@@ -26,6 +26,10 @@ TagManager:
   - ghostTwo
   - ghostFour
   - spiderFour
+  - bag
+  - hand
+  - potionBottle
+  - purifier
   layers:
   - Default
   - TransparentFX

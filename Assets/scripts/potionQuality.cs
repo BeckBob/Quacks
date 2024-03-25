@@ -7,20 +7,41 @@ public class PotionQuality : MonoBehaviour
     public UnityEvent<GameObject> OnEnterEvent;
 
     private int _cherryBombs;
+    private grabIngredient _grabIngredient;
+    public int cherryBombLimit = 7;
+
+
+    private void Awake()
+    {
+        _grabIngredient = FindObjectOfType<grabIngredient>();
+
+
+    }
 
     public int GetCherryBombs()
     {
         return _cherryBombs;
     }
 
+    public int getCherryBombLimit()
+    {
+        return cherryBombLimit;
+    }
+
+    public void AddToCherryBombLimit()
+    {
+        cherryBombLimit++;
+    }
+
     private void OnTriggerEnter(Collider other)
     {
+        _grabIngredient.ingredientInPotion();
         if (other.gameObject.CompareTag("cherryBombOne"))
         {
             OnEnterEvent.Invoke(other.gameObject);
             _cherryBombs += 1;
 
-            if (_cherryBombs > 7)
+            if (_cherryBombs > cherryBombLimit)
             {
                 potionOne.material.color = Color.black;
             }
@@ -30,7 +51,7 @@ public class PotionQuality : MonoBehaviour
             OnEnterEvent.Invoke(other.gameObject);
             _cherryBombs += 2;
 
-            if (_cherryBombs > 7)
+            if (_cherryBombs > cherryBombLimit)
             {
                 potionOne.material.color = Color.black;
             }
@@ -40,7 +61,7 @@ public class PotionQuality : MonoBehaviour
             OnEnterEvent.Invoke(other.gameObject);
             _cherryBombs += 3;
 
-            if (_cherryBombs > 7)
+            if (_cherryBombs > cherryBombLimit)
             {
                 potionOne.material.color = Color.black;
             }

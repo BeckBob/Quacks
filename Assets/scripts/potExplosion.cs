@@ -8,7 +8,7 @@ public class potExplosion : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         // Check if the collision is with a cherry bomb and if the cherryBombs count in quality is less than or equal to 7
-        if (other.gameObject.tag.Contains("cherryBomb") && quality.GetCherryBombs() <= 7)
+        if (other.gameObject.tag.Contains("cherryBomb") && quality.GetCherryBombs() <= quality.cherryBombLimit)
         {
             potionOne.material.color = Color.red;
 
