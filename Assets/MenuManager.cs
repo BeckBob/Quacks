@@ -5,13 +5,13 @@ using UnityEngine;
 
 public class MenuManager : MonoBehaviour
 {
-    [SerializeField] private GameObject _selectFortune;
+    [SerializeField] public GameObject _selectFortune;
     void Awake()
     {
         GameManager.OnGameStateChanged += GameManagerOnOnGameStateChanged;
 
     }
-    private void OnDestroy()
+    void OnDestroy()
     {
         GameManager.OnGameStateChanged -= GameManagerOnOnGameStateChanged;
     }

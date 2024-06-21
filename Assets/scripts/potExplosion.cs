@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class potExplosion : MonoBehaviour
+public class PotExplosion : MonoBehaviour
 {
     [SerializeField] private Renderer potionOne;
     public PotionQuality quality;

@@ -8,6 +8,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/SampleScene.unity
     guid: 9fc0d4010bbf28b4594072e72b8655ab
+  - enabled: 1
+    path: Assets/quacksBACKUP.unity
+    guid: b4a46999fcd72d542bbf2a9dff3c0ceb
   m_configObjects:
     Unity.XR.Oculus.Settings: {fileID: 11400000, guid: 1691c50ba21f7994ca5db2ca6d6bf07f, type: 2}
     com.unity.xr.management.loader_settings: {fileID: 11400000, guid: f6e364b92589cd84cbcdf5caf5f9b283, type: 2}

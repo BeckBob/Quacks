@@ -1,21 +1,37 @@
+using TMPro;
+using Unity.Netcode;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class PotionQuality : MonoBehaviour
+public class PotionQuality : MonoBehaviour 
 {
     [SerializeField] private Renderer potionOne;
+  
     public UnityEvent<GameObject> OnEnterEvent;
 
-    private int _cherryBombs;
-    private grabIngredient _grabIngredient;
+    public ChipPoints _chipPoints;
+
+    [SerializeField] TextMeshProUGUI cherryBombsText;
+    [SerializeField] TextMeshProUGUI cherryBombsText2;
+
+    private int _cherryBombs = 0;
+  
     public int cherryBombLimit = 7;
 
+    public bool nextIngredientTime = true;
 
-    private void Awake()
+    public void ResetCherryBombs()
     {
-        _grabIngredient = FindObjectOfType<grabIngredient>();
+        _cherryBombs = 0;
+    }
 
-
+    public void SetCherryBombText()
+    {
+        string cherrybombsinPot = _cherryBombs.ToString();
+        string cherrybombLimitforText = cherryBombLimit.ToString();
+        cherryBombsText.text = $"{cherrybombsinPot}/{cherrybombLimitforText}";
+        cherryBombsText2.text = $"{cherrybombsinPot}/{cherrybombLimitforText}";
     }
 
     public int GetCherryBombs()
@@ -23,7 +39,7 @@ public class PotionQuality : MonoBehaviour
         return _cherryBombs;
     }
 
-    public int getCherryBombLimit()
+    public int GetCherryBombLimit()
     {
         return cherryBombLimit;
     }
@@ -33,9 +49,24 @@ public class PotionQuality : MonoBehaviour
         cherryBombLimit++;
     }
 
+    public void RemoveFromCherryBombLimit()
+    {
+        cherryBombLimit--;
+    }
+
+    public void FalseNextIngredientMethod()
+    {
+        if (nextIngredientTime)
+        {
+            nextIngredientTime = false;
+        }
+    }
+
     private void OnTriggerEnter(Collider other)
     {
-        _grabIngredient.ingredientInPotion();
+        nextIngredientTime = true;
+       
+
         if (other.gameObject.CompareTag("cherryBombOne"))
         {
             OnEnterEvent.Invoke(other.gameObject);
@@ -43,7 +74,9 @@ public class PotionQuality : MonoBehaviour
 
             if (_cherryBombs > cherryBombLimit)
             {
+           
                 potionOne.material.color = Color.black;
+                _chipPoints.PotExplosionEndRound();
             }
         }
         else if (other.gameObject.CompareTag("cherryBombTwo"))
@@ -54,6 +87,8 @@ public class PotionQuality : MonoBehaviour
             if (_cherryBombs > cherryBombLimit)
             {
                 potionOne.material.color = Color.black;
+                _chipPoints.PotExplosionEndRound();
+
             }
         }
         else if (other.gameObject.CompareTag("cherryBombThree"))
@@ -64,8 +99,10 @@ public class PotionQuality : MonoBehaviour
             if (_cherryBombs > cherryBombLimit)
             {
                 potionOne.material.color = Color.black;
+                _chipPoints.PotExplosionEndRound();
             }
         }
+        SetCherryBombText();
     }
 }
 

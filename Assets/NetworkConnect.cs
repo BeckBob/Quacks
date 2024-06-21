@@ -9,28 +9,56 @@ using Unity.Services.Relay.Models;
 using Unity.Netcode.Transports.UTP;
 using Unity.Services.Lobbies;
 using Unity.Services.Lobbies.Models;
+using UnityEngine.UI;
+
+
 
 
 
 public class NetworkConnect : MonoBehaviour
 {
-    
+
+    private LobbyCodeText _lobbyCodeText;
+    private LobbytextVBscript _lobbyTextVBscript;
+    [SerializeField] GameObject _inputLobbyCode;
+    private NetworkManager _networkManagerInstance;
+    public int players;
+
+
+    // Start is called before the first frame update
+
+    private void Start()
+    {
+        _lobbyCodeText = FindObjectOfType<LobbyCodeText>();
+        _lobbyTextVBscript = FindObjectOfType<LobbytextVBscript>();
+        _networkManagerInstance = NetworkManager.Singleton;
+
+    }
+    [SerializeField] private GameObject _startMenu;
     public int maxConnection = 20;
     public UnityTransport transport;
+   
+
 
     private Lobby currentLobby;
 
     private async void Awake()
     {
         await UnityServices.InitializeAsync();
-        await AuthenticationService.Instance.SignInAnonymouslyAsync();
+        AuthenticationService.Instance.SignedIn += () =>
+        {
+            Debug.Log("Signed in " + AuthenticationService.Instance.PlayerId);
+        };
+        await AuthenticationService.Instance.SignInAnonymouslyAsync(); 
     }
     public async void Create()
     {
-        Allocation allocation = await RelayService.Instance.CreateAllocationAsync(maxConnection);
+        Allocation allocation = await RelayService.Instance.CreateAllocationAsync(3);
         string newJoinCode = await RelayService.Instance.GetJoinCodeAsync(allocation.AllocationId);
 
-        Debug.LogError(newJoinCode);
+        
+        _lobbyCodeText.SetLobbyCode(newJoinCode);
+        _lobbyTextVBscript.SetLobbyCode(newJoinCode);
 
         transport.SetHostRelayData(allocation.RelayServer.IpV4, (ushort)allocation.RelayServer.Port,
             allocation.AllocationIdBytes, allocation.Key, allocation.ConnectionData);
@@ -42,9 +70,12 @@ public class NetworkConnect : MonoBehaviour
         lobbyOptions.Data.Add("JOIN_CODE", dataObject);
 
         currentLobby = await Lobbies.Instance.CreateLobbyAsync("Lobby Name", maxConnection, lobbyOptions);
+       
 
-        
-        NetworkManager.Singleton.StartHost();
+    NetworkManager.Singleton.StartHost();
+        players = _networkManagerInstance.ConnectedClients.Count;
+        _startMenu.SetActive(false);
+        GameManager.Instance.UpdateGameState(GameState.Lobby);
     }
 
     public async void Join()
@@ -58,6 +89,30 @@ public class NetworkConnect : MonoBehaviour
             allocation.AllocationIdBytes, allocation.Key, allocation.ConnectionData, allocation.HostConnectionData);
 
         NetworkManager.Singleton.StartClient();
+        _startMenu.SetActive(false);
+        players = _networkManagerInstance.ConnectedClients.Count;
+        GameManager.Instance.UpdateGameState(GameState.Lobby);
     }
+
+    public async void JoinWithCode()
+    {
+
+        Debug.Log(_inputLobbyCode.GetComponent<InputField>().text);
+        string InputCode = _inputLobbyCode.GetComponent<InputField>().text;
+        
+        string relayJoinCode = InputCode;
+
+        JoinAllocation allocation = await RelayService.Instance.JoinAllocationAsync(relayJoinCode);
+
+        transport.SetClientRelayData(allocation.RelayServer.IpV4, (ushort)allocation.RelayServer.Port,
+        allocation.AllocationIdBytes, allocation.Key, allocation.ConnectionData, allocation.HostConnectionData);
+
+        NetworkManager.Singleton.StartClient();
+        players = _networkManagerInstance.ConnectedClients.Count;
+        _startMenu.SetActive(false);
+        GameManager.Instance.UpdateGameState(GameState.Lobby);
+    }
+
+
 }
 

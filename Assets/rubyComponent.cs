@@ -6,16 +6,17 @@ using TMPro;
 
 public class rubyComponenet : MonoBehaviour
 {
-    [SerializeField]
+    
     private bool _ruby;
+    [SerializeField] GameObject tickPresent;
+    [SerializeField] GameObject crossPresent;
 
-    private chipPoints _chipPoints;
-    private TMP_Text _rubyText;
-
+    private ChipPoints _chipPoints;
+    
     private void Awake()
     {
-        _chipPoints = FindObjectOfType<chipPoints>();
-        _rubyText = GetComponent<TMP_Text>();
+        _chipPoints = FindObjectOfType<ChipPoints>();
+        
 
     }
 
@@ -24,11 +25,13 @@ public class rubyComponenet : MonoBehaviour
         _ruby = _chipPoints.RubiesThisRound;
         if (_ruby == false)
         {
-            _rubyText.text = "= N";
+            tickPresent.SetActive(false);
+            crossPresent.SetActive(true);
         }
         if (_ruby == true)
         {
-            _rubyText.text = "= Y";
+            tickPresent.SetActive(true);
+            crossPresent.SetActive(false);
         }
     }
 

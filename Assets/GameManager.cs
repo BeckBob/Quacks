@@ -4,23 +4,68 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Rendering.UI;
 using System;
+using Unity.Services.Lobbies.Models;
 
 
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
+    [SerializeField] private GameObject _fortuneText;
+    [SerializeField] private GameObject _purplePresentScore;
+    [SerializeField] private GameObject _yellowPresentScore;
+    [SerializeField] private GameObject _redPresentScore;
+    [SerializeField] private GameObject _bluePresentScore;
+    [SerializeField] private GameObject _purpleFutureScore;
+    [SerializeField] private GameObject _redFutureScore;
+    [SerializeField] private GameObject _blueFutureScore;
+    [SerializeField] private GameObject _yellowFutureScore;
+    [SerializeField] private GameObject _purpleSphere;
+    [SerializeField] private GameObject _redSphere;
+    [SerializeField] private GameObject _yellowSphere;
+    [SerializeField] private GameObject _blueSphere;
+    [SerializeField] private GameObject _purpleCauldronScores;
+    [SerializeField] private GameObject _redCauldronScores;
+    [SerializeField] private GameObject _blueCauldronScores;
+    [SerializeField] private GameObject _yellowCauldronScores;
+    [SerializeField] private GameObject _purpleIngredientSphere;
+    [SerializeField] private GameObject _yellowIngredientSphere;
+    [SerializeField] private GameObject _blueIngredientSphere;
+    [SerializeField] private GameObject _redIngredientSphere;
+    [SerializeField] private GameObject _LobbySettings;
+    [SerializeField] private GameObject _LobbyCodeText;
+    [SerializeField] private GameObject _bigBook;
+    [SerializeField] private GameObject _purplePlayerSpace;
+    [SerializeField] private GameObject _yellowPlayerSpace;
+    [SerializeField] private GameObject _BluePlayerSpace;
+    [SerializeField] private GameObject _redPlayerSpace;
+    private TeleportationManager _teleportationManager;
 
+
+    private FortuneNumber _fortuneNumber;
+    private PlayerData _playerData;
+    private WinnerManager _winnerManager;
+    private BuyIngredients _buyIngredients;
+    private ChipPoints _chipPoints;
+    fortuneTeller _fortuneTeller;
     public GameState State;
+
+    
 
     public static event Action<GameState> OnGameStateChanged;
     void Awake()
     {
         Instance = this;
+
+        _fortuneNumber = FindObjectOfType<FortuneNumber>();
+        _teleportationManager = FindObjectOfType<TeleportationManager>();
+        _winnerManager = FindObjectOfType<WinnerManager>();
+        _buyIngredients = FindObjectOfType<BuyIngredients>();
+        _chipPoints = FindObjectOfType<ChipPoints>();
     }
 
     void Start()
     {
-        UpdateGameState(GameState.FortuneTeller);
+        UpdateGameState(GameState.StartMenu);
     }
     public void UpdateGameState(GameState newState) 
     {  
@@ -28,49 +73,171 @@ public class GameManager : MonoBehaviour
 
         switch (newState)
         {
-            case GameState.FortuneTeller:
-                HandleFortune();
+            case GameState.StartMenu:
+                HandleStartMenu();
                 break;
-            case GameState.RatTails:
+            case GameState.Lobby:
+                HandleLobby();
+                break;
+            case GameState.FortuneTeller:
+                HandleFortune(); 
                 break;
             case GameState.PotionMaking:
-                break;
-            case GameState.EndOfRoundEffects:
-                break;
-            case GameState.ifPotExploded:
+                HandlePotionMaking();
                 break;
             case GameState.RollDice:
-                break;
-            case GameState.AddStuffFromRound:
+                RollDice();
                 break;
             case GameState.BuyIngredients:
+                BuyIngredients();
                 break;
-            case GameState.RepeatFor8Rounds:
-                break;
+            case GameState.SpendRubies:
+                SpendRubies();
+                    break;
             case GameState.DeclareWinner:
+                DeclareWinner();
                 break;
                 
         }
         OnGameStateChanged?.Invoke(newState);
+        Debug.Log(State.ToString());
+
+    }
+
+    private void DeclareWinner()
+    {
+        _winnerManager.GameWinner();
+    }
+    private void BuyIngredients()
+    {
+        if (_playerData.Colour.Value == "Purple")
+        {
+            _purpleSphere.SetActive(false);
+
+            _purpleIngredientSphere.SetActive(false);
+            _purplePresentScore.SetActive(false);
+            _purpleFutureScore.SetActive(false);
+        }
+        if (_playerData.Colour.Value == "Red")
+        {
+            _redSphere.SetActive(false);
+
+            _redIngredientSphere.SetActive(false);
+            _redPresentScore.SetActive(false);
+            _redFutureScore.SetActive(false);
+        }
+        if (_playerData.Colour.Value == "Yellow")
+        {
+            _yellowSphere.SetActive(false);
+            _yellowIngredientSphere.SetActive(false);
+            _yellowPresentScore.SetActive(false);
+            _yellowFutureScore.SetActive(false);
+        }
+        if (_playerData.Colour.Value == "Blue")
+        {
+            _blueSphere.SetActive(false);
+
+            _blueIngredientSphere.SetActive(false);
+            _bluePresentScore.SetActive(false);
+            _blueFutureScore.SetActive(false);
+        }
+        _buyIngredients.SetUpStall();
+    }
+
+    private void SpendRubies()
+    {
+        _chipPoints = FindObjectOfType<ChipPoints>();
+        _purpleSphere.SetActive(true);
+        _chipPoints.SpendRubiesUI();
+
+    }
+    
+    private void RollDice()
+    {
+        
+            _winnerManager.RoundWinner();
+      
+        
+    }
+
+    private void HandleLobby()
+    {
+        _LobbyCodeText.SetActive(true);
+        _LobbySettings.SetActive(true);
+    }
+
+    private void HandleStartMenu()
+    {
+        
+    }
+
+    private void HandlePotionMaking()
+    {
+        _playerData = FindObjectOfType<PlayerData>();
+        _playerData.IsReadyFunction();
+        if (_playerData.Colour.Value == "Purple")
+        {
+            _purpleSphere.SetActive(true);
+
+            _purpleIngredientSphere.SetActive(true);
+            _purplePresentScore.SetActive(true);
+            _purpleFutureScore.SetActive(true);
+        }
+        if (_playerData.Colour.Value == "Red")
+        {
+            _redSphere.SetActive(true);
+
+            _redIngredientSphere.SetActive(true);
+            _redPresentScore.SetActive(true);
+            _redFutureScore.SetActive(true);
+        }
+        if (_playerData.Colour.Value == "Yellow") { 
+            _yellowSphere.SetActive(true);
+        _yellowIngredientSphere.SetActive(true);
+        _yellowPresentScore.SetActive(true);
+        _yellowFutureScore.SetActive(true);
+    }
+        if (_playerData.Colour.Value == "Blue")
+        {
+            _blueSphere.SetActive(true);
+           
+            _blueIngredientSphere.SetActive(true);
+            _bluePresentScore.SetActive(true);
+            _blueFutureScore.SetActive(true);
+        }
+        _yellowCauldronScores.SetActive(true);
+        _blueCauldronScores.SetActive(true);
+        _redCauldronScores.SetActive(true);
+        _purpleCauldronScores.SetActive(true);
     }
 
     private void HandleFortune()
     {
-
+        _fortuneTeller = FindObjectOfType<fortuneTeller>();
+        _playerData = FindObjectOfType<PlayerData>();
+        _bigBook.SetActive(false);
+        _purplePlayerSpace.SetActive(true);
+        _yellowPlayerSpace.SetActive(true);
+        _redPlayerSpace.SetActive(true);
+        _BluePlayerSpace.SetActive(true);
+        _teleportationManager.StartGameTeleportation();
+        _playerData.IsReadyFunction();
+        _fortuneText.SetActive(true);
+        _fortuneNumber.FortuneNumberGenerator();
+        
+        
     }
 
 }
 
 public enum GameState
 {
+    StartMenu,
+    Lobby,
     FortuneTeller,
-    RatTails,
     PotionMaking,
-    EndOfRoundEffects,
-    ifPotExploded,
     RollDice,
-    AddStuffFromRound,
     BuyIngredients,
-    RepeatFor8Rounds,
+    SpendRubies,
     DeclareWinner
 }

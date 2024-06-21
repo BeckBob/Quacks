@@ -4,25 +4,29 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class coinComponenet : MonoBehaviour
+public class CoinComponenet : MonoBehaviour
 {
-    [SerializeField]
-    private int _coins;
+    
 
-    private chipPoints _chipPoints;
+    public int _coins;
+
+    private ChipPoints _chipPoints;
     private TMP_Text _coinsText;
 
     private void Awake()
     {
-        _chipPoints = FindObjectOfType<chipPoints>();
+        _chipPoints = FindObjectOfType<ChipPoints>();
         _coinsText = GetComponent<TMP_Text>();
        
     }
 
+
+
     public void Update()
     {
         _coins = _chipPoints.Coins;
-        _coinsText.text = $"= {_coins}";
+            _coinsText.text = $"= {_coins}";
+        
     }
 
 }

@@ -6,15 +6,15 @@ using TMPro;
 
 public class VictoryPointComponenet : MonoBehaviour
 {
-    [SerializeField]
-    private int _victoryPoints;
+    
+    public int _victoryPoints;
 
-    private chipPoints _chipPoints;
+    private ChipPoints _chipPoints;
     private TMP_Text _victoryPointText;
 
     private void Awake()
     {
-        _chipPoints = FindObjectOfType<chipPoints>();
+        _chipPoints = FindObjectOfType<ChipPoints>();
         _victoryPointText = GetComponent<TMP_Text>();
 
     }
