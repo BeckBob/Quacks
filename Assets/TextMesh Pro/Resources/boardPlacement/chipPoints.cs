@@ -67,6 +67,14 @@ public class ChipPoints : MonoBehaviour
     [SerializeField] TextMeshProUGUI choiceFour;
     [SerializeField] TextMeshProUGUI choiceFive;
     [SerializeField] TextMeshProUGUI rubyNumber;
+    [SerializeField] GameObject bagSphere;
+
+    [SerializeField] GameObject Ruby1;
+    [SerializeField] GameObject Ruby2;
+    [SerializeField] GameObject Ruby3;
+    [SerializeField] GameObject Ruby4;
+    [SerializeField] GameObject Ruby5;
+    [SerializeField] GameObject Ruby6;
 
     public Material Round1Sky;
     public Material Round2Sky;
@@ -76,6 +84,8 @@ public class ChipPoints : MonoBehaviour
     public Material Round6Sky;
     public Material Round7Sky;
     public Material Round8Sky;
+
+    public string lastIngredient;
 
     public bool choiceOneCauldron = false;
     public bool choiceTwoCauldron = false;
@@ -139,7 +149,7 @@ public class ChipPoints : MonoBehaviour
         if (crowSkullRule == 3)
         {
             
-            if (ingredientsList[ingredientsList.Count] == "crowSkullOne")
+            if (ingredientsList[ingredientsList.Count - 1] == "crowSkullOne")
             {
                 buttonsToAddLeftover.SetActive(true);
                 button5.SetActive(true);
@@ -151,7 +161,7 @@ public class ChipPoints : MonoBehaviour
                 await CheckWhichChoice();
                 ResetChoices();
             }
-            if (ingredientsList[ingredientsList.Count - 1] == "crowSkullTwo" || ingredientsList[ingredientsList.Count] == "crowSkullTwo")
+            if (ingredientsList[ingredientsList.Count - 1] == "crowSkullTwo" || ingredientsList[ingredientsList.Count - 2] == "crowSkullTwo")
             {
                 buttonsToAddLeftover.SetActive(true);
                 button5.SetActive(true);
@@ -163,7 +173,7 @@ public class ChipPoints : MonoBehaviour
                 await CheckWhichChoice();
                 ResetChoices();
             }
-            if (ingredientsList[ingredientsList.Count - 1] == "crowSkullFour" || ingredientsList[ingredientsList.Count - 2] == "crowSkullFour" || ingredientsList[ingredientsList.Count] == "crowSkullFour")
+            if (ingredientsList[ingredientsList.Count - 1] == "crowSkullFour" || ingredientsList[ingredientsList.Count - 2] == "crowSkullFour" || ingredientsList[ingredientsList.Count - 3] == "crowSkullFour")
             {
                 buttonsToAddLeftover.SetActive(true);
                 button5.SetActive(true);
@@ -209,11 +219,11 @@ public class ChipPoints : MonoBehaviour
 
         ingredientsList.Add(other.gameObject.tag);
         extraPoints = 0; extraRubies = 0;
-
+        lastIngredient = other.gameObject.tag;
 
         if (mushroomRule == 1)
         {
-            if (other.gameObject.tag.Contains("mushroom") && ingredientsList.Count >= 2 && ingredientsList[ingredientsList.Count - 1].Contains("cherryBomb"))
+            if (other.gameObject.tag.Contains("mushroom") && ingredientsList.Count >= 2 && ingredientsList[ingredientsList.Count - 2].Contains("cherryBomb"))
             {
 
                 if (ingredientsList[ingredientsList.Count - 1].Contains("One"))
@@ -420,7 +430,10 @@ public class ChipPoints : MonoBehaviour
                     aboveCauldronText.text = "One mandrake in potion! Limit of cherry bombs increased to 8!";
                     //sound effect
                     await CheckWhichChoice();
-                    buttonsToAddLeftover.SetActive(false); quality.AddToCherryBombLimit(); }
+
+                    buttonsToAddLeftover.SetActive(false); quality.AddToCherryBombLimit();
+                    quality.SetCherryBombText();
+                }
                 if (mandrakes == 3)
                 {
                     buttonsToAddLeftover.SetActive(true);
@@ -428,7 +441,9 @@ public class ChipPoints : MonoBehaviour
                     aboveCauldronText.text = "One mandrake in potion! Limit of cherry bombs increased to 9!";
                     //sound effect
                     await CheckWhichChoice();
-                    buttonsToAddLeftover.SetActive(false); quality.AddToCherryBombLimit();
+                    buttonsToAddLeftover.SetActive(false);
+                    quality.AddToCherryBombLimit();
+                    quality.SetCherryBombText();
                 }
                 ResetChoices();
             }
@@ -713,10 +728,24 @@ public class ChipPoints : MonoBehaviour
 
     public void ResetStuffInBook()
     {
+        programInstance = new Program();
         Chips[] boardPlacement = programInstance.GetBoardPlacement();
-        Coins = boardPlacement[Score].Coins;
-        VictoryPoints = boardPlacement[Score].VictoryPoints;
-        RubiesThisRound = boardPlacement[Score].Ruby;
+        if (Score > 0)
+        {
+            Coins = boardPlacement[Score - 1].Coins;
+            VictoryPoints = boardPlacement[Score - 1].VictoryPoints;
+            RubiesThisRound = boardPlacement[Score - 1].Ruby;
+        }
+        else
+        {
+            Coins = boardPlacement[0].Coins;
+            VictoryPoints = boardPlacement[0].VictoryPoints;
+            RubiesThisRound = boardPlacement[0].Ruby;
+        }
+
+        FutureCoins = boardPlacement[Score].Coins;
+        FutureVictoryPoints = boardPlacement[Score].VictoryPoints;
+        FutureRubiesThisRound = boardPlacement[Score].Ruby;
     }
 
     public string getNameOfIngredientFromNumber(int nextIngredient)
@@ -952,7 +981,7 @@ public class ChipPoints : MonoBehaviour
 
             if (gardenSpiderRule == 1)
             {
-                if (ingredientsList[ingredientsList.Count - 1].Contains("spider") || ingredientsList[ingredientsList.Count].Contains("spider"))
+                if (ingredientsList[ingredientsList.Count - 1].Contains("spider") || ingredientsList[ingredientsList.Count - 2].Contains("spider"))
                 {
                     buttonsToAddLeftover.SetActive(true);
                     aboveCauldronText.text = "You had a spider last or next to last in your pot, you may pay one ruby to to add a droplet to your pot permanatly";
@@ -974,7 +1003,7 @@ public class ChipPoints : MonoBehaviour
 
                     ResetChoices();
                 }
-                if (ingredientsList[ingredientsList.Count - 1].Contains("spider") && ingredientsList[ingredientsList.Count].Contains("spider"))
+                if (ingredientsList[ingredientsList.Count - 1].Contains("spider") && ingredientsList[ingredientsList.Count - 2].Contains("spider"))
                 {
                     buttonsToAddLeftover.SetActive(true);
                     aboveCauldronText.text = "You had spiders both last or next to last in your pot, you may pay one ruby to to add a droplet to your pot permanatly for each spider";
@@ -1068,7 +1097,7 @@ public class ChipPoints : MonoBehaviour
             }
             if (gardenSpiderRule == 3)
             {
-                if (ingredientsList[ingredientsList.Count - 1].Contains("spider") || ingredientsList[ingredientsList.Count].Contains("spider"))
+                if (ingredientsList[ingredientsList.Count - 1].Contains("spider") || ingredientsList[ingredientsList.Count - 2].Contains("spider"))
                 {
                     buttonsToAddLeftover.SetActive(true);
                     aboveCauldronText.text = "You had a spider last or next to last in your pot, you get a ruby!";
@@ -1080,7 +1109,7 @@ public class ChipPoints : MonoBehaviour
                     ChangeRubyUI();
 
                 }
-                if (ingredientsList[ingredientsList.Count - 1].Contains("spider") && ingredientsList[ingredientsList.Count].Contains("spider"))
+                if (ingredientsList[ingredientsList.Count - 1].Contains("spider") && ingredientsList[ingredientsList.Count - 2].Contains("spider"))
                 {
                     buttonsToAddLeftover.SetActive(true);
                     aboveCauldronText.text = "You had a spider last AND next to last in your pot, you get TWO rubies!";
@@ -1099,7 +1128,7 @@ public class ChipPoints : MonoBehaviour
                 if (ingredientsList[ingredientsList.Count - 1].Contains("spider"))
                 {
                     grabIngredient = FindObjectOfType<GrabIngredient>();
-                    if (ingredientsList[ingredientsList.Count - 1] == "spiderOne")
+                    if (ingredientsList[ingredientsList.Count - 2] == "spiderOne")
                     {
                         buttonsToAddLeftover.SetActive(true);
                         aboveCauldronText.text = "You had a small spider next to last in your pot, added pumpkin to bag!";
@@ -1107,6 +1136,66 @@ public class ChipPoints : MonoBehaviour
                         //some sound effect for Pumpkin
                         grabIngredient.AddToBagPermanantly(14);
                         await CheckWhichChoice();
+                    }
+                    if (ingredientsList[ingredientsList.Count - 2] == "spiderTwo")
+                    {
+                        buttonsToAddLeftover.SetActive(true);
+                        aboveCauldronText.text = "You had a medium spider next to last in your pot, choose which small ingredient to add to bag!";
+                        button1.SetActive(true);
+                        button2.SetActive(true);
+                        choiceOne.text = "Crow skull";
+                        choiceTwo.text = "Mushroom";
+
+                        await CheckWhichChoice();
+                        if (choiceOneCauldron)
+                        {
+                            //sound effect of crow
+                            grabIngredient.AddToBagPermanantly(4);
+                        }
+                        if (choiceOneCauldron)
+                        {
+                            //sound effect of mushroom
+                            grabIngredient.AddToBagPermanantly(12);
+                        }
+
+                    }
+                    if (ingredientsList[ingredientsList.Count - 2] == "spiderFour")
+                    {
+                        buttonsToAddLeftover.SetActive(true);
+                        aboveCauldronText.text = "You had a large spider next to last in your pot, choose which small ingredient to add to bag!";
+                        button1.SetActive(true);
+                        button2.SetActive(true);
+                        choiceOne.text = "Mandrake";
+                        choiceTwo.text = "GhostsBreath";
+
+                        await CheckWhichChoice();
+                        if (choiceOneCauldron)
+                        {
+                            //sound effect of screaming? like nice screaming?
+                            grabIngredient.AddToBagPermanantly(8);
+                        }
+                        if (choiceOneCauldron)
+                        {
+                            //sound effect of a "BOO"
+                            grabIngredient.AddToBagPermanantly(6);
+                        }//text saying large spider second to last in pot, choose to add small mandrake or ghostsbreath
+                    }
+                }
+                if (ingredientsList[ingredientsList.Count - 1].Contains("spider"))
+                {
+                    grabIngredient = FindObjectOfType<GrabIngredient>();
+
+                    if (ingredientsList[ingredientsList.Count] == "spiderOne")
+                    {
+
+                        buttonsToAddLeftover.SetActive(true);
+                        aboveCauldronText.text = "You had a small spider next to last in your pot, added pumpkin to bag!";
+                        button5.SetActive(true);
+                        //some sound effect for Pumpkin
+                        grabIngredient.AddToBagPermanantly(14);
+                        await CheckWhichChoice();
+
+
                     }
                     if (ingredientsList[ingredientsList.Count - 1] == "spiderTwo")
                     {
@@ -1131,66 +1220,6 @@ public class ChipPoints : MonoBehaviour
 
                     }
                     if (ingredientsList[ingredientsList.Count - 1] == "spiderFour")
-                    {
-                        buttonsToAddLeftover.SetActive(true);
-                        aboveCauldronText.text = "You had a large spider next to last in your pot, choose which small ingredient to add to bag!";
-                        button1.SetActive(true);
-                        button2.SetActive(true);
-                        choiceOne.text = "Mandrake";
-                        choiceTwo.text = "GhostsBreath";
-
-                        await CheckWhichChoice();
-                        if (choiceOneCauldron)
-                        {
-                            //sound effect of screaming? like nice screaming?
-                            grabIngredient.AddToBagPermanantly(8);
-                        }
-                        if (choiceOneCauldron)
-                        {
-                            //sound effect of a "BOO"
-                            grabIngredient.AddToBagPermanantly(6);
-                        }//text saying large spider second to last in pot, choose to add small mandrake or ghostsbreath
-                    }
-                }
-                if (ingredientsList[ingredientsList.Count].Contains("spider"))
-                {
-                    grabIngredient = FindObjectOfType<GrabIngredient>();
-
-                    if (ingredientsList[ingredientsList.Count] == "spiderOne")
-                    {
-
-                        buttonsToAddLeftover.SetActive(true);
-                        aboveCauldronText.text = "You had a small spider next to last in your pot, added pumpkin to bag!";
-                        button5.SetActive(true);
-                        //some sound effect for Pumpkin
-                        grabIngredient.AddToBagPermanantly(14);
-                        await CheckWhichChoice();
-
-
-                    }
-                    if (ingredientsList[ingredientsList.Count] == "spiderTwo")
-                    {
-                        buttonsToAddLeftover.SetActive(true);
-                        aboveCauldronText.text = "You had a medium spider next to last in your pot, choose which small ingredient to add to bag!";
-                        button1.SetActive(true);
-                        button2.SetActive(true);
-                        choiceOne.text = "Crow skull";
-                        choiceTwo.text = "Mushroom";
-
-                        await CheckWhichChoice();
-                        if (choiceOneCauldron)
-                        {
-                            //sound effect of crow
-                            grabIngredient.AddToBagPermanantly(4);
-                        }
-                        if (choiceOneCauldron)
-                        {
-                            //sound effect of mushroom
-                            grabIngredient.AddToBagPermanantly(12);
-                        }
-
-                    }
-                    if (ingredientsList[ingredientsList.Count] == "spiderFour")
                     {
                         buttonsToAddLeftover.SetActive(true);
                         aboveCauldronText.text = "You had a large spider next to last in your pot, choose which small ingredient to add to bag!";
@@ -2401,12 +2430,14 @@ public class ChipPoints : MonoBehaviour
             choiceOne.text = "Buy droplet";
             button2.SetActive(true);
             int rubiesToSpend = _playerData.Rubies.Value;
+            
             if (_playerData.PurifierFull.Value == false)
             {
-                button3.SetActive(true);
+                buttonsToAddLeftover.SetActive(true);
+                button5.SetActive(true);
                 aboveCauldronText.text = $"You have {rubiesToSpend} rubies, do you want to buy a droplet or refill your purifier potion?";
                 choiceTwo.text = "Buy refill of purifier potion";
-                choiceThree.text = "Skip";
+                
                 await CheckWhichChoice();
                 if (choiceOneCauldron)
                 {
@@ -2424,6 +2455,7 @@ public class ChipPoints : MonoBehaviour
             }
             else
             {
+                buttonsToAddLeftover.SetActive(true);
                 aboveCauldronText.text = $"You have {rubiesToSpend} rubies, do you want to buy a droplet?";
                 choiceTwo.text = "Skip";
 
@@ -2442,6 +2474,7 @@ public class ChipPoints : MonoBehaviour
     }
     public async void ReadyForNextRound()
     {
+        bagSphere.SetActive(true);
         Debug.Log("ready for next round function");
         buttonsToAddLeftover.SetActive(true);
         ResetScore();
@@ -2449,7 +2482,7 @@ public class ChipPoints : MonoBehaviour
         await winnerManager.CheckAllPlayersReady();
         winnerManager.ResetReady();
         ChangeSceneryDependingOnRound();
-
+        grabIngredient = FindObjectOfType<GrabIngredient>();
 
         //RAT TAILS - ADD RAT TAILS BECK MY GOD
         await winnerManager.CalculateRatTails();
@@ -2461,6 +2494,11 @@ public class ChipPoints : MonoBehaviour
         
         await CheckWhichChoice();
         aboveCauldronText.text = "";
+        quality.ResetPotionColour();
+        quality.ResetCherryBombLimit();
+        quality.SetCherryBombText();
+        grabIngredient.ResetBagContents();
+        bagSphere.SetActive(false);
         resetScoreText();
         ResetChoices();
         ResetStuffInBook();
@@ -2492,6 +2530,7 @@ public class ChipPoints : MonoBehaviour
         if (winnerManager.round == 2)
         {
             RenderSettings.skybox = Round2Sky;
+            //maybe also change shade of lighting
 
         }
         if (winnerManager.round == 3)
@@ -2535,8 +2574,159 @@ public class ChipPoints : MonoBehaviour
         rubyNumber.text = _playerData.Rubies.Value.ToString();
         rubyInstantiationLocation = rubylocationSphere.transform.position;
 
-        Instantiate(rubyForBowl, rubyInstantiationLocation, Quaternion.identity);
+        if (_playerData.Rubies.Value == 0)
+        {
+            Ruby1.SetActive(false);
+            Ruby2.SetActive(false);
+            Ruby3.SetActive(false);
+            Ruby4.SetActive(false);
+            Ruby5.SetActive(false);
+            Ruby6.SetActive(false);
+        }
+        if (_playerData.Rubies.Value == 1)
+        {
+            Ruby1.SetActive(true);
+            Ruby2.SetActive(false);
+            Ruby3.SetActive(false);
+            Ruby4.SetActive(false);
+            Ruby5.SetActive(false);
+            Ruby6.SetActive(false);
+        }
+        if (_playerData.Rubies.Value == 2)
+        {
+            Ruby1.SetActive(true);
+            Ruby2.SetActive(true);
+            Ruby3.SetActive(false);
+            Ruby4.SetActive(false);
+            Ruby5.SetActive(false);
+            Ruby6.SetActive(false);
+        }
+        if (_playerData.Rubies.Value == 3)
+        {
+            Ruby1.SetActive(true);
+            Ruby2.SetActive(true);
+            Ruby3.SetActive(true);
+            Ruby4.SetActive(false);
+            Ruby5.SetActive(false);
+            Ruby6.SetActive(false);
+        }
+        if (_playerData.Rubies.Value == 4)
+        {
+            Ruby1.SetActive(true);
+            Ruby2.SetActive(true);
+            Ruby3.SetActive(true);
+            Ruby4.SetActive(true);
+            Ruby5.SetActive(false);
+            Ruby6.SetActive(false);
+        }
+        if (_playerData.Rubies.Value == 5)
+        {
+            Ruby1.SetActive(true);
+            Ruby2.SetActive(true);
+            Ruby3.SetActive(true);
+            Ruby4.SetActive(true);
+            Ruby5.SetActive(true);
+            Ruby6.SetActive(false);
+        }
+        if (_playerData.Rubies.Value >= 6)
+        {
+            Ruby1.SetActive(true);
+            Ruby2.SetActive(true);
+            Ruby3.SetActive(true);
+            Ruby4.SetActive(true);
+            Ruby5.SetActive(true);
+            Ruby6.SetActive(true);
+        }
+        //Instantiate(rubyForBowl, rubyInstantiationLocation, Quaternion.identity);
     }
+
+    public void SetRules()
+    {
+        winnerManager = FindObjectOfType<WinnerManager>();
+        mushroomRule = winnerManager.ToadstallRule.Value;
+        crowSkullRule = winnerManager.CrowskullRule.Value;
+        gardenSpiderRule = winnerManager.SpiderRule.Value;
+        mandrakeRule = winnerManager.MandrakeRule.Value;
+        hawkMothRule = winnerManager.MothRule.Value;
+        ghostsBreathRule = winnerManager.GhostsbreathRule.Value; 
+      
+    }
+
+    public void RemoveLastIngredient()
+    {
+        if (lastIngredient == "cherryBombOne")
+        { grabIngredient.AddToBagThisRound(0); }
+        if (lastIngredient == "cherryBombTwo")
+        { grabIngredient.AddToBagThisRound(2); }
+        if (lastIngredient == "cherryBombThree")
+        { grabIngredient.AddToBagThisRound(1); }
+        ingredientsList.RemoveAt(ingredientsList.Count);
+    }
+
+    public async Task MessageAboveCauldron(string message)
+    {
+        buttonsToAddLeftover.SetActive(true);
+        button5.SetActive(true);
+        aboveCauldronText.text = message;
+
+        await CheckWhichChoice();
+        ResetChoices();
+
+
+
+    }
+
+    public async Task MessageAboveCauldronMultipleChoice(int num, string choice1, string choice2, string choice3, string choice4)
+    {
+        buttonsToAddLeftover.SetActive(true);
+        if (num == 0)
+        {
+            aboveCauldronText.text = "OH NO! Can't upgrade any of the ingredients you drew!";
+            button5.SetActive(true);
+        }
+        if (num == 1)
+        {
+            aboveCauldronText.text = $"Oh dear... you can only upgrade one ingredient and that is {choice1}!";
+            button5.SetActive(true);
+        }
+        if (num == 0)
+        {
+            aboveCauldronText.text = "Which of these ingredients do you want to upgrade?";
+            button1.SetActive(true);
+            button2.SetActive(true);
+         
+            choiceOne.text = choice1;
+            choiceTwo.text = choice2;
+        }
+        if (num == 0)
+        {
+            aboveCauldronText.text = "Which of these ingredients do you want to upgrade?";
+            button1.SetActive(true);
+            button2.SetActive(true);
+            button3.SetActive(true);
+            choiceOne.text = choice1;
+            choiceTwo.text = choice2;
+            choiceThree.text = choice3;
+        }
+        if (num == 0)
+        {
+            aboveCauldronText.text = "OH WOW! you get to choose between 4! Which of these ingredients do you want to upgrade?";
+
+            button1.SetActive(true);
+            button2.SetActive(true);
+            button3.SetActive(true);
+            button4.SetActive(true);
+            choiceOne.text = choice1;
+            choiceTwo.text = choice2;
+            choiceThree.text = choice3;
+            choiceFour.text = choice4;
+        }
+     
+
+        await CheckWhichChoice();
+    }
+
+
 }
 
 

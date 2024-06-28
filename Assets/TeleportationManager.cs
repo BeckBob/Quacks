@@ -13,6 +13,7 @@ public class TeleportationManager : MonoBehaviour
     [SerializeField] GameObject redPlayerSpace;
     [SerializeField] GameObject purplePlayerSpace;
     PlayerData _playerData;
+    LobbySettings _settings;
 
     Vector3 blueSpaceLocation;
     Vector3 redSpaceLocation;
@@ -35,12 +36,14 @@ public class TeleportationManager : MonoBehaviour
         yellowSpaceLocation = yellowPlayerSpace.transform.position;
         purpleSpaceLocation = purplePlayerSpace.transform.position;
         _playerData = FindObjectOfType<PlayerData>();
+        _settings = FindObjectOfType<LobbySettings>();
         colour = _playerData.Colour.Value;
         
         if (colour == "Random")
         {
            
-            colour = _playerData.GetRandomColour();
+            colour = _settings.GetRandomColour();
+            _playerData.Colour.Value = colour;
             
         }
 

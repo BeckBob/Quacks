@@ -34,6 +34,11 @@ public class PotionQuality : MonoBehaviour
         cherryBombsText2.text = $"{cherrybombsinPot}/{cherrybombLimitforText}";
     }
 
+    public void ResetCherryBombLimit()
+    {
+        cherryBombLimit = 7;
+    }
+
     public int GetCherryBombs()
     {
         return _cherryBombs;
@@ -103,6 +108,11 @@ public class PotionQuality : MonoBehaviour
             }
         }
         SetCherryBombText();
+    }
+
+    public void ResetPotionColour()
+    {
+        potionOne.material.color = Color.green;
     }
 }
 

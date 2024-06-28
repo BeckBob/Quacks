@@ -39,7 +39,7 @@ public class onClickFortune : MonoBehaviour
         button2.SetActive(false);
         fortune.SetActive(false);
 
-        _fortuneManager.PreRoundFortuneEffects();
+        await _fortuneManager.PreRoundFortuneEffects();
         _winnerManager.ReadyUp();
         await _winnerManager.CheckAllPlayersReady();
         _winnerManager.ResetReady();
@@ -57,7 +57,7 @@ public class onClickFortune : MonoBehaviour
         button2.SetActive(false);
         fortune.SetActive(false);
         
-        _fortuneManager.PreRoundFortuneEffects();
+        await _fortuneManager.PreRoundFortuneEffects();
         _winnerManager.ReadyUp();
         await _winnerManager.CheckAllPlayersReady();
         _winnerManager.ResetReady();
@@ -73,7 +73,7 @@ public class onClickFortune : MonoBehaviour
         button3.SetActive(false);
         fortune.SetActive(false);
         
-        _fortuneManager.PreRoundFortuneEffects();
+        await _fortuneManager.PreRoundFortuneEffects();
 
         _winnerManager.ReadyUp();
         await _winnerManager.CheckAllPlayersReady();

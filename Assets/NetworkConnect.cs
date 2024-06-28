@@ -10,6 +10,9 @@ using Unity.Netcode.Transports.UTP;
 using Unity.Services.Lobbies;
 using Unity.Services.Lobbies.Models;
 using UnityEngine.UI;
+using System.Runtime.CompilerServices;
+using Oculus.Platform;
+using Oculus.Platform.Models;
 
 
 
@@ -23,6 +26,7 @@ public class NetworkConnect : MonoBehaviour
     [SerializeField] GameObject _inputLobbyCode;
     private NetworkManager _networkManagerInstance;
     public int players;
+    public string hostname;
 
 
     // Start is called before the first frame update
@@ -55,8 +59,10 @@ public class NetworkConnect : MonoBehaviour
     {
         Allocation allocation = await RelayService.Instance.CreateAllocationAsync(3);
         string newJoinCode = await RelayService.Instance.GetJoinCodeAsync(allocation.AllocationId);
-
         
+        
+       
+
         _lobbyCodeText.SetLobbyCode(newJoinCode);
         _lobbyTextVBscript.SetLobbyCode(newJoinCode);
 
@@ -73,6 +79,7 @@ public class NetworkConnect : MonoBehaviour
        
 
     NetworkManager.Singleton.StartHost();
+        GetUserName();
         players = _networkManagerInstance.ConnectedClients.Count;
         _startMenu.SetActive(false);
         GameManager.Instance.UpdateGameState(GameState.Lobby);
@@ -113,6 +120,29 @@ public class NetworkConnect : MonoBehaviour
         GameManager.Instance.UpdateGameState(GameState.Lobby);
     }
 
+    private void GetUserName()
+    {
+        Oculus.Platform.Users.GetLoggedInUser().OnComplete(GetLoggedInUserCallback);
+    }
 
+
+    private void GetLoggedInUserCallback(Message message)
+    {
+        if (!message.IsError)
+        {
+            User user = message.GetUser();
+            string userId = user.OculusID;
+
+
+            hostname = userId;
+        }
+        if (message.IsError)
+        {
+            Debug.Log("Cannot get user info");
+            return;
+        }
+
+
+    }
 }
 

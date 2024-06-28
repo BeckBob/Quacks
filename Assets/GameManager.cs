@@ -10,7 +10,11 @@ using Unity.Services.Lobbies.Models;
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
-    [SerializeField] private GameObject _fortuneText;
+    [SerializeField] private GameObject _fortuneTextPurple;
+    [SerializeField] private GameObject _fortuneTextBlue;
+    [SerializeField] private GameObject _fortuneTextYellow;
+    [SerializeField] private GameObject _fortuneTextRed;
+
     [SerializeField] private GameObject _purplePresentScore;
     [SerializeField] private GameObject _yellowPresentScore;
     [SerializeField] private GameObject _redPresentScore;
@@ -46,6 +50,7 @@ public class GameManager : MonoBehaviour
     private WinnerManager _winnerManager;
     private BuyIngredients _buyIngredients;
     private ChipPoints _chipPoints;
+    private LobbySettings lobbySettings;
     fortuneTeller _fortuneTeller;
     public GameState State;
 
@@ -61,6 +66,7 @@ public class GameManager : MonoBehaviour
         _winnerManager = FindObjectOfType<WinnerManager>();
         _buyIngredients = FindObjectOfType<BuyIngredients>();
         _chipPoints = FindObjectOfType<ChipPoints>();
+        lobbySettings = FindObjectOfType<LobbySettings>();
     }
 
     void Start()
@@ -146,8 +152,25 @@ public class GameManager : MonoBehaviour
 
     private void SpendRubies()
     {
+      
+        if (_playerData.Colour.Value == "Purple")
+        {
+            _purpleSphere.SetActive(true);
+
+        }
+        if (_playerData.Colour.Value == "Red")
+        {
+            _redSphere.SetActive(true);
+        }
+        if (_playerData.Colour.Value == "Yellow")
+        {
+            _yellowSphere.SetActive(true);
+        }
+        if (_playerData.Colour.Value == "Blue")
+        {
+            _blueSphere.SetActive(true);
+        }
         _chipPoints = FindObjectOfType<ChipPoints>();
-        _purpleSphere.SetActive(true);
         _chipPoints.SpendRubiesUI();
 
     }
@@ -164,6 +187,8 @@ public class GameManager : MonoBehaviour
     {
         _LobbyCodeText.SetActive(true);
         _LobbySettings.SetActive(true);
+        lobbySettings = FindObjectOfType<LobbySettings>();
+        lobbySettings.AddRuleDropdowns();
     }
 
     private void HandleStartMenu()
@@ -174,6 +199,7 @@ public class GameManager : MonoBehaviour
     private void HandlePotionMaking()
     {
         _playerData = FindObjectOfType<PlayerData>();
+
         _playerData.IsReadyFunction();
         if (_playerData.Colour.Value == "Purple")
         {
@@ -209,6 +235,9 @@ public class GameManager : MonoBehaviour
         _blueCauldronScores.SetActive(true);
         _redCauldronScores.SetActive(true);
         _purpleCauldronScores.SetActive(true);
+        _chipPoints = FindObjectOfType<ChipPoints>();
+        _chipPoints.SetRules();
+        _chipPoints.ResetStuffInBook();
     }
 
     private void HandleFortune()
@@ -222,7 +251,23 @@ public class GameManager : MonoBehaviour
         _BluePlayerSpace.SetActive(true);
         _teleportationManager.StartGameTeleportation();
         _playerData.IsReadyFunction();
-        _fortuneText.SetActive(true);
+        if (_playerData.Colour.Value == "Purple")
+        {
+            _fortuneTextPurple.SetActive(true);
+        }
+        if (_playerData.Colour.Value == "Blue")
+        {
+            _fortuneTextBlue.SetActive(true);
+        }
+        if (_playerData.Colour.Value == "Red")
+        {
+            _fortuneTextRed.SetActive(true);
+        }
+        if (_playerData.Colour.Value == "Yellow")
+        {
+            _fortuneTextYellow.SetActive(true);
+        }
+
         _fortuneNumber.FortuneNumberGenerator();
         
         

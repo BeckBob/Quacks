@@ -18,9 +18,7 @@ public class PlayerData : NetworkBehaviour
     public NetworkVariable<int> Coins = new NetworkVariable<int>();
     public NetworkVariable<int> Score = new NetworkVariable<int>();
     public NetworkVariable<bool> PurifierFull = new NetworkVariable<bool>();
-   
 
-    List<FixedString128Bytes> AvailableColours = new List<FixedString128Bytes> { "Purple", "Blue", "Red", "Yellow" };
 
     
     public override void OnNetworkSpawn()
@@ -51,19 +49,6 @@ public class PlayerData : NetworkBehaviour
         isReady.Value = !isReady.Value;   
     }
 
-    public void ChangeColourFunction(FixedString128Bytes NewColour)
-    {
-        Colour.Value = NewColour;
-        int index = AvailableColours.IndexOf(NewColour);
-        AvailableColours.RemoveAt(index);
-    }
-
-    public FixedString128Bytes GetRandomColour(){
-        System.Random rand = new System.Random();
-        int colourNum = rand.Next(0, AvailableColours.Count);
-        FixedString128Bytes randomColour = AvailableColours[colourNum];
-        return randomColour;
-    }
     private void GetUserName()
     {
         Oculus.Platform.Users.GetLoggedInUser().OnComplete(GetLoggedInUserCallback);

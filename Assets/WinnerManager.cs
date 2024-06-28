@@ -21,9 +21,20 @@ public class WinnerManager : NetworkBehaviour
     public NetworkVariable<int> BluePoints = new NetworkVariable<int>();
     public NetworkVariable<int> YellowPoints = new NetworkVariable<int>();
 
+    private NetworkVariable<int> PurpleRubies = new NetworkVariable<int>();
+    private NetworkVariable<int> RedRubies = new NetworkVariable<int>();
+    private NetworkVariable<int> BlueRubies = new NetworkVariable<int>();
+    private NetworkVariable<int> YellowRubies = new NetworkVariable<int>();
+
+    private NetworkVariable<int> PurpleDrawnIngredients = new NetworkVariable<int>();
+    private NetworkVariable<int> RedDrawnIngredients = new NetworkVariable<int>();
+    private NetworkVariable<int> BlueDrawnIngredients = new NetworkVariable<int>();
+    private NetworkVariable<int> YellowDrawnIngredients = new NetworkVariable<int>();
+
     public NetworkVariable<int> RoundWinnerScore = new NetworkVariable<int>();
     public NetworkVariable<int> ratTailTopScore = new NetworkVariable<int>();
     public NetworkVariable<int> GameWinnerScore = new NetworkVariable<int>();
+   
 
     public NetworkVariable<int> PurpleMoths = new NetworkVariable<int>();
     public NetworkVariable<int> RedMoths = new NetworkVariable<int>();
@@ -40,13 +51,26 @@ public class WinnerManager : NetworkBehaviour
 
     public int round = 0;
 
+    public NetworkVariable<int> ToadstallRule = new NetworkVariable<int>();
+    public NetworkVariable<int> SpiderRule = new NetworkVariable<int>();
+    public NetworkVariable<int> CrowskullRule = new NetworkVariable<int>();
+    public NetworkVariable<int> MandrakeRule = new NetworkVariable<int>();
+    public NetworkVariable<int> MothRule = new NetworkVariable<int>();
+    public NetworkVariable<int> GhostsbreathRule = new NetworkVariable<int>();
+
+
 
     private NetworkConnect _networkConnect;
     private PlayerData _playerData;
     private ChipPoints _chipPoints;
+    private GrabIngredient _grabIngredient;
     private int numberOfPlayers;
     private int MothNumbersBeaten;
     private bool TwoPlayerDraw = false;
+
+    public int LowestVictoryPoints;
+    public int LowestRubies;
+    public int LowestDrawn;
 
     [SerializeField] GameObject PurpleRoundWinCanvas;
     [SerializeField] GameObject RedRoundWinCanvas;
@@ -63,10 +87,26 @@ public class WinnerManager : NetworkBehaviour
     [SerializeField] GameObject PurpleDice;
     [SerializeField] GameObject DiceFloor;
 
-    [SerializeField] GameObject aboveCauldronUI;
-    [SerializeField] GameObject aboveCauldronButton;
-    [SerializeField] TextMeshProUGUI aboveCauldronText;
+    [SerializeField] GameObject aboveCauldronUIPurple;
+    [SerializeField] GameObject aboveCauldronButtonPurple;
+    [SerializeField] TextMeshProUGUI aboveCauldronTextPurple;
+
+
+    [SerializeField] GameObject aboveCauldronUIRed;
+    [SerializeField] GameObject aboveCauldronButtonRed;
+    [SerializeField] TextMeshProUGUI aboveCauldronTextRed;
+
+
+    [SerializeField] GameObject aboveCauldronUIBlue;
+    [SerializeField] GameObject aboveCauldronButtonBlue;
+    [SerializeField] TextMeshProUGUI aboveCauldronTextBlue;
+
+
+    [SerializeField] GameObject aboveCauldronUIYellow;
+    [SerializeField] GameObject aboveCauldronButtonYellow;
+    [SerializeField] TextMeshProUGUI aboveCauldronTextYellow;
     [SerializeField] TextMeshProUGUI winnerText;
+
 
     List<string> winners = new();
     // Start is called before the first frame update
@@ -78,7 +118,13 @@ public class WinnerManager : NetworkBehaviour
         BlueExists.Value = false;
         RedExists.Value = false;
         PurpleExists.Value = false;
-       
+        ToadstallRule.Value = 1;
+        SpiderRule.Value = 1;
+        CrowskullRule.Value = 1;
+        MandrakeRule.Value = 1;
+        MothRule.Value = 1;
+        GhostsbreathRule.Value = 1;
+
     }
 
     public async Task CalculateRatTails()
@@ -110,6 +156,100 @@ public class WinnerManager : NetworkBehaviour
         RatTailsCalculator();
     }
     // Update is called once per frame
+    public async Task CalculateLowestVictoryPoints()
+    {
+        Debug.Log("Calculating lowest Victory Points");
+        _playerData = FindObjectOfType<PlayerData>();
+        // figure out who has the highest score and then get them to roll dice and initiate dice function
+        if (_playerData.Colour.Value == "Red")
+        {
+            RedVictoryPoints.Value = _playerData.VictoryPoints.Value;
+            ReadyUp();
+        }
+        if (_playerData.Colour.Value == "Yellow")
+        {
+            YellowVictoryPoints.Value = _playerData.VictoryPoints.Value;
+            ReadyUp();
+        }
+        if (_playerData.Colour.Value == "Blue")
+        {
+            BlueVictoryPoints.Value = _playerData.VictoryPoints.Value;
+            ReadyUp();
+        }
+        if (_playerData.Colour.Value == "Purple")
+        {
+            PurpleVictoryPoints.Value = _playerData.VictoryPoints.Value;
+            ReadyUp();
+        }
+        await CheckAllPlayersReady();
+        ResetReady();
+
+        LowestVictoryPoints = new[] { RedVictoryPoints.Value, BlueVictoryPoints.Value, YellowVictoryPoints.Value, PurpleVictoryPoints.Value }.Min();   
+    }
+
+    public async Task CalculateLowestRubies()
+    {
+        Debug.Log("Calculating lowest Victory Points");
+        _playerData = FindObjectOfType<PlayerData>();
+        // figure out who has the highest score and then get them to roll dice and initiate dice function
+        if (_playerData.Colour.Value == "Red")
+        {
+            RedRubies.Value = _playerData.Rubies.Value;
+            ReadyUp();
+        }
+        if (_playerData.Colour.Value == "Yellow")
+        {
+            YellowRubies.Value = _playerData.Rubies.Value;
+            ReadyUp();
+        }
+        if (_playerData.Colour.Value == "Blue")
+        {
+            BlueRubies.Value = _playerData.Rubies.Value;
+            ReadyUp();
+        }
+        if (_playerData.Colour.Value == "Purple")
+        {
+            PurpleRubies.Value = _playerData.Rubies.Value;
+            ReadyUp();
+        }
+        await CheckAllPlayersReady();
+        ResetReady();
+
+        LowestRubies = new[] { RedRubies.Value, BlueRubies.Value, YellowRubies.Value, PurpleRubies.Value }.Min();
+    }
+
+    public async Task CalculateLowestDrawnIngredients()
+    {
+        Debug.Log("Calculating lowest drawn Victory points");
+        _playerData = FindObjectOfType<PlayerData>();
+        _grabIngredient = FindObjectOfType<GrabIngredient>();
+        // figure out who has the highest score and then get them to roll dice and initiate dice function
+        if (_playerData.Colour.Value == "Red")
+        {
+            RedDrawnIngredients.Value = _grabIngredient.totalOfFortuneIngredients;
+            ReadyUp();
+        }
+        if (_playerData.Colour.Value == "Yellow")
+        {
+            YellowDrawnIngredients.Value = _grabIngredient.totalOfFortuneIngredients;
+            ReadyUp();
+        }
+        if (_playerData.Colour.Value == "Blue")
+        {
+            BlueDrawnIngredients.Value = _grabIngredient.totalOfFortuneIngredients;
+            ReadyUp();
+        }
+        if (_playerData.Colour.Value == "Purple")
+        {
+            PurpleDrawnIngredients.Value = _grabIngredient.totalOfFortuneIngredients;
+            ReadyUp();
+        }
+        await CheckAllPlayersReady();
+        ResetReady();
+
+        LowestDrawn = new[] { RedDrawnIngredients.Value, BlueDrawnIngredients.Value, YellowDrawnIngredients.Value, PurpleDrawnIngredients.Value }.Min();
+    }
+
     public void RoundWinner()
     {
         _playerData = FindObjectOfType<PlayerData>();
@@ -143,6 +283,8 @@ public class WinnerManager : NetworkBehaviour
             PurpleExists.Value = true;
             RoundWinnerDecider();
         }
+        round++;
+        Debug.Log(round);
     }
 
     private async void RatTailsCalculator()
@@ -171,7 +313,7 @@ public class WinnerManager : NetworkBehaviour
     private async void RoundWinnerDecider()
     {
         await CheckAllPlayersReady();
-        round += 1;
+      
         ResetReady();
         RoundWinnerScore.Value = new[] { RedPoints.Value, BluePoints.Value, YellowPoints.Value, PurplePoints.Value }.Max();
         Debug.Log(RoundWinnerScore.Value);
@@ -183,6 +325,10 @@ public class WinnerManager : NetworkBehaviour
             if (_playerData.Colour.Value == "Red")
             {
                 DiceFloor.SetActive(true);
+                await CheckAllPlayersReady();
+
+                ResetReady();
+                _chipPoints.CheckMoths();
             }
             // UI announcing they won - in book and above head?
             //instantiate dice in front of them and add whatever it lands on to their player Data
@@ -195,6 +341,10 @@ public class WinnerManager : NetworkBehaviour
             if (_playerData.Colour.Value == "Yellow")
             {
                 DiceFloor.SetActive(true);
+                await CheckAllPlayersReady();
+
+                ResetReady();
+                _chipPoints.CheckMoths();
             }
         }
         if (RoundWinnerScore.Value == BluePoints.Value)
@@ -205,6 +355,10 @@ public class WinnerManager : NetworkBehaviour
             if (_playerData.Colour.Value == "Blue")
             {
                 DiceFloor.SetActive(true);
+                await CheckAllPlayersReady();
+
+                ResetReady();
+                _chipPoints.CheckMoths();
             }
         }
         if (RoundWinnerScore.Value == PurplePoints.Value)
@@ -215,6 +369,10 @@ public class WinnerManager : NetworkBehaviour
             if (_playerData.Colour.Value == "Purple")
             {
                 DiceFloor.SetActive(true);
+                await CheckAllPlayersReady();
+
+                ResetReady();
+                _chipPoints.CheckMoths();
             }
             else
             {
@@ -242,8 +400,20 @@ public class WinnerManager : NetworkBehaviour
             //leave lobby button on book.
             if (_playerData.Colour.Value == "Red")
             {
+                aboveCauldronUIRed.SetActive(true);
+                aboveCauldronTextRed.text = "YOU WON!";
                 Debug.Log("YOU WON");
                 winners.Add(_playerData.Name.Value.ToString());
+                ReadyUp();
+                await CheckAllPlayersReady();
+                ResetReady();
+            }
+            else
+            {
+                ReadyUp();
+                await CheckAllPlayersReady();
+                ResetReady();
+                ShowWinnerUI();
             }
             // UI announcing they won - in book and above head?
             //instantiate dice in front of them and add whatever it lands on to their player Data
@@ -255,6 +425,18 @@ public class WinnerManager : NetworkBehaviour
             {
                 Debug.Log("YOU WON");
                 winners.Add(_playerData.Name.Value.ToString());
+                aboveCauldronUIYellow.SetActive(true);
+                aboveCauldronTextYellow.text = "YOU WON!";
+                ReadyUp();
+                await CheckAllPlayersReady();
+                ResetReady();
+            }
+            else
+            {
+                ReadyUp();
+                await CheckAllPlayersReady();
+                ResetReady();
+                ShowWinnerUI();
             }
         }
         if (GameWinnerScore.Value == BlueVictoryPoints.Value)
@@ -264,6 +446,18 @@ public class WinnerManager : NetworkBehaviour
             {
                 Debug.Log("YOU WON");
                 winners.Add(_playerData.Name.Value.ToString());
+                aboveCauldronUIBlue.SetActive(true);
+                aboveCauldronTextBlue.text = "YOU WON!";
+                ReadyUp();
+                await CheckAllPlayersReady();
+                ResetReady();
+            }
+            else
+            {
+                ReadyUp();
+                await CheckAllPlayersReady();
+                ResetReady();
+                ShowWinnerUI();
             }
         }
         if (GameWinnerScore.Value == PurpleVictoryPoints.Value)
@@ -272,29 +466,44 @@ public class WinnerManager : NetworkBehaviour
             if (_playerData.Colour.Value == "Purple")
             {
                 Debug.Log("YOU WON");
-                winners.Add(_playerData.Name.Value.ToString());
+                winners.Add(_playerData.Name.Value.ToString()); 
+                aboveCauldronUIPurple.SetActive(true);
+                aboveCauldronTextPurple.text = "YOU WON!";
+                ReadyUp();
+                await CheckAllPlayersReady();
+                ResetReady();
+            }
+            else
+            {
+                ReadyUp();
+                await CheckAllPlayersReady();
+                ResetReady();
+                ShowWinnerUI();
             }
         }
-
+        
     }
 
     public void ShowWinnerUI()
     {
         if (winners.Count == 1)
         {
-            winnerText.text = $"{winners[0]} IS THE WINNER!";
+            DecideWhichCauldronUI($"{winners[0]} IS THE WINNER!");
+       
         }
         if (winners.Count == 2)
         {
-            winnerText.text = $"IT'S A DRAW! {winners[0]} AND {winners[1]} ARE THE WINNERS!";
+            DecideWhichCauldronUI($"IT'S A DRAW! {winners[0]} AND {winners[1]} ARE THE WINNERS!");
+       
         }
         if (winners.Count == 3)
         {
-            winnerText.text = $"IT'S A DRAW! {winners[0]} AND {winners[1]} AND {winners[2]} ARE THE WINNERS!";
+            DecideWhichCauldronUI($"IT'S A DRAW! {winners[0]} AND {winners[1]} AND {winners[2]} ARE THE WINNERS!");
+           
         }
         if (winners.Count == 4)
         {
-            winnerText.text = $"How did you all get the same points? what a pointless game";
+            DecideWhichCauldronUI($"How did you all get the same points? what a pointless game");
         }
     }
     public void ReadyUp()
@@ -650,18 +859,16 @@ public class WinnerManager : NetworkBehaviour
         _chipPoints = FindAnyObjectByType<ChipPoints>();
         if (_chipPoints.hawkMothRule == 1 && MothNumbersBeaten == 2)
         {
-            aboveCauldronUI.SetActive(true);
-            aboveCauldronButton.SetActive(true);
-            aboveCauldronText.text = "You have more moths in your pot than both your neighbours, you get a droplet and a ruby";
+            DecideWhichCauldronUI("You have more moths in your pot than both your neighbours, you get a droplet and a ruby");
+          
             _playerData.Rubies.Value++;
             _chipPoints.AddDroplet();
             await _chipPoints.CheckWhichChoice();
         }
         if (_chipPoints.hawkMothRule == 1 && MothNumbersBeaten == 1)
         {
-            aboveCauldronUI.SetActive(true);
-            aboveCauldronButton.SetActive(true);
-            aboveCauldronText.text = "You have more moths in your pot than ONE of your neighbours, you get a droplet";
+            DecideWhichCauldronUI("You have more moths in your pot than ONE of your neighbours, you get a droplet");
+          
             _chipPoints.AddDroplet();
        
             await _chipPoints.CheckWhichChoice();
@@ -670,9 +877,8 @@ public class WinnerManager : NetworkBehaviour
 
         if (_chipPoints.hawkMothRule == 2 && MothNumbersBeaten == 1)
         {
-            aboveCauldronUI.SetActive(true);
-            aboveCauldronButton.SetActive(true);
-            aboveCauldronText.text = "You have more moths in your pot than your neighbours, you get a droplet and a ruby";
+            DecideWhichCauldronUI("You have more moths in your pot than your neighbours, you get a droplet and a ruby");
+           
             _playerData.Rubies.Value++;
             _chipPoints.AddDroplet();
             await _chipPoints.CheckWhichChoice();
@@ -680,9 +886,8 @@ public class WinnerManager : NetworkBehaviour
         }
         if (_chipPoints.hawkMothRule == 2 && TwoPlayerDraw)
         {
-            aboveCauldronUI.SetActive(true);
-            aboveCauldronButton.SetActive(true);
-            aboveCauldronText.text = "You have same amount of moths in your pot as your neighbour, you get one droplet";
+            DecideWhichCauldronUI("You have same amount of moths in your pot as your neighbour, you get one droplet");
+          
             _chipPoints.AddDroplet();
             await _chipPoints.CheckWhichChoice();
             // UI saying they have more moths than their neighbours and get a ruby and a droplet
@@ -701,7 +906,33 @@ public class WinnerManager : NetworkBehaviour
         YellowMoths.Value = 0;
     }
 
-
+    public void DecideWhichCauldronUI(string textAboveCauldron)
+    {
+        if(_playerData.Colour.Value == "Purple")
+        {
+            aboveCauldronButtonPurple.SetActive(true);
+            aboveCauldronUIPurple.SetActive(true);
+            aboveCauldronTextPurple.text = textAboveCauldron;
+        }
+        if (_playerData.Colour.Value == "Yellow")
+        {
+            aboveCauldronButtonYellow.SetActive(true);
+            aboveCauldronUIYellow.SetActive(true);
+            aboveCauldronTextYellow.text = textAboveCauldron;
+        }
+        if (_playerData.Colour.Value == "Blue")
+        {
+            aboveCauldronButtonBlue.SetActive(true);
+            aboveCauldronUIBlue.SetActive(true);
+            aboveCauldronTextBlue.text = textAboveCauldron;
+        }
+        if (_playerData.Colour.Value == "Red")
+        {
+            aboveCauldronButtonRed.SetActive(true);
+            aboveCauldronUIRed.SetActive(true);
+            aboveCauldronTextRed.text = textAboveCauldron;
+        }
+    }
 
     }
 
