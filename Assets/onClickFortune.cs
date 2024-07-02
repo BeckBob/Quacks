@@ -43,7 +43,7 @@ public class onClickFortune : MonoBehaviour
         _winnerManager.ReadyUp();
         await _winnerManager.CheckAllPlayersReady();
         _winnerManager.ResetReady();
-        
+        buttonOne = false;
         BottleUpCollider.gameObject.SetActive(true);   
             GameManager.Instance.UpdateGameState(GameState.PotionMaking);
         
@@ -61,7 +61,7 @@ public class onClickFortune : MonoBehaviour
         _winnerManager.ReadyUp();
         await _winnerManager.CheckAllPlayersReady();
         _winnerManager.ResetReady();
-
+        buttonTwo = false;
         BottleUpCollider.gameObject.SetActive(true);
         GameManager.Instance.UpdateGameState(GameState.PotionMaking);
     }
@@ -78,7 +78,7 @@ public class onClickFortune : MonoBehaviour
         _winnerManager.ReadyUp();
         await _winnerManager.CheckAllPlayersReady();
         _winnerManager.ResetReady();
-
+        buttonThree = false;
         BottleUpCollider.gameObject.SetActive(true);
         GameManager.Instance.UpdateGameState(GameState.PotionMaking);
     }

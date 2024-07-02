@@ -22,7 +22,7 @@ public class DiceScript : MonoBehaviour
     ChipPoints chipPoints;
     GrabIngredient grabIngredient;
     WinnerManager winnerManager;
-    fortuneTeller _fortuneTeller;
+    FortuneNumber _fortuneNumber;
     FortuneManager fortuneManager;
     private bool RollTwiceAllowed = true;
     Vector3 speed;
@@ -39,13 +39,17 @@ public class DiceScript : MonoBehaviour
             grabIngredient = FindObjectOfType<GrabIngredient>();
             chipPoints = FindObjectOfType<ChipPoints>();
             string colour = playerData.Colour.Value.ToString();
-            string diceColour = other.transform.root.name;
+            Debug.Log(colour);
+         
+            Debug.Log(other.transform.tag);
             winnerManager = FindObjectOfType<WinnerManager>();
             Vector3 velocity = other.attachedRigidbody.velocity;
             speed = velocity;
+            Debug.Log(velocity);
 
-            if (speed.x == 0f && speed.y == 0f && speed.z == 0f && !alreadyCalled && diceColour == colour)
+            if (speed.x == 0f && speed.y == 0f && speed.z == 0f && !alreadyCalled && other.transform.tag == colour)
             {
+                Debug.Log("past if in dice");
                 switch (other.gameObject.name)
                 {
                     case "Side1":
@@ -54,7 +58,7 @@ public class DiceScript : MonoBehaviour
                         alreadyCalled = true;
                         playerData.VictoryPoints.Value += 1;
                         await chipPoints.MessageAboveCauldron("You get 1 Victory point!!");
-                         DeactivateDice(diceColour);
+                         DeactivateDice(colour);
 
                         break;
                     case "Side2":
@@ -62,7 +66,7 @@ public class DiceScript : MonoBehaviour
                         alreadyCalled = true;
                         playerData.VictoryPoints.Value += 2;
                         await chipPoints.MessageAboveCauldron("You get 2 Victory points!");
-                        DeactivateDice(diceColour);
+                        DeactivateDice(colour);
                         break;
                     case "Side3":
                         Debug.Log("Added pumpkin to bag");
@@ -71,7 +75,7 @@ public class DiceScript : MonoBehaviour
                         chipPoints.ResetScore();
                         chipPoints.resetScoreText();
                         await chipPoints.MessageAboveCauldron("Pumpkin added to your bag!");
-                        DeactivateDice(diceColour);
+                        DeactivateDice(colour);
                         break;
                     case "Side4":
                         Debug.Log("Add ruby");
@@ -79,7 +83,7 @@ public class DiceScript : MonoBehaviour
                         playerData.Rubies.Value += 1;
                         chipPoints.ChangeRubyUI();
                         await chipPoints.MessageAboveCauldron("You get a Ruby!!");
-                        DeactivateDice(diceColour);
+                        DeactivateDice(colour);
                         break;
                     case "Side5":
                         Debug.Log("Add droplet");
@@ -88,14 +92,14 @@ public class DiceScript : MonoBehaviour
                         chipPoints.ResetScore();
                         chipPoints.resetScoreText();
                         await chipPoints.MessageAboveCauldron("Added a droplet to your pot!");
-                         DeactivateDice(diceColour);
+                         DeactivateDice(colour);
                         break;
                     case "Side6":
                         Debug.Log("Add one victory point");
                         alreadyCalled = true;
                         playerData.VictoryPoints.Value += 1;
                         await chipPoints.MessageAboveCauldron("You get 1 Victory point!");
-                        DeactivateDice(diceColour);
+                        DeactivateDice(colour);
                         break;
                 }
             }
@@ -111,10 +115,11 @@ public class DiceScript : MonoBehaviour
         speed = velocity;
     }
 
-    private void DeactivateDice(string DiceColour)
+    private async void DeactivateDice(string DiceColour)
     {
-        {
-            if (DiceColour == "Purple")
+        _fortuneNumber = FindObjectOfType<FortuneNumber>();
+        fortuneManager = FindObjectOfType<FortuneManager>();
+        if (DiceColour == "Purple")
             {
                 purpleDice.SetActive(false);
             }
@@ -138,9 +143,13 @@ public class DiceScript : MonoBehaviour
             blueWinnerCanvas.SetActive(false);
             //deactivate dice floor.
             alreadyCalled = false;
-            if (_fortuneTeller.fortuneNum == 8 && RollTwiceAllowed)
+            if (_fortuneNumber.fortuneNum == 20)
+        {
+            return; 
+        }
+            if (_fortuneNumber.fortuneNum == 8 && RollTwiceAllowed)
             {
-                fortuneManager.RollDiceTwice();
+                await fortuneManager.RollDiceTwice();
                 RollTwiceAllowed = false;
             }
             else
@@ -150,5 +159,5 @@ public class DiceScript : MonoBehaviour
             }
            
         }
-    }
+    
 }

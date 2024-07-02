@@ -8,10 +8,15 @@ public class resetPositionDice : MonoBehaviour
     Quaternion originalRotation;
     void Start()
     {
-        originalPosition = transform.position;
-        originalRotation = transform.rotation;
+        originalPosition = gameObject.transform.position;
+        originalRotation = gameObject.transform.rotation;
     }
 
+    private void OnEnable()
+    {
+        originalPosition = gameObject.transform.position;
+        originalRotation = gameObject.transform.rotation;
+    }
     private void OnDisable()
     {
         transform.rotation = originalRotation;

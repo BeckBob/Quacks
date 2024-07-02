@@ -58,6 +58,10 @@ public class WinnerManager : NetworkBehaviour
     public NetworkVariable<int> MothRule = new NetworkVariable<int>();
     public NetworkVariable<int> GhostsbreathRule = new NetworkVariable<int>();
 
+    public NetworkVariable<bool> redExploded = new();
+    public NetworkVariable<bool> yellowExploded = new();
+    public NetworkVariable<bool> blueExploded = new();
+    public NetworkVariable<bool> purpleExploded = new();
 
 
     private NetworkConnect _networkConnect;
@@ -124,6 +128,10 @@ public class WinnerManager : NetworkBehaviour
         MandrakeRule.Value = 1;
         MothRule.Value = 1;
         GhostsbreathRule.Value = 1;
+        redExploded.Value = false;
+        purpleExploded.Value = false;
+        yellowExploded.Value = false;
+        blueExploded.Value = false;
 
     }
 
@@ -317,13 +325,16 @@ public class WinnerManager : NetworkBehaviour
         ResetReady();
         RoundWinnerScore.Value = new[] { RedPoints.Value, BluePoints.Value, YellowPoints.Value, PurplePoints.Value }.Max();
         Debug.Log(RoundWinnerScore.Value);
-        if (RoundWinnerScore.Value == RedPoints.Value)
+        _chipPoints = FindObjectOfType<ChipPoints>();
+
+        if (RedExists.Value && RoundWinnerScore.Value == RedPoints.Value)
         {
-            RedFutureCanvas.SetActive(false);
-            RedRoundWinCanvas.SetActive(true);
+            
             RedDice.SetActive(true);
             if (_playerData.Colour.Value == "Red")
             {
+                RedFutureCanvas.SetActive(false);
+                RedRoundWinCanvas.SetActive(true);
                 DiceFloor.SetActive(true);
                 await CheckAllPlayersReady();
 
@@ -333,27 +344,31 @@ public class WinnerManager : NetworkBehaviour
             // UI announcing they won - in book and above head?
             //instantiate dice in front of them and add whatever it lands on to their player Data
         }
-        if (RoundWinnerScore.Value == YellowPoints.Value)
+        if (YellowExists.Value && RoundWinnerScore.Value == YellowPoints.Value)
         {
-            YellowFutureCanvas.SetActive(false);
-            YellowRoundWinCanvas.SetActive(true);
+        
             YellowDice.SetActive(true);
             if (_playerData.Colour.Value == "Yellow")
             {
+                YellowFutureCanvas.SetActive(false);
+                YellowRoundWinCanvas.SetActive(true);
                 DiceFloor.SetActive(true);
                 await CheckAllPlayersReady();
 
                 ResetReady();
                 _chipPoints.CheckMoths();
             }
+ 
         }
-        if (RoundWinnerScore.Value == BluePoints.Value)
+        if (BlueExists.Value && RoundWinnerScore.Value == BluePoints.Value)
         {
-            BlueFutureCanvas.SetActive(false);
-            BlueRoundWinCanvas.SetActive(true);
+         
             BlueDice.SetActive(true);
             if (_playerData.Colour.Value == "Blue")
             {
+           
+                BlueFutureCanvas.SetActive(false);
+                BlueRoundWinCanvas.SetActive(true);
                 DiceFloor.SetActive(true);
                 await CheckAllPlayersReady();
 
@@ -361,29 +376,31 @@ public class WinnerManager : NetworkBehaviour
                 _chipPoints.CheckMoths();
             }
         }
-        if (RoundWinnerScore.Value == PurplePoints.Value)
+        if (PurpleExists.Value && RoundWinnerScore.Value == PurplePoints.Value)
         {
-            PurpleFutureCanvas.SetActive(false);
-            PurpleRoundWinCanvas.SetActive(true);
+           
             PurpleDice.SetActive(true);
             if (_playerData.Colour.Value == "Purple")
             {
+                PurpleFutureCanvas.SetActive(false);
+                PurpleRoundWinCanvas.SetActive(true);
                 DiceFloor.SetActive(true);
                 await CheckAllPlayersReady();
 
                 ResetReady();
                 _chipPoints.CheckMoths();
             }
-            else
-            {
-                ReadyUp();
-                await CheckAllPlayersReady();
-              
-                ResetReady();
-                _chipPoints.CheckMoths();
-            }
+     
             
 
+        }
+        else
+        {
+            ReadyUp();
+            await CheckAllPlayersReady();
+
+            ResetReady();
+            _chipPoints.CheckMoths();
         }
 
     }

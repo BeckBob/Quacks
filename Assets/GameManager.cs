@@ -196,11 +196,14 @@ public class GameManager : MonoBehaviour
         
     }
 
-    private void HandlePotionMaking()
+    private async void HandlePotionMaking()
     {
         _playerData = FindObjectOfType<PlayerData>();
 
-        _playerData.IsReadyFunction();
+        _winnerManager.ReadyUp();
+        await _winnerManager.CheckAllPlayersReady();
+        _winnerManager.ResetReady();
+
         if (_playerData.Colour.Value == "Purple")
         {
             _purpleSphere.SetActive(true);
@@ -244,13 +247,13 @@ public class GameManager : MonoBehaviour
     {
         _fortuneTeller = FindObjectOfType<fortuneTeller>();
         _playerData = FindObjectOfType<PlayerData>();
-        _bigBook.SetActive(false);
+        
         _purplePlayerSpace.SetActive(true);
         _yellowPlayerSpace.SetActive(true);
         _redPlayerSpace.SetActive(true);
         _BluePlayerSpace.SetActive(true);
-        _teleportationManager.StartGameTeleportation();
-        _playerData.IsReadyFunction();
+     
+        
         if (_playerData.Colour.Value == "Purple")
         {
             _fortuneTextPurple.SetActive(true);

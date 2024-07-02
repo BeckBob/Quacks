@@ -11,6 +11,7 @@ public class PotionQuality : MonoBehaviour
     public UnityEvent<GameObject> OnEnterEvent;
 
     public ChipPoints _chipPoints;
+    GrabIngredient _grabIngredient;
 
     [SerializeField] TextMeshProUGUI cherryBombsText;
     [SerializeField] TextMeshProUGUI cherryBombsText2;
@@ -57,6 +58,11 @@ public class PotionQuality : MonoBehaviour
     public void RemoveFromCherryBombLimit()
     {
         cherryBombLimit--;
+    }
+
+    public void RemoveFromCherryBombs()
+    {
+        _cherryBombs--;
     }
 
     public void FalseNextIngredientMethod()
@@ -107,6 +113,8 @@ public class PotionQuality : MonoBehaviour
                 _chipPoints.PotExplosionEndRound();
             }
         }
+        _grabIngredient = FindObjectOfType<GrabIngredient>();
+        _grabIngredient.updateCherryBombs();
         SetCherryBombText();
     }
 

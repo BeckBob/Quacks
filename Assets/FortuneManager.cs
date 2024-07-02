@@ -12,7 +12,7 @@ public class FortuneManager : MonoBehaviour
     private GrabIngredient _grabIngredient;
     private PlayerData _playerData;
     private ChipPoints _chipPoints;
-    private TeleportationManager _teleportationManager;
+ 
     private BuyIngredients _buyIngredients;
     private WinnerManager _winnerManager;
 
@@ -32,6 +32,8 @@ public class FortuneManager : MonoBehaviour
     [SerializeField] GameObject redDice;
     [SerializeField] GameObject DiceFloor;
 
+    private bool firstCherryBombHappened = false;
+    private bool firstFiveIngredientsHappened = false;
     public bool fortuneShopDone = false;
     // Start is called before the first frame update
 
@@ -42,6 +44,10 @@ public class FortuneManager : MonoBehaviour
         _winnerManager = FindObjectOfType<WinnerManager>();
         
         _playerData = FindObjectOfType<PlayerData>();
+        if (purpleGrabSphere == null)
+        {
+            Debug.LogError("SomeVariable has not been assigned.", this);
+        }
     }
 
     public async Task CheckWhichChoice()
@@ -81,10 +87,13 @@ public class FortuneManager : MonoBehaviour
         _fortuneTeller = FindObjectOfType<fortuneTeller>();
         _grabIngredient = FindAnyObjectByType<GrabIngredient>();
         _chipPoints = FindObjectOfType<ChipPoints>();
-        _teleportationManager = FindObjectOfType<TeleportationManager>();
+       
         _buyIngredients = FindObjectOfType<BuyIngredients>();
-
-        if (_fortuneTeller.fortuneNum == 0)
+        _quality = FindObjectOfType<PotionQuality>();
+        Debug.Log("pre round fortune task");
+        Debug.Log(_fortuneTeller.fortuneNumber);
+        
+        if (_fortuneTeller.fortuneNumber == 0)
         {
             if(_onClickFortune.buttonOne == true)
             {
@@ -106,7 +115,7 @@ public class FortuneManager : MonoBehaviour
 
             
         }
-        if (_fortuneTeller.fortuneNum == 4)
+        if (_fortuneTeller.fortuneNumber == 4)
         {
             if(_onClickFortune.buttonOne == true)
             {
@@ -122,7 +131,7 @@ public class FortuneManager : MonoBehaviour
                 //trade rat tails for rubies
             }
         }
-        if (_fortuneTeller.fortuneNum == 5)
+        if (_fortuneTeller.fortuneNumber == 5)
         {
             if( _onClickFortune.buttonThree == true)
             {
@@ -133,7 +142,7 @@ public class FortuneManager : MonoBehaviour
             //PRE-ROUND add 2 to cherrybomb limit END OF ROUND Minus two.
             
         }
-        if (_fortuneTeller.fortuneNum == 6)
+        if (_fortuneTeller.fortuneNumber == 6)
         {
             if (_onClickFortune.buttonThree == true)
             {
@@ -143,26 +152,28 @@ public class FortuneManager : MonoBehaviour
             await _chipPoints.MessageAboveCauldron($"Added {_playerData.RatTails.Value} to Rat Tails!");
 
         }
-         if(_fortuneTeller.fortuneNum==7)
+         if(_fortuneTeller.fortuneNumber == 7)
         {
 
             if (_onClickFortune.buttonOne == true)
             {
-                _playerData.VictoryPoints.Value *= 4;
+               
                 await _chipPoints.MessageAboveCauldron($"Added 4 Victory Points!");
+                _playerData.VictoryPoints.Value += 4;
                 //add 4 victory points to players score
             }
             if (_onClickFortune.buttonTwo == true)
             {
                 Debug.Log("hello");
                 _grabIngredient.RemoveItemFromBagPermanantly(0);
+                _grabIngredient.ResetBagContents();
                 _grabIngredient.CountIngredientsInBag();
                 await _chipPoints.MessageAboveCauldron($"Removed small cherry bomb from bag PERMANANTLY!");
                 //remove white chip from players bag
             }
             
         }
-        if (_fortuneTeller.fortuneNum == 9)
+        if (_fortuneTeller.fortuneNumber == 9)
         {
            if( _onClickFortune.buttonThree == true)
             {
@@ -171,31 +182,33 @@ public class FortuneManager : MonoBehaviour
                 {
                     _grabIngredient.AddToBagPermanantly(16);
                     await _chipPoints.MessageAboveCauldron($"You have the lowest Victory Points! Added small spider to bag!");
+                    _grabIngredient.ResetBagContents();
+                    _grabIngredient.CountIngredientsInBag();
                 }
                 _winnerManager.LowestVictoryPoints = 0;
-
+                ResetChoices();
                 //the player with the fewest victory points recieves one small spider
             }
           
         }
-        if (_fortuneTeller.fortuneNum == 11)
+        if (_fortuneTeller.fortuneNumber == 11)
         {
            if(_onClickFortune.buttonOne== true)
             {
-                _buyIngredients.SetUpShopForFortune11(); //take 1 moth or any mediun ingredient - maybe tekeoirt to shop and set up differently?
+                _buyIngredients.SetUpShopForFortune11(11); //take 1 moth or any mediun ingredient - maybe tekeoirt to shop and set up differently?
                 await CheckWhichChoice();
-                ResetChoices();
+               
             }
            if(_onClickFortune.buttonTwo == true)
             {
-                _playerData.Rubies.Value *= 3;
+                _playerData.Rubies.Value += 3;
                 _chipPoints.ChangeRubyUI();
                 await _chipPoints.MessageAboveCauldron($"Added 3 Rubies!");
             }
-        
+            ResetChoices();
             //PRE ROUND - either open up shop with only medium ingredients and moth or add 3 rubies to players inventory
         }
-        if (_fortuneTeller.fortuneNum == 12)
+        if (_fortuneTeller.fortuneNumber == 12)
         { 
             _chipPoints.AddDroplet();
             _chipPoints.ResetScore();
@@ -203,7 +216,7 @@ public class FortuneManager : MonoBehaviour
             await _chipPoints.MessageAboveCauldron($"Added droplet to potion!");
             //PRE ROUND - adds droplet to everyones potion.
         }
-        if (_fortuneTeller.fortuneNum == 13)
+        if (_fortuneTeller.fortuneNumber == 13)
         {
             if (_onClickFortune.buttonOne == true)
             {
@@ -220,12 +233,12 @@ public class FortuneManager : MonoBehaviour
                 _grabIngredient.CountIngredientsInBag();
                 await _chipPoints.MessageAboveCauldron($"Added Ghosts Breath to your bag!");
             }
+            ResetChoices();
 
 
-          
             //PREROUND
         }
-        if (_fortuneTeller.fortuneNum == 15)
+        if (_fortuneTeller.fortuneNumber == 15)
         {
             _grabIngredient.fortuneDrawAmount = 5;
 
@@ -248,6 +261,7 @@ public class FortuneManager : MonoBehaviour
                 _chipPoints.ChangeRubyUI();
                 
             }
+
             _grabIngredient.DeleteInstantiatedIngredients();
             _grabIngredient.ResetChoices();
             _chipPoints.ResetScore();
@@ -255,7 +269,7 @@ public class FortuneManager : MonoBehaviour
 
             //Pre Round All players draw 5 ingredients.The player with the lowest sum takes a medium skull, everyone else gets a ruby.
         }
-        if (_fortuneTeller.fortuneNum == 16)
+        if (_fortuneTeller.fortuneNumber == 16)
         {
             if (_onClickFortune.buttonOne == true)
             {
@@ -267,7 +281,7 @@ public class FortuneManager : MonoBehaviour
            
             
         }
-        if (_fortuneTeller.fortuneNum == 20)
+        if (_fortuneTeller.fortuneNumber == 20)
         {
             redDice.SetActive(true);
             blueDice.SetActive(true);
@@ -278,18 +292,20 @@ public class FortuneManager : MonoBehaviour
             DiceFloor.SetActive(false);
             // PRE ROUND DICE FUNCTION - "Everyone rolls the victory die once and get the bonus shown."
         }
-        if (_fortuneTeller.fortuneNum == 21)
+        if (_fortuneTeller.fortuneNumber == 21)
         {
             await _winnerManager.CalculateLowestRubies();
             if(_playerData.Rubies.Value == _winnerManager.LowestRubies)
             {
                 _playerData.Rubies.Value++;
-                await _chipPoints.MessageAboveCauldron("You have the lowest rubies? You get a ruby!");
+
+                await _chipPoints.MessageAboveCauldron("You have the lowest rubies! You get a ruby!");
+                _chipPoints.ChangeRubyUI();
             }
             _winnerManager.LowestRubies = 0;
             // PRE ROUND - "The player with the fewest rubies receive one ruby."
         }
-        if (_fortuneTeller.fortuneNum == 23)
+        if (_fortuneTeller.fortuneNumber == 23)
         {
             _grabIngredient.fortuneDrawAmount = 4;
 
@@ -299,91 +315,303 @@ public class FortuneManager : MonoBehaviour
             _grabIngredient.ResetBagContents();
             _grabIngredient.CountIngredientsInBag();
             _grabIngredient.DeleteInstantiatedIngredients();
-            _grabIngredient.ResetChoices();
+            
             
 
            
             
             //PRE ROUND - "Draw 4 chips from your bag/ You may trade in 1 of them for a chip of the same colour with the next higher value. If you can’t make a trade take a small spider. Put all chips back in the bag." - shop pops up with all the icons of the ingredients drawn.
         }
-        DisableSpheres();
+        ResetChoices();
     }
 
-    public async void DuringRoundFortuneEffects()
+    public async Task DuringRoundFortuneEffects(string ingredient)
     {
-        if (_fortuneTeller.fortuneNum == 3)
+        EnableSpheres();
+        if (_fortuneTeller.fortuneNumber == 3)
         {
+            if (ingredient.Contains("cherryBomb") && firstCherryBombHappened == false)
+            {
+                await _chipPoints.MessageAboveCauldronMultipleChoice(2, "Your first cherry bomb! Do you want to Remove it and put back in you bag?", "Remove Cherry Bomb", "Leave in pot", "", "", "");
+                if (_chipPoints.choiceOneCauldron)
+                {
+                    if (ingredient.Contains("One"))
+                    {
+                        _grabIngredient.AddToBagThisRound(0);
+                        _quality.RemoveFromCherryBombs();
+
+                    }
+                    if (ingredient.Contains("Two"))
+                    {
+                        _grabIngredient.AddToBagThisRound(2);
+                        _quality.RemoveFromCherryBombs();
+                        _quality.RemoveFromCherryBombs();
+                    }
+                    if (ingredient.Contains("Three"))
+                    {
+                        _grabIngredient.AddToBagThisRound(1);
+                        _quality.RemoveFromCherryBombs();
+                        _quality.RemoveFromCherryBombs();
+                        _quality.RemoveFromCherryBombs();
+                    }
+                    _chipPoints.RemoveLastIngredient();
+                    _grabIngredient.CountIngredientsInBag();
+                    _chipPoints.CountIngredientsInPot();
+                    _chipPoints.resetScoreText();
+                    _quality.SetCherryBombText();
+                    _chipPoints.ResetStuffInBook();
+                }
+                _chipPoints.ResetChoices();
+                firstCherryBombHappened = true;
+            }
             
-            //close fortune buttom
             //DURING-ROUND FUNCTION first cherry bomb out multiple choice to remove ingredient or leave it. - if remove - add back to bag contents list and undo score changes.
         }
-        if (_fortuneTeller.fortuneNum == 17)
+        if (_fortuneTeller.fortuneNumber == 17)
         {
-           
+            if (ingredient.Contains("pumpkin"))
+            {
+                await _chipPoints.MessageAboveCauldron("The fortune pumpkin adds an extra point to pot!");
+                _chipPoints.Score++;
+            }
             //DURING ROUND In this round, every pumpkin add an extra 1 to potion. -have this set a boolean true in chippoints that adds 1 in pumpkin if statements
         }
-        if (_fortuneTeller.fortuneNum == 22)
+        if (_fortuneTeller.fortuneNumber == 22)
         {
-            
+            if (ingredient.Contains("cherryBomb") && firstFiveIngredientsHappened == true)
+            {
+                await _chipPoints.MessageAboveCauldronMultipleChoice(2, "You've had your first 5 ingredients, do you want to carry on or restart?", "Carry on", "Restart", "", "", "");
+                if (_chipPoints.choiceTwoCauldron)
+                {
+                    _grabIngredient.ResetBagContents();
+                    _chipPoints.ResetScore();
+                    _quality.ResetCherryBombs();
+                    _quality.SetCherryBombText();
+                    _grabIngredient.CountIngredientsInBag();
+                    _chipPoints.CountIngredientsInPot();
+                    _chipPoints.ResetStuffInBook();
+                }
+                _chipPoints.ResetChoices();
+                firstFiveIngredientsHappened = false;
+            }
             //DURING ROUND MULTIPLE CHOICE BUTTONS APPEAR - After you have places the first 5 ingredients in your pot, choose to continue OR begin the round all over again – but you get this choice only once."
         }
     }
 
 
-    public async void PostRoundFortuneEffects()
+    public async Task PostRoundFortuneEffects()
     {
-        if (_fortuneTeller.fortuneNum == 1)
+        firstCherryBombHappened = false;
+        firstFiveIngredientsHappened = false;
+        EnableSpheres();
+        if (_fortuneTeller.fortuneNumber == 1)
         {
-            await _chipPoints.MessageAboveCauldron("You have the lowest rubies? You get a ruby!");
+            
             if (_chipPoints.RubiesThisRound)
             {
-                await _chipPoints.MessageAboveCauldron("You landed on a ruby this round and according to the fortune you get an extra ruby!");
+                await _chipPoints.MessageAboveCauldron("You reached a ruby level this round and according to the fortune you get an extra ruby!");
                 _playerData.Rubies.Value++;
                 _chipPoints.ChangeRubyUI();
+            }
+            else
+            {
+                await _chipPoints.MessageAboveCauldron("Boooohooooo! You didn't reach a ruby level, no extra fortune ruby for you");
             }
             //close fortune button
             //AFTER-ROUND FUNCTION give extra ruby is end on ruby space
         }
-        if (_fortuneTeller.fortuneNum == 2)
+        if (_fortuneTeller.fortuneNumber == 2)
         {
+            if (_playerData.Colour.Value == "Purple")
+            {
+                if (_winnerManager.YellowExists.Value)
+                {
+                    if (_winnerManager.yellowExploded.Value)
+                    {
+                        
+                        await getMediumIngredient();
+                    }
+                }
+                else if (_winnerManager.RedExists.Value)
+                {
+                    if (_winnerManager.redExploded.Value)
+                    {
 
-            //close fortune button
-            //AFTER-ROUND FUNCTION if pot explodes player++ gets a level 2 ingredient.
-        }
-        if (_fortuneTeller.fortuneNum == 5)
-        {
-            await _chipPoints.MessageAboveCauldron("Putting Cherry Bomb limit back to 7!");
-            _quality.RemoveFromCherryBombLimit();
-            _quality.RemoveFromCherryBombLimit();
-        }
+                        await getMediumIngredient();
+                    }
+                }
+                else if (_winnerManager.BlueExists.Value)
+                {
+                    if (_winnerManager.blueExploded.Value)
+                    {
 
-        if (_fortuneTeller.fortuneNum == 10)
-        {
+                        await getMediumIngredient();
+                    }
+                }
+            }
+            if (_playerData.Colour.Value == "Red")
+            {
+                if (_winnerManager.BlueExists.Value)
+                {
+                    if (_winnerManager.blueExploded.Value)
+                    {
+
+                        await getMediumIngredient();
+                    }
+                }
+                else if (_winnerManager.PurpleExists.Value)
+                {
+                    if (_winnerManager.purpleExploded.Value)
+                    {
+
+                        await getMediumIngredient();
+                    }
+                }
+                else if (_winnerManager.YellowExists.Value)
+                {
+                    if (_winnerManager.yellowExploded.Value)
+                    {
+
+                        await getMediumIngredient();
+                    }
+                }
             
+                
+            }
+            if (_playerData.Colour.Value == "Blue")
+            {
+                 if (_winnerManager.PurpleExists.Value)
+                {
+                    if (_winnerManager.purpleExploded.Value)
+                    {
+
+                        await getMediumIngredient();
+                    }
+                }
+                else if (_winnerManager.YellowExists.Value)
+                {
+                    if (_winnerManager.yellowExploded.Value)
+                    {
+
+                        await getMediumIngredient();
+                    }
+                }
+                else if (_winnerManager.RedExists.Value)
+                {
+                    if (_winnerManager.redExploded.Value)
+                    {
+
+                        await getMediumIngredient();
+                    }
+                }
+            }
+            if (_playerData.Colour.Value == "Yellow")
+            {
+                if (_winnerManager.RedExists.Value)
+                {
+                    if (_winnerManager.redExploded.Value)
+                    {
+
+                        await getMediumIngredient();
+                    }
+                }
+                else if (_winnerManager.BlueExists.Value)
+                {
+                    if (_winnerManager.blueExploded.Value)
+                    {
+
+                        await getMediumIngredient();
+                    }
+                }
+                else if (_winnerManager.PurpleExists.Value)
+                {
+                    if (_winnerManager.purpleExploded.Value)
+                    {
+
+                        await getMediumIngredient();
+                    }
+                }
+            }
+            //close fortune button
+            //AFTER-ROUND FUNCTION if pot to left IMPLIMENT POT EXPLODED BOOL TO WINNER MANAGER BIT explodes player++ gets a level 2 ingredient.
+        }
+       
+
+        if (_fortuneTeller.fortuneNumber == 10)
+        {
+            if (_chipPoints.RubiesThisRound)
+            {
+                await _chipPoints.MessageAboveCauldron("Ruby on this level, you get 2 extra victory points because of fortune!");
+                _playerData.VictoryPoints.Value += 2;
+            }
             //AFTER ROUND - if you reach a scoring space with a ruby this round you get 2 extra victory points, even if your pot explodes.
         }
-        if (_fortuneTeller.fortuneNum == 14)
+        if (_fortuneTeller.fortuneNumber == 14)
         {
-            
+            if (_playerData.Colour.Value == "Purple" && !_winnerManager.purpleExploded.Value)
+            {
+                await DrawIngredientsAndPutOneInPot();
+            }
+            if (_playerData.Colour.Value == "Red" && !_winnerManager.redExploded.Value)
+            {
+                await DrawIngredientsAndPutOneInPot();
+            }
+            if (_playerData.Colour.Value == "Blue" && !_winnerManager.blueExploded.Value)
+            {
+                await DrawIngredientsAndPutOneInPot();
+            }
+            if (_playerData.Colour.Value == "Yellow" && !_winnerManager.yellowExploded.Value)
+            {
+                await DrawIngredientsAndPutOneInPot();
+            }
             //AFTER ROUND you stopped without an explosion, draw up to 5 chips from your bag. You may place 1 of them in your pot.
         }
-        if (_fortuneTeller.fortuneNum == 18)
+        if (_fortuneTeller.fortuneNumber == 18)
         {
-           
+            await _chipPoints.MessageAboveCauldron("Everyone gets a free refill of their purifier bottle this round!!");
+            _playerData.PurifierFull.Value = true;
             //AFTERROUND-the end of the round all flasks get a free refill.
         }
-        if (_fortuneTeller.fortuneNum == 19)
+        if (_fortuneTeller.fortuneNumber == 19)
         {
-            
+            if (_quality.GetCherryBombs() == 7)
+            {
+                await _chipPoints.MessageAboveCauldron("Your Cherry Bombs total exactly 7! You get another droplet in your potion!");
+                _chipPoints.AddDroplet();
+                _chipPoints.ResetScore();
+                _chipPoints.resetScoreText();
+            }
+            else
+            {
+                await _chipPoints.MessageAboveCauldron("Ohhh nooo! You didn't get a total of 7 cherry bombs, no droplet for you! YOU LOSER!");
+            }
             // END OF ROUND - "If your white chips total exactly 7 at the end of the round you get to add a droplet to your potion.
         }
+        if (_playerData.Colour.Value == "Purple")
+        {
+            _winnerManager.purpleExploded.Value = false;
+        }
+        if (_playerData.Colour.Value == "Red")
+        {
+            _winnerManager.redExploded.Value = false;
+        }
+        if (_playerData.Colour.Value == "Blue")
+        {
+            _winnerManager.blueExploded.Value = false;
+        }
+        if (_playerData.Colour.Value == "Yellow")
+        {
+            _winnerManager.yellowExploded.Value = false;
+        }
+      
     }
-    // Update is called once per frame
+
 
 
 
     public void EnableSpheres()
     {
+        _playerData = FindObjectOfType<PlayerData>();
         if (_playerData.Colour.Value == "Purple")
         {
             purpleGrabSphere.SetActive(true);
@@ -428,14 +656,17 @@ public class FortuneManager : MonoBehaviour
             yellowGrabSphere.SetActive(false);
             yellowSphere.SetActive(false);
         }
+       
     }
 
 
-    public async void RollDiceTwice()
+    public async Task RollDiceTwice()
     {
-        if (_fortuneTeller.fortuneNum == 8)
+        if (_fortuneTeller.fortuneNumber == 8)
         {
+            EnableSpheres();
             await _chipPoints.MessageAboveCauldron("The fortune means the winner gets to roll twice this round!");
+            DisableSpheres();
             if (_winnerManager.RoundWinnerScore.Value == _winnerManager.RedPoints.Value)
             {
 
@@ -478,4 +709,34 @@ public class FortuneManager : MonoBehaviour
             }
         }
         }
+
+    private async Task getMediumIngredient()
+    {
+        _buyIngredients.SetUpShopForFortune11(2);
+        await CheckWhichChoice();
+        ResetChoices();
+    }
+
+    private async Task DrawIngredientsAndPutOneInPot()
+    {
+        _grabIngredient.fortuneDrawAmount = 5;
+
+        _grabIngredient.fortuneDrawTime = true;
+        await _grabIngredient.CheckDrawnRightAmount();
+        await _grabIngredient.SendDrawnIngredientsInfoToAddToPot();
+        _grabIngredient.ResetBagContents();
+        _grabIngredient.CountIngredientsInBag();
+        _grabIngredient.DeleteInstantiatedIngredients();
+        _grabIngredient.ResetChoices();
+    }
+
+    public async Task AtTheVeryEndOfRound()
+    {
+        if (_fortuneTeller.fortuneNumber == 5)
+        {
+            await _chipPoints.MessageAboveCauldron("Putting Cherry Bomb limit back to 7!");
+            _quality.RemoveFromCherryBombLimit();
+            _quality.RemoveFromCherryBombLimit();
+        }
+    }
 }

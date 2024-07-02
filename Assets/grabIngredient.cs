@@ -35,7 +35,8 @@ public class GrabIngredient : MonoBehaviour
     List<int> resetBagContents = new() { 14, 16, 1, 2, 2, 0, 0, 0 };
 
 
-    List<int> ingredientsToUpgrade;
+    List<int> ingredientsToUpgrade = new();
+    List<int> ingredientToAddOneToPot = new();
 
     public List<GameObject> ingredients;
 
@@ -64,6 +65,7 @@ public class GrabIngredient : MonoBehaviour
     [SerializeField] TextMeshProUGUI mandrakeAmount;
     [SerializeField] TextMeshProUGUI ghostsAmount;
     [SerializeField] TextMeshProUGUI cherryBombAmount;
+    [SerializeField] TextMeshProUGUI aboveCauldronText;
 
     [SerializeField] GameObject insideBag;
 
@@ -120,10 +122,11 @@ public class GrabIngredient : MonoBehaviour
     }
     public async Task CheckDrawnRightAmount()
     {
-        while (!EverythingDrawn())
+        while (!EverythingDrawn() || bagContents.Count == 0)
         {
+            int leftToDraw = fortuneDrawAmount - fortuneDrawn;
             Debug.Log("no choice chosen");
-
+            aboveCauldronText.text = $"You have {leftToDraw} ingredients left to draw!";
             await Task.Yield();
         }
         Debug.Log("choice MADE");
@@ -172,48 +175,65 @@ public class GrabIngredient : MonoBehaviour
 
     }
 
-    private void OnTriggerEnter(Collider other)
+    private async void OnTriggerEnter(Collider other)
     {
         if (fortuneDrawTime && bagContents.Count > 0 && fortuneDrawAmount > fortuneDrawn)
         {
-            System.Random rand = new();
-            int num = rand.Next(0, bagContents.Count);
-            int nextIngredient = bagContents[num];
-            InsideBagLocation = insideBag.transform.position;
-            if (fortuneDrawn == 1)
+            _potionQuality = FindObjectOfType<PotionQuality>();
+            if (other.gameObject.CompareTag("hand"))
             {
-               drawnOne = Instantiate(ingredients[nextIngredient], InsideBagLocation, Quaternion.identity);
+                System.Random rand = new();
+                int num = rand.Next(0, bagContents.Count -1);
+                int nextIngredient = bagContents[num];
+                InsideBagLocation = insideBag.transform.position;
+                if (fortuneDrawn == 1)
+                {
+                    drawnOne = Instantiate(ingredients[nextIngredient], InsideBagLocation, Quaternion.identity);
+                    await Task.Delay(4000);
+                    Destroy(drawnOne);
+
+                }
+                if (fortuneDrawn == 2)
+                {
+                    drawnTwo = Instantiate(ingredients[nextIngredient], InsideBagLocation, Quaternion.identity);
+                    await Task.Delay(4000);
+                    Destroy(drawnTwo);
+                }
+                if (fortuneDrawn == 3)
+                {
+                    drawnThree = Instantiate(ingredients[nextIngredient], InsideBagLocation, Quaternion.identity);
+                    await Task.Delay(4000);
+                    Destroy(drawnThree);
+                }
+                if (fortuneDrawn == 4)
+                {
+                    drawnFour = Instantiate(ingredients[nextIngredient], InsideBagLocation, Quaternion.identity);
+                    await Task.Delay(4000);
+                    Destroy(drawnFour);
+                }
+                if (fortuneDrawn == 5)
+                {
+                    drawnFive = Instantiate(ingredients[nextIngredient], InsideBagLocation, Quaternion.identity);
+                    await Task.Delay(4000);
+                    Destroy(drawnFive);
+                }
+                ingredientToAddOneToPot.Add(num);
+                bagContents.RemoveAt(num);
+                CountIngredientsInBag();
+                CountDrawnIngredients(num);
+                CountDrawnIngredientsForUpgrading(num);
+                fortuneDrawn++;
+                Debug.Log(fortuneDrawn);
             }
-            if (fortuneDrawn == 2)
-            {
-                drawnTwo = Instantiate(ingredients[nextIngredient], InsideBagLocation, Quaternion.identity);
-            }
-            if (fortuneDrawn == 3)
-            {
-                drawnThree = Instantiate(ingredients[nextIngredient], InsideBagLocation, Quaternion.identity);
-            }
-            if (fortuneDrawn == 4)
-            {
-                drawnFour = Instantiate(ingredients[nextIngredient], InsideBagLocation, Quaternion.identity);
-            }
-            if (fortuneDrawn == 5)
-            {
-                drawnFive = Instantiate(ingredients[nextIngredient], InsideBagLocation, Quaternion.identity);
-            }
-            bagContents.RemoveAt(num);
-            CountIngredientsInBag();
-            CountDrawnIngredients(num);
-            CountDrawnIngredientsForUpgrading(num);
-            fortuneDrawn++;
         }
         if (bagContents.Count > 0 && _cherryBombs <= _cherryBombLimit)
         {
-
+            _potionQuality = FindObjectOfType<PotionQuality>();
             if (other.gameObject.CompareTag("hand") && _potionQuality.nextIngredientTime)
             {
 
                 System.Random rand = new();
-                int num = rand.Next(0, bagContents.Count);
+                int num = rand.Next(0, bagContents.Count -1);
                 int nextIngredient = bagContents[num];
                 InsideBagLocation = insideBag.transform.position;
 
@@ -319,14 +339,14 @@ public class GrabIngredient : MonoBehaviour
         int num = ingredientsToUpgrade.Count;
         if (num == 0)
         {
-            await _chipPoints.MessageAboveCauldronMultipleChoice(num, "", "", "", "");
+            await _chipPoints.MessageAboveCauldronMultipleChoice(num, "OH NO! Can't upgrade any of the ingredients you drew!", "", "", "", "", "");
             _chipPoints.ResetChoices();
         }
         if (num == 1)
         {
             int ingredientNumber = ingredientsToUpgrade[0];
             string ingredientName = GetNameOFIngredient(ingredientNumber);
-            await _chipPoints.MessageAboveCauldronMultipleChoice(num, ingredientName, "", "", "");
+            await _chipPoints.MessageAboveCauldronMultipleChoice(num, $"Oh dear... you can only upgrade {ingredientName}...", "UPGRADE", "", "", "", "");
             GetNumberOfUpgrade(ingredientNumber);
             RemoveItemFromBagPermanantly(ingredientNumber);
             AddToBagPermanantly(GetNumberOfUpgrade(ingredientNumber));
@@ -337,7 +357,7 @@ public class GrabIngredient : MonoBehaviour
             string ingredientName = GetNameOFIngredient(ingredientNumber);
             int ingredientTwo = ingredientsToUpgrade[1];
             string ingredientNameTwo = GetNameOFIngredient(ingredientTwo);
-            await _chipPoints.MessageAboveCauldronMultipleChoice(num, ingredientName, ingredientNameTwo, "", "");
+            await _chipPoints.MessageAboveCauldronMultipleChoice(num, "Which of these ingredients do you want to upgrade?", ingredientName, ingredientNameTwo, "", "", "");
             if (_chipPoints.choiceOneCauldron)
             {
                 RemoveItemFromBagPermanantly(ingredientNumber);
@@ -358,7 +378,7 @@ public class GrabIngredient : MonoBehaviour
             string ingredientNameTwo = GetNameOFIngredient(ingredientTwo);
             int ingredientThree = ingredientsToUpgrade[2];
             string ingredientNameThree = GetNameOFIngredient(ingredientThree);
-            await _chipPoints.MessageAboveCauldronMultipleChoice(num, ingredientName, ingredientNameTwo, ingredientNameThree, "");
+            await _chipPoints.MessageAboveCauldronMultipleChoice(num, "Which of these ingredients do you want to upgrade?", ingredientName, ingredientNameTwo, ingredientNameThree, "", "");
             if (_chipPoints.choiceOneCauldron)
             {
                 RemoveItemFromBagPermanantly(ingredientNumber);
@@ -386,7 +406,7 @@ public class GrabIngredient : MonoBehaviour
             string ingredientNameThree = GetNameOFIngredient(ingredientThree);
             int ingredientFour = ingredientsToUpgrade[3];
             string ingredientNameFour = GetNameOFIngredient(ingredientFour);
-            await _chipPoints.MessageAboveCauldronMultipleChoice(num, ingredientName, ingredientNameTwo, ingredientNameThree, ingredientNameFour);
+            await _chipPoints.MessageAboveCauldronMultipleChoice(num, "OH WOW! you get to choose between 4! Which of these ingredients do you want to upgrade?", ingredientName, ingredientNameTwo, ingredientNameThree, ingredientNameFour, "");
             if (_chipPoints.choiceOneCauldron)
             {
                 RemoveItemFromBagPermanantly(ingredientNumber);
@@ -414,6 +434,136 @@ public class GrabIngredient : MonoBehaviour
 
     }
 
+    public async Task SendDrawnIngredientsInfoToAddToPot()
+    {
+        _chipPoints = FindObjectOfType<ChipPoints>();
+        int num = ingredientToAddOneToPot.Count;
+        if (num == 0)
+        {
+            await _chipPoints.MessageAboveCauldronMultipleChoice(num, "OH NO! You had no ingredients left to draw!", "", "", "", "", "");
+            _chipPoints.ResetChoices();
+        }
+        if (num == 1)
+        {
+            int ingredientNumber = ingredientToAddOneToPot[0];
+            string ingredientName = GetNameOFIngredient(ingredientNumber);
+            await _chipPoints.MessageAboveCauldronMultipleChoice(num, $"Oh dear... you could only draw one ingredient, {ingredientName}, do you want to put it in your pot?", "put in pot", "", "", "", "");
+            if (_chipPoints.choiceOneCauldron)
+            {
+                _chipPoints.InstantiateOverPot(ingredientNumber);
+            }
+            
+            
+        }
+        if (num == 2)
+        {
+            int ingredientNumber = ingredientToAddOneToPot[0];
+            string ingredientName = GetNameOFIngredient(ingredientNumber);
+            int ingredientTwo = ingredientToAddOneToPot[1];
+            string ingredientNameTwo = GetNameOFIngredient(ingredientTwo);
+            await _chipPoints.MessageAboveCauldronMultipleChoice(num, "Which ingredient do you want to add to the pot?", ingredientName, ingredientNameTwo, "", "", "");
+            if (_chipPoints.choiceOneCauldron)
+            {
+                _chipPoints.InstantiateOverPot(ingredientNumber);
+            }
+            if (_chipPoints.choiceTwoCauldron)
+            {
+                _chipPoints.InstantiateOverPot(ingredientTwo);
+            }
+
+        }
+        if (num == 3)
+        {
+            int ingredientNumber = ingredientToAddOneToPot[0];
+            string ingredientName = GetNameOFIngredient(ingredientNumber);
+            int ingredientTwo = ingredientToAddOneToPot[1];
+            string ingredientNameTwo = GetNameOFIngredient(ingredientTwo);
+            int ingredientThree = ingredientToAddOneToPot[2];
+            string ingredientNameThree = GetNameOFIngredient(ingredientThree);
+            await _chipPoints.MessageAboveCauldronMultipleChoice(num, "Which ingredient do you want to add to the pot?", ingredientName, ingredientNameTwo, ingredientNameThree, "", "");
+            if (_chipPoints.choiceOneCauldron)
+            {
+                _chipPoints.InstantiateOverPot(ingredientNumber);
+            }
+            if (_chipPoints.choiceTwoCauldron)
+            {
+                _chipPoints.InstantiateOverPot(ingredientTwo);
+            }
+            if (_chipPoints.choiceThreeCauldron)
+            {
+                _chipPoints.InstantiateOverPot(ingredientThree);
+            }
+
+        }
+        if (num == 4)
+        {
+            int ingredientNumber = ingredientToAddOneToPot[0];
+            string ingredientName = GetNameOFIngredient(ingredientNumber);
+            int ingredientTwo = ingredientToAddOneToPot[1];
+            string ingredientNameTwo = GetNameOFIngredient(ingredientTwo);
+            int ingredientThree = ingredientToAddOneToPot[2];
+            string ingredientNameThree = GetNameOFIngredient(ingredientThree);
+            int ingredientFour = ingredientToAddOneToPot[3];
+            string ingredientNameFour = GetNameOFIngredient(ingredientFour);
+            await _chipPoints.MessageAboveCauldronMultipleChoice(num, "Whick ingredient do you want to put in the pot?", ingredientName, ingredientNameTwo, ingredientNameThree, ingredientNameFour, "");
+            if (_chipPoints.choiceOneCauldron)
+            {
+                _chipPoints.InstantiateOverPot(ingredientNumber);
+            }
+            if (_chipPoints.choiceTwoCauldron)
+            {
+                _chipPoints.InstantiateOverPot(ingredientTwo);
+            }
+            if (_chipPoints.choiceThreeCauldron)
+            {
+                _chipPoints.InstantiateOverPot(ingredientThree);
+            }
+            if (_chipPoints.choiceThreeCauldron)
+            {
+                _chipPoints.InstantiateOverPot(ingredientFour);
+            }
+
+        }
+        if (num == 4)
+        {
+            int ingredientNumber = ingredientToAddOneToPot[0];
+            string ingredientName = GetNameOFIngredient(ingredientNumber);
+            int ingredientTwo = ingredientToAddOneToPot[1];
+            string ingredientNameTwo = GetNameOFIngredient(ingredientTwo);
+            int ingredientThree = ingredientToAddOneToPot[2];
+            string ingredientNameThree = GetNameOFIngredient(ingredientThree);
+            int ingredientFour = ingredientToAddOneToPot[3];
+            string ingredientNameFour = GetNameOFIngredient(ingredientFour);
+            int ingredientFive = ingredientToAddOneToPot[4];
+            string ingredientNameFive = GetNameOFIngredient(ingredientFive);
+            await _chipPoints.MessageAboveCauldronMultipleChoice(num, "Whick ingredient do you want to put in the pot?", ingredientName, ingredientNameTwo, ingredientNameThree, ingredientNameFour, ingredientNameFive);
+            if (_chipPoints.choiceOneCauldron)
+            {
+                _chipPoints.InstantiateOverPot(ingredientNumber);
+            }
+            if (_chipPoints.choiceTwoCauldron)
+            {
+                _chipPoints.InstantiateOverPot(ingredientTwo);
+            }
+            if (_chipPoints.choiceThreeCauldron)
+            {
+                _chipPoints.InstantiateOverPot(ingredientThree);
+            }
+            if (_chipPoints.choiceThreeCauldron)
+            {
+                _chipPoints.InstantiateOverPot(ingredientFour);
+            }
+            if (_chipPoints.choiceSixCauldron)
+            {
+                _chipPoints.InstantiateOverPot(ingredientFive);
+            }
+
+        }
+        _chipPoints.ResetChoices();
+
+
+    }
+
     private void CountDrawnIngredientsForUpgrading(int Num)
     {
         if (Num == 4 && !ingredientsToUpgrade.Contains(4) || Num == 5 && !ingredientsToUpgrade.Contains(5) || Num == 8 && !ingredientsToUpgrade.Contains(8) || Num == 9 && !ingredientsToUpgrade.Contains(9) || Num == 12 && !ingredientsToUpgrade.Contains(12) || Num == 13 && !ingredientsToUpgrade.Contains(13) || Num == 16 && !ingredientsToUpgrade.Contains(16) || Num == 17 && !ingredientsToUpgrade.Contains(17))
@@ -422,32 +572,53 @@ public class GrabIngredient : MonoBehaviour
         }
 
     }
-    public void Update()
+
+    public void updateCherryBombs()
     {
         _cherryBombs = _potionQuality.GetCherryBombs();
         _cherryBombLimit = _potionQuality.cherryBombLimit;
-
     }
+   
+
 
     private string GetNameOFIngredient(int Num)
     {
-       
-        if (Num == 4) 
-        { return "Medium Crow Skull"; }
-        if (Num == 5)
+        if (Num == 0)
+        { return "Small Cherry Bomb"; }
+        if (Num == 1)
+        { return "Large Cherry Bomb"; }
+        if (Num == 2)
+        { return "Small Cherry Bomb"; }
+        if (Num == 3)
         { return "Large Crow Skull"; }
-        if (Num == 8)
-        { return "Medium Mandrake"; }
-        if (Num == 9)
+        if (Num == 4)
+        { return "Small Crow Skull"; }
+        if (Num == 5)
+        { return "Medium Crow Skull"; }
+        if (Num == 6)
+        { return "Large Crow Skull"; }
+        if (Num == 7)
         { return "Large Mandrake"; }
-        if (Num == 12)
-        { return "Medium Mushroom"; }
-        if (Num == 13)
+        if (Num == 8)
+        { return "Small Mandrake"; }
+        if (Num == 9)
+        { return "Medium Mandrake"; }
+        if (Num == 10)
+        { return "HawkMoth"; }
+        if (Num == 11)
         { return "Large Mushroom"; }
-        if (Num == 16)
-        { return "Medium Garden Spider"; }
-        if (Num == 17)
+        if (Num == 12)
+        { return "Small Mushroom"; }
+        if (Num == 13)
+        { return "Medium Mushroom"; }
+        if (Num == 14)
+        { return "Pumpkin"; }
+        if (Num == 15)
         { return "Large Garden Spider"; }
+        if (Num == 16)
+        { return "Small Garden Spider"; }
+        if (Num == 17)
+        { return "Medium Garden Spider"; }
         else
         {
             return "";

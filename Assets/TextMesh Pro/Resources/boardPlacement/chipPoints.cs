@@ -43,6 +43,7 @@ public class ChipPoints : MonoBehaviour
     [SerializeField] GameObject potExplodedCanvas;
 
     private PlayerData _playerData;
+    private FortuneManager _fortuneManager;
 
     [SerializeField] GameObject leftOverIngredient;
     [SerializeField] GameObject rubylocationSphere;
@@ -60,12 +61,16 @@ public class ChipPoints : MonoBehaviour
     [SerializeField] GameObject button3;
     [SerializeField] GameObject button4;
     [SerializeField] GameObject button5;
+    [SerializeField] GameObject button6;
+    [SerializeField] GameObject button7;
     [SerializeField] TextMeshProUGUI aboveCauldronText;
     [SerializeField] TextMeshProUGUI choiceOne;
     [SerializeField] TextMeshProUGUI choiceTwo;
     [SerializeField] TextMeshProUGUI choiceThree;
     [SerializeField] TextMeshProUGUI choiceFour;
     [SerializeField] TextMeshProUGUI choiceFive;
+    [SerializeField] TextMeshProUGUI choiceSix;
+    [SerializeField] TextMeshProUGUI choiceSeven;
     [SerializeField] TextMeshProUGUI rubyNumber;
     [SerializeField] GameObject bagSphere;
 
@@ -92,6 +97,7 @@ public class ChipPoints : MonoBehaviour
     public bool choiceThreeCauldron = false;
     public bool choiceFourCauldron = false;
     public bool choiceFiveCauldron = false;
+    public bool choiceSixCauldron =false;
     private int numberOfPlayers;
 
     public static int InitialScore = 0;
@@ -139,6 +145,7 @@ public class ChipPoints : MonoBehaviour
         // Initialize programInstance
         programInstance = new Program();
         ingredients = new List<GameObject>(Resources.LoadAll<GameObject>("ingredients"));
+        _fortuneManager = FindObjectOfType<FortuneManager>();
         CountIngredientsInPot();
         
 
@@ -146,6 +153,7 @@ public class ChipPoints : MonoBehaviour
     //TWO FUNCTIONS
     public async void PotExplosionEndRound()
     {
+        _playerData = FindObjectOfType<PlayerData>();
         if (crowSkullRule == 3)
         {
             
@@ -201,7 +209,24 @@ public class ChipPoints : MonoBehaviour
             Score = 0;
 
         }
+        if (_playerData.Colour.Value == "Purple")
+        {
+            winnerManager.purpleExploded.Value = true;
+        }
+        if (_playerData.Colour.Value == "Red")
+        {
+            winnerManager.redExploded.Value = true;
+        }
+        if (_playerData.Colour.Value == "Blue")
+        {
+            winnerManager.blueExploded.Value = true;
+        }
+        if (_playerData.Colour.Value == "Yellow")
+        {
+            winnerManager.yellowExploded.Value = true;
+        }
         AfterRoundChipEffects();
+        await _fortuneManager.PostRoundFortuneEffects();
         
         Debug.Log("pot exploded");
         GameManager.Instance.UpdateGameState(GameState.RollDice);
@@ -719,6 +744,7 @@ public class ChipPoints : MonoBehaviour
                     }
                 }
             }
+           await _fortuneManager.DuringRoundFortuneEffects(other.gameObject.tag);
 
             cauldronScoreFront.text = Score.ToString();
             cauldronScoreBack.text = Score.ToString();
@@ -818,7 +844,7 @@ public class ChipPoints : MonoBehaviour
     {
         //afterRoundfFortuneEffects
         AfterRoundChipEffects();
-
+        await _fortuneManager.PostRoundFortuneEffects();
         _playerData = FindObjectOfType<PlayerData>();
         
 
@@ -992,7 +1018,7 @@ public class ChipPoints : MonoBehaviour
                     await CheckWhichChoice();
                     if (choiceOneCauldron)
                     {
-                        _playerData.Rubies.Value = -1;
+                        _playerData.Rubies.Value--;
                         ChangeRubyUI();
                         AddDroplet();
                         ResetScore();
@@ -1278,7 +1304,7 @@ public class ChipPoints : MonoBehaviour
     public bool ChoiceChosem()
     {
         
-            if (!choiceOneCauldron && !choiceTwoCauldron && !choiceThreeCauldron && !choiceFourCauldron && !choiceFiveCauldron)
+            if (!choiceOneCauldron && !choiceTwoCauldron && !choiceThreeCauldron && !choiceFourCauldron && !choiceFiveCauldron && !choiceSixCauldron)
             {
                return false;
             }
@@ -1296,6 +1322,7 @@ public class ChipPoints : MonoBehaviour
         choiceFourCauldron = false;
         choiceThreeCauldron = false;
         choiceFiveCauldron = false;
+        choiceSixCauldron = false;
     }
 
 
@@ -2355,7 +2382,7 @@ public class ChipPoints : MonoBehaviour
         await CheckWhichChoice();
         ResetChoices();
         Debug.Log("Added coins");
-
+        await _fortuneManager.AtTheVeryEndOfRound();
 
         buttonsToAddLeftover.SetActive(false);
         quality.ResetCherryBombs();
@@ -2368,6 +2395,7 @@ public class ChipPoints : MonoBehaviour
         }
         else
         {
+            quality.ResetPotionColour();
             GameManager.Instance.UpdateGameState(GameState.BuyIngredients);
         }
         //timer then add victory points with UI And then same with coins - then gamemanager set state to buyingredients
@@ -2421,6 +2449,8 @@ public class ChipPoints : MonoBehaviour
         spiderAmount.text = spider.ToString();
     }
 
+ 
+
     public async void SpendRubiesUI()
     {
         Debug.Log("start spend rubies ui");
@@ -2442,12 +2472,18 @@ public class ChipPoints : MonoBehaviour
                 if (choiceOneCauldron)
                 {
                     BuyDrop();
-                    SpendRubiesUI();
+                    if (_playerData.Rubies.Value >= 2)
+                    {
+                        SpendRubiesUI();
+                    }
                 }
                 if (choiceTwoCauldron)
                 {
                     FillPurifier();
-                    SpendRubiesUI();
+                    if (_playerData.Rubies.Value >= 2)
+                    {
+                        SpendRubiesUI();
+                    }
                 }
 
                 ResetChoices();
@@ -2463,7 +2499,10 @@ public class ChipPoints : MonoBehaviour
                 if (choiceOneCauldron)
                 {
                     BuyDrop();
-                    SpendRubiesUI();
+                    if (_playerData.Rubies.Value >= 2)
+                    {
+                        SpendRubiesUI();
+                    }
                 }
                 ResetChoices();
 
@@ -2476,7 +2515,7 @@ public class ChipPoints : MonoBehaviour
     {
         bagSphere.SetActive(true);
         Debug.Log("ready for next round function");
-        buttonsToAddLeftover.SetActive(true);
+  
         ResetScore();
         winnerManager.ReadyUp();
         await winnerManager.CheckAllPlayersReady();
@@ -2484,10 +2523,11 @@ public class ChipPoints : MonoBehaviour
         ChangeSceneryDependingOnRound();
         grabIngredient = FindObjectOfType<GrabIngredient>();
 
-        //RAT TAILS - ADD RAT TAILS BECK MY GOD
+        
         await winnerManager.CalculateRatTails();
 
         int ratTails = _playerData.RatTails.Value;
+        buttonsToAddLeftover.SetActive(true);
         button5.SetActive(true);
         aboveCauldronText.text = $"You have {ratTails} rat tails to add to your pot this round";
         Score += ratTails;
@@ -2571,6 +2611,7 @@ public class ChipPoints : MonoBehaviour
 
     public void ChangeRubyUI()
     {
+        _playerData = FindObjectOfType<PlayerData>();
         rubyNumber.text = _playerData.Rubies.Value.ToString();
         rubyInstantiationLocation = rubylocationSphere.transform.position;
 
@@ -2654,12 +2695,14 @@ public class ChipPoints : MonoBehaviour
 
     public void RemoveLastIngredient()
     {
+        grabIngredient = FindObjectOfType<GrabIngredient>();
         if (lastIngredient == "cherryBombOne")
         { grabIngredient.AddToBagThisRound(0); }
         if (lastIngredient == "cherryBombTwo")
         { grabIngredient.AddToBagThisRound(2); }
         if (lastIngredient == "cherryBombThree")
         { grabIngredient.AddToBagThisRound(1); }
+
         ingredientsList.RemoveAt(ingredientsList.Count);
     }
 
@@ -2671,47 +2714,42 @@ public class ChipPoints : MonoBehaviour
 
         await CheckWhichChoice();
         ResetChoices();
+        aboveCauldronText.text = "";
 
 
 
     }
 
-    public async Task MessageAboveCauldronMultipleChoice(int num, string choice1, string choice2, string choice3, string choice4)
+    public async Task MessageAboveCauldronMultipleChoice(int num, string message, string choice1, string choice2, string choice3, string choice4, string choice5)
     {
         buttonsToAddLeftover.SetActive(true);
         if (num == 0)
         {
-            aboveCauldronText.text = "OH NO! Can't upgrade any of the ingredients you drew!";
+            aboveCauldronText.text = message;
             button5.SetActive(true);
         }
         if (num == 1)
         {
-            aboveCauldronText.text = $"Oh dear... you can only upgrade one ingredient and that is {choice1}!";
-            button5.SetActive(true);
-        }
-        if (num == 0)
-        {
-            aboveCauldronText.text = "Which of these ingredients do you want to upgrade?";
+            aboveCauldronText.text = message;
             button1.SetActive(true);
             button2.SetActive(true);
-         
             choiceOne.text = choice1;
-            choiceTwo.text = choice2;
+            choiceTwo.text = "Skip";
         }
-        if (num == 0)
+        if (num == 2)
         {
-            aboveCauldronText.text = "Which of these ingredients do you want to upgrade?";
+            aboveCauldronText.text = message;
             button1.SetActive(true);
             button2.SetActive(true);
             button3.SetActive(true);
+
             choiceOne.text = choice1;
             choiceTwo.text = choice2;
-            choiceThree.text = choice3;
+            choiceThree.text = "Skip";
         }
-        if (num == 0)
+        if (num == 3)
         {
-            aboveCauldronText.text = "OH WOW! you get to choose between 4! Which of these ingredients do you want to upgrade?";
-
+            aboveCauldronText.text = message;
             button1.SetActive(true);
             button2.SetActive(true);
             button3.SetActive(true);
@@ -2719,13 +2757,51 @@ public class ChipPoints : MonoBehaviour
             choiceOne.text = choice1;
             choiceTwo.text = choice2;
             choiceThree.text = choice3;
-            choiceFour.text = choice4;
+            choiceFour.text = "Skip";
         }
-     
+        if (num == 4)
+        {
+            aboveCauldronText.text = message;
+
+            button1.SetActive(true);
+            button2.SetActive(true);
+            button3.SetActive(true);
+            button4.SetActive(true);
+            button5.SetActive(true);
+            choiceOne.text = choice1;
+            choiceTwo.text = choice2;
+            choiceThree.text = choice3;
+            choiceFour.text = choice4;
+            choiceFive.text = "Skip";
+        }
+        if (num == 5)
+        {
+            aboveCauldronText.text = message;
+
+            button1.SetActive(true);
+            button2.SetActive(true);
+            button3.SetActive(true);
+            button4.SetActive(true);
+            button6.SetActive(true);
+            button7.SetActive(true);
+            choiceOne.text = choice1;
+            choiceTwo.text = choice2;
+            choiceThree.text = choice3;
+            choiceFour.text = choice4;
+            choiceSix.text = choice5;
+            choiceSeven.text = "Skip";
+            
+        }
+
 
         await CheckWhichChoice();
     }
 
+    public void InstantiateOverPot(int num)
+    {
+        leftOverIngredientLocation = leftOverIngredient.transform.position;
+        Instantiate(ingredients[num], leftOverIngredientLocation, Quaternion.identity);
+    }
 
 }
 

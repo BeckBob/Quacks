@@ -1062,7 +1062,7 @@ public class BuyIngredients : MonoBehaviour
     }
 
 
-    public void SetUpShopForFortune11()
+    public void SetUpShopForFortune11(int num)
     {
         ActivateSpheres();
         _chipPoints = FindObjectOfType<ChipPoints>();
@@ -1090,7 +1090,8 @@ public class BuyIngredients : MonoBehaviour
         DoneWithFortuneButton.SetActive(true);
 
         bagBoard.SetActive(true);
-        mothStall.SetActive(true);
+        if (num == 11) { mothStall.SetActive(true); }
+        else { mothStall.SetActive(false);}
         pumpkinStall.SetActive(false);
         UpdateAmountInBag();
         if (_winnerManager.round >= 3)

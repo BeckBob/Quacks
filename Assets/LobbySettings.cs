@@ -53,11 +53,14 @@ public class LobbySettings : NetworkBehaviour
     public Color trueColour;
     public Color falseColour;
     private NetworkConnect _networkConnect;
+    private TeleportationManager _teleportationManager;
 
     [SerializeField] GameObject purpleSphere;
     [SerializeField] GameObject blueSphere;
     [SerializeField] GameObject yellowSphere;
     [SerializeField] GameObject redSphere;
+
+    [SerializeField] GameObject _bigBook;
 
     private string oldColour = "Random";
     private bool _ready = false;
@@ -70,6 +73,7 @@ public class LobbySettings : NetworkBehaviour
 
         _networkConnect = FindObjectOfType<NetworkConnect>();
         _winnerManager = FindObjectOfType<WinnerManager>();
+        _teleportationManager = FindObjectOfType<TeleportationManager>();
         ToadstallRule.Value = 1;
         SpiderRule.Value = 1;
         CrowskullRule.Value = 1;
@@ -192,7 +196,10 @@ public class LobbySettings : NetworkBehaviour
                     colour = GetRandomColour();
                     _playerData.Colour.Value = colour.Value;
                 }
+                
+                _teleportationManager.StartGameTeleportation();
                 GameManager.Instance.UpdateGameState(GameState.FortuneTeller);
+                _bigBook.SetActive(false);
             }
         }
         if (!_ready)
@@ -203,7 +210,16 @@ public class LobbySettings : NetworkBehaviour
             {
                 SetRules();
                 BuildRandomColourList();
+                if (_playerData.Colour.Value == "Random")
+                {
+                    FixedString128Bytes colour;
+                    colour = GetRandomColour();
+                    _playerData.Colour.Value = colour.Value;
+                }
+               
+                _teleportationManager.StartGameTeleportation();
                 GameManager.Instance.UpdateGameState(GameState.FortuneTeller);
+                _bigBook.SetActive(false);
             }
         }
        

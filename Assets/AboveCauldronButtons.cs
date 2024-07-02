@@ -9,6 +9,8 @@ public class AboveCauldronButtons : MonoBehaviour
     [SerializeField] GameObject button3;
     [SerializeField] GameObject button4;
     [SerializeField] GameObject button5;
+    [SerializeField] GameObject button6;
+    [SerializeField] GameObject button7;
    
 
     private ChipPoints _chipPoints;
@@ -31,7 +33,10 @@ public class AboveCauldronButtons : MonoBehaviour
         button2.SetActive(false);
         button3.SetActive(false);
         button4.SetActive(false);
-       
+        button5.SetActive(false);
+        button6.SetActive(false);
+        button7.SetActive(false);
+
     }
 
     public void ClickButton2()
@@ -42,8 +47,11 @@ public class AboveCauldronButtons : MonoBehaviour
         button2.SetActive(false);
         button3.SetActive(false);
         button4.SetActive(false);
-            
-       
+        button5.SetActive(false);
+        button6.SetActive(false);
+        button7.SetActive(false);
+
+
     }
 
     public void ClickButton3()
@@ -54,7 +62,10 @@ public class AboveCauldronButtons : MonoBehaviour
         button2.SetActive(false);
         button3.SetActive(false);
         button4.SetActive(false);
-        
+        button5.SetActive(false);
+        button6.SetActive(false);
+        button7.SetActive(false);
+
     }
 
     public void ClickButton4()
@@ -65,14 +76,37 @@ public class AboveCauldronButtons : MonoBehaviour
         button2.SetActive(false);
         button3.SetActive(false);
         button4.SetActive(false);
-       
+        button5.SetActive(false);
+            button6.SetActive(false);
+        button7.SetActive(false);
+
     }
     public void ClickButton5()
     {
         _chipPoints = FindObjectOfType<ChipPoints>();
         _chipPoints.choiceFiveCauldron = true;
+        button1.SetActive(false);
+        button2.SetActive(false);
+        button3.SetActive(false);
+        button4.SetActive(false);
         button5.SetActive(false);
+            button6.SetActive(false);
+        button7.SetActive(false);
      
+
+    }
+    public void ClickButton6()
+    {
+        _chipPoints = FindObjectOfType<ChipPoints>();
+        _chipPoints.choiceSixCauldron = true;
+        button1.SetActive(false);
+        button2.SetActive(false);
+        button3.SetActive(false);
+        button4.SetActive(false);
+        button5.SetActive(false);
+        button6.SetActive(false);
+        button7.SetActive(false);
+
 
     }
 
