@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.32696944, g: 0.28958488, b: 0.3222681, a: 1}
+  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -572,7 +572,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1316,7 +1316,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1674,7 +1674,8 @@ MonoBehaviour:
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 0161d805a3764c089bef00bfe00793f5, type: 2}
   m_sharedMaterial: {fileID: 2147374, guid: 0161d805a3764c089bef00bfe00793f5, type: 2}
-  m_fontSharedMaterials: []
+  m_fontSharedMaterials:
+  - {fileID: 2147374, guid: 0161d805a3764c089bef00bfe00793f5, type: 2}
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
   m_fontColor32:
@@ -2008,6 +2009,29 @@ MonoBehaviour:
   PurpleExists:
     m_InternalValue: 0
   round: 1
+  ToadstallRule:
+    m_InternalValue: 0
+  SpiderRule:
+    m_InternalValue: 0
+  CrowskullRule:
+    m_InternalValue: 0
+  MandrakeRule:
+    m_InternalValue: 0
+  MothRule:
+    m_InternalValue: 0
+  GhostsbreathRule:
+    m_InternalValue: 0
+  redExploded:
+    m_InternalValue: 0
+  yellowExploded:
+    m_InternalValue: 0
+  blueExploded:
+    m_InternalValue: 0
+  purpleExploded:
+    m_InternalValue: 0
+  LowestVictoryPoints: 0
+  LowestRubies: 0
+  LowestDrawn: 0
   PurpleRoundWinCanvas: {fileID: 103430288}
   RedRoundWinCanvas: {fileID: 1442848548}
   BlueRoundWinCanvas: {fileID: 755200134}
@@ -2021,9 +2045,18 @@ MonoBehaviour:
   YellowDice: {fileID: 1355829052}
   PurpleDice: {fileID: 884138810976918339}
   DiceFloor: {fileID: 717061775}
-  aboveCauldronUI: {fileID: 0}
-  aboveCauldronButton: {fileID: 0}
-  aboveCauldronText: {fileID: 0}
+  aboveCauldronUIPurple: {fileID: 0}
+  aboveCauldronButtonPurple: {fileID: 0}
+  aboveCauldronTextPurple: {fileID: 0}
+  aboveCauldronUIRed: {fileID: 0}
+  aboveCauldronButtonRed: {fileID: 0}
+  aboveCauldronTextRed: {fileID: 0}
+  aboveCauldronUIBlue: {fileID: 0}
+  aboveCauldronButtonBlue: {fileID: 0}
+  aboveCauldronTextBlue: {fileID: 0}
+  aboveCauldronUIYellow: {fileID: 0}
+  aboveCauldronButtonYellow: {fileID: 0}
+  aboveCauldronTextYellow: {fileID: 0}
   winnerText: {fileID: 0}
 --- !u!114 &53468491
 MonoBehaviour:
@@ -4830,6 +4863,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ingredients: []
   _cherryBombs: 0
+  fortuneDrawAmount: 0
+  fortuneDrawn: 0
+  fortuneDrawTime: 0
+  totalOfFortuneIngredients: 0
   pumpkinAmount: {fileID: 1831568718}
   toadstallAmount: {fileID: 1639829493}
   crowSkullAmount: {fileID: 1042168076}
@@ -4838,6 +4875,7 @@ MonoBehaviour:
   mandrakeAmount: {fileID: 2048853732}
   ghostsAmount: {fileID: 1320830136}
   cherryBombAmount: {fileID: 1998524000}
+  aboveCauldronText: {fileID: 0}
   insideBag: {fileID: 155969878}
   bombs: 0
   crowSkull: 0
@@ -5396,6 +5434,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e21b235e877b65a4cb509ddc1c81f4a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  FutureTick: {fileID: 0}
+  FutureCross: {fileID: 0}
 --- !u!114 &180300373
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5628,7 +5668,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 9dfc825aed78fcd4ba02077103263b40, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -7050,10 +7090,10 @@ MonoBehaviour:
   button2: {fileID: 913178491}
   button3: {fileID: 822172860}
   fortune: {fileID: 1212000434}
+  BottleUpCollider: {fileID: 0}
   buttonOne: 0
   buttonTwo: 0
   buttonThree: 0
-  numberOfPlayers: 0
 --- !u!114 &232445894
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7069,10 +7109,13 @@ MonoBehaviour:
   _button1: {fileID: 1243051004}
   _button2: {fileID: 913178491}
   _button3: {fileID: 822172860}
+  _fortuneTextObj: {fileID: 0}
   choiceOne: {fileID: 1410694175}
   choiceTwo: {fileID: 1900552896}
   _fortune: {fileID: 1212000435}
-  fortuneNum: 0
+  potionBottle: {fileID: 0}
+  purifierBottle: {fileID: 0}
+  fortuneNumber: 0
 --- !u!114 &232445895
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8353,10 +8396,10 @@ MonoBehaviour:
   button2: {fileID: 465229796}
   button3: {fileID: 1934756660}
   fortune: {fileID: 492817261}
+  BottleUpCollider: {fileID: 0}
   buttonOne: 0
   buttonTwo: 0
   buttonThree: 0
-  numberOfPlayers: 0
 --- !u!114 &300899942
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8372,10 +8415,13 @@ MonoBehaviour:
   _button1: {fileID: 1554562248}
   _button2: {fileID: 465229796}
   _button3: {fileID: 1934756660}
+  _fortuneTextObj: {fileID: 0}
   choiceOne: {fileID: 1554491366}
   choiceTwo: {fileID: 1061164996}
   _fortune: {fileID: 492817262}
-  fortuneNum: 0
+  potionBottle: {fileID: 0}
+  purifierBottle: {fileID: 0}
+  fortuneNumber: 0
 --- !u!114 &300899943
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8519,7 +8565,8 @@ MonoBehaviour:
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_fontSharedMaterials: []
+  m_fontSharedMaterials:
+  - {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
   m_fontColor32:
@@ -8837,6 +8884,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c59968e6aeb934f468a4b89efdfc679b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tickPresent: {fileID: 0}
+  crossPresent: {fileID: 0}
 --- !u!114 &304301816
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9379,6 +9428,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c59968e6aeb934f468a4b89efdfc679b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tickPresent: {fileID: 0}
+  crossPresent: {fileID: 0}
 --- !u!114 &314531270
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10952,7 +11003,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 9dfc825aed78fcd4ba02077103263b40, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -13490,6 +13541,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7e38e8f371cede64da4d6abdc41fba5a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  purpleSphere: {fileID: 0}
+  blueSphere: {fileID: 0}
+  yellowSphere: {fileID: 0}
+  redSphere: {fileID: 0}
+  purpleGrabSphere: {fileID: 0}
+  blueGrabSphere: {fileID: 0}
+  yellowGrabSphere: {fileID: 0}
+  redGrabSphere: {fileID: 0}
+  purpleDice: {fileID: 0}
+  blueDice: {fileID: 0}
+  yellowDice: {fileID: 0}
+  redDice: {fileID: 0}
+  DiceFloor: {fileID: 0}
+  fortuneShopDone: 0
 --- !u!114 &465229798
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15253,7 +15318,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -16379,6 +16444,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c59968e6aeb934f468a4b89efdfc679b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tickPresent: {fileID: 0}
+  crossPresent: {fileID: 0}
 --- !u!114 &565656528
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16947,7 +17014,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 9dfc825aed78fcd4ba02077103263b40, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -18366,7 +18433,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 9dfc825aed78fcd4ba02077103263b40, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -18808,24 +18875,48 @@ MonoBehaviour:
   futureScore: {fileID: 1324653965}
   potExplodedCanvas: {fileID: 1561541399}
   leftOverIngredient: {fileID: 523412792}
+  rubylocationSphere: {fileID: 0}
   buttonsToAddLeftover: {fileID: 523412792}
+  rubyForBowl: {fileID: 0}
   ingredients: []
   button1: {fileID: 1857714016}
   button2: {fileID: 303010949}
   button3: {fileID: 1161818304}
   button4: {fileID: 851343888}
   button5: {fileID: 2072346920}
+  button6: {fileID: 0}
+  button7: {fileID: 0}
   aboveCauldronText: {fileID: 1782145406}
   choiceOne: {fileID: 1932002233}
   choiceTwo: {fileID: 208823326}
   choiceThree: {fileID: 2077075707}
   choiceFour: {fileID: 792264972}
   choiceFive: {fileID: 1327234145}
+  choiceSix: {fileID: 0}
+  choiceSeven: {fileID: 0}
+  rubyNumber: {fileID: 0}
+  bagSphere: {fileID: 0}
+  Ruby1: {fileID: 0}
+  Ruby2: {fileID: 0}
+  Ruby3: {fileID: 0}
+  Ruby4: {fileID: 0}
+  Ruby5: {fileID: 0}
+  Ruby6: {fileID: 0}
+  Round1Sky: {fileID: 0}
+  Round2Sky: {fileID: 0}
+  Round3Sky: {fileID: 0}
+  Round4Sky: {fileID: 0}
+  Round5Sky: {fileID: 0}
+  Round6Sky: {fileID: 0}
+  Round7Sky: {fileID: 0}
+  Round8Sky: {fileID: 0}
+  lastIngredient: 
   choiceOneCauldron: 0
   choiceTwoCauldron: 0
   choiceThreeCauldron: 0
   choiceFourCauldron: 0
   choiceFiveCauldron: 0
+  choiceSixCauldron: 0
   Score: 0
   mushroomRule: 3
   mandrakeRule: 4
@@ -19643,7 +19734,8 @@ MonoBehaviour:
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_fontSharedMaterials: []
+  m_fontSharedMaterials:
+  - {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
   m_fontColor32:
@@ -20798,6 +20890,7 @@ MonoBehaviour:
   blueWinnerCanvas: {fileID: 103430288}
   yellowWinnerCanvas: {fileID: 103430288}
   purpleWinnerCanvas: {fileID: 103430288}
+  diceFloor: {fileID: 0}
   alreadyCalled: 0
 --- !u!65 &717061777
 BoxCollider:
@@ -21936,24 +22029,48 @@ MonoBehaviour:
   futureScore: {fileID: 1312823544}
   potExplodedCanvas: {fileID: 523143165}
   leftOverIngredient: {fileID: 932498193}
+  rubylocationSphere: {fileID: 0}
   buttonsToAddLeftover: {fileID: 1558293459}
+  rubyForBowl: {fileID: 0}
   ingredients: []
   button1: {fileID: 0}
   button2: {fileID: 0}
   button3: {fileID: 0}
   button4: {fileID: 0}
   button5: {fileID: 0}
+  button6: {fileID: 0}
+  button7: {fileID: 0}
   aboveCauldronText: {fileID: 0}
   choiceOne: {fileID: 0}
   choiceTwo: {fileID: 0}
   choiceThree: {fileID: 0}
   choiceFour: {fileID: 0}
   choiceFive: {fileID: 0}
+  choiceSix: {fileID: 0}
+  choiceSeven: {fileID: 0}
+  rubyNumber: {fileID: 0}
+  bagSphere: {fileID: 0}
+  Ruby1: {fileID: 0}
+  Ruby2: {fileID: 0}
+  Ruby3: {fileID: 0}
+  Ruby4: {fileID: 0}
+  Ruby5: {fileID: 0}
+  Ruby6: {fileID: 0}
+  Round1Sky: {fileID: 0}
+  Round2Sky: {fileID: 0}
+  Round3Sky: {fileID: 0}
+  Round4Sky: {fileID: 0}
+  Round5Sky: {fileID: 0}
+  Round6Sky: {fileID: 0}
+  Round7Sky: {fileID: 0}
+  Round8Sky: {fileID: 0}
+  lastIngredient: 
   choiceOneCauldron: 0
   choiceTwoCauldron: 0
   choiceThreeCauldron: 0
   choiceFourCauldron: 0
   choiceFiveCauldron: 0
+  choiceSixCauldron: 0
   Score: 0
   mushroomRule: 3
   mandrakeRule: 4
@@ -22930,7 +23047,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 9dfc825aed78fcd4ba02077103263b40, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -24350,6 +24467,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e21b235e877b65a4cb509ddc1c81f4a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  FutureTick: {fileID: 0}
+  FutureCross: {fileID: 0}
 --- !u!114 &824948979
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -26256,7 +26375,8 @@ MonoBehaviour:
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 0161d805a3764c089bef00bfe00793f5, type: 2}
   m_sharedMaterial: {fileID: 2147374, guid: 0161d805a3764c089bef00bfe00793f5, type: 2}
-  m_fontSharedMaterials: []
+  m_fontSharedMaterials:
+  - {fileID: 2147374, guid: 0161d805a3764c089bef00bfe00793f5, type: 2}
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
   m_fontColor32:
@@ -26599,6 +26719,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7e38e8f371cede64da4d6abdc41fba5a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  purpleSphere: {fileID: 0}
+  blueSphere: {fileID: 0}
+  yellowSphere: {fileID: 0}
+  redSphere: {fileID: 0}
+  purpleGrabSphere: {fileID: 0}
+  blueGrabSphere: {fileID: 0}
+  yellowGrabSphere: {fileID: 0}
+  redGrabSphere: {fileID: 0}
+  purpleDice: {fileID: 0}
+  blueDice: {fileID: 0}
+  yellowDice: {fileID: 0}
+  redDice: {fileID: 0}
+  DiceFloor: {fileID: 0}
+  fortuneShopDone: 0
 --- !u!114 &913178493
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -27548,7 +27682,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -29055,11 +29189,57 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a2a796ffaf2244e41b39f0cb98a9ced9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ToadstallRule:
+    m_InternalValue: 0
+  SpiderRule:
+    m_InternalValue: 0
+  CrowskullRule:
+    m_InternalValue: 0
+  MandrakeRule:
+    m_InternalValue: 0
+  MothRule:
+    m_InternalValue: 0
+  GhostsbreathRule:
+    m_InternalValue: 0
+  yellowPicked:
+    m_InternalValue: 0
+  purplePicked:
+    m_InternalValue: 0
+  redPicked:
+    m_InternalValue: 0
+  bluePicked:
+    m_InternalValue: 0
+  readyPlayers:
+    m_InternalValue: 0
+  ToadstallText: {fileID: 0}
+  SpiderText: {fileID: 0}
+  CrowSkullText: {fileID: 0}
+  MothText: {fileID: 0}
+  MandrakeText: {fileID: 0}
+  GhostBreathText: {fileID: 0}
+  DropDown1: {fileID: 0}
+  DropDown2: {fileID: 0}
+  DropDown3: {fileID: 0}
+  DropDown4: {fileID: 0}
+  DropDown5: {fileID: 0}
+  DropDown6: {fileID: 0}
   readyButton: {fileID: 480675649}
   dropDown: {fileID: 1908740290}
+  toadstoolDropdown: {fileID: 0}
+  spiderDropdown: {fileID: 0}
+  crowDropdown: {fileID: 0}
+  mothDropdown: {fileID: 0}
+  mandrakeDropdown: {fileID: 0}
+  ghostDropdown: {fileID: 0}
   trueColour: {r: 0.6710879, g: 0.9528302, b: 0.4809096, a: 1}
   falseColour: {r: 0.8962264, g: 0.35088107, b: 0.35088107, a: 1}
+  purpleSphere: {fileID: 0}
+  blueSphere: {fileID: 0}
+  yellowSphere: {fileID: 0}
+  redSphere: {fileID: 0}
+  _bigBook: {fileID: 0}
   numberOfPlayers: 0
+  AvailableColours: []
 --- !u!4 &961829483
 Transform:
   m_ObjectHideFlags: 0
@@ -30029,7 +30209,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -30667,6 +30847,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ingredients: []
   _cherryBombs: 0
+  fortuneDrawAmount: 0
+  fortuneDrawn: 0
+  fortuneDrawTime: 0
+  totalOfFortuneIngredients: 0
   pumpkinAmount: {fileID: 0}
   toadstallAmount: {fileID: 0}
   crowSkullAmount: {fileID: 0}
@@ -30675,6 +30859,7 @@ MonoBehaviour:
   mandrakeAmount: {fileID: 0}
   ghostsAmount: {fileID: 0}
   cherryBombAmount: {fileID: 0}
+  aboveCauldronText: {fileID: 0}
   insideBag: {fileID: 1006610371}
   bombs: 0
   crowSkull: 0
@@ -34646,7 +34831,8 @@ MonoBehaviour:
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_fontSharedMaterials: []
+  m_fontSharedMaterials:
+  - {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
   m_fontColor32:
@@ -35850,6 +36036,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7e38e8f371cede64da4d6abdc41fba5a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  purpleSphere: {fileID: 0}
+  blueSphere: {fileID: 0}
+  yellowSphere: {fileID: 0}
+  redSphere: {fileID: 0}
+  purpleGrabSphere: {fileID: 0}
+  blueGrabSphere: {fileID: 0}
+  yellowGrabSphere: {fileID: 0}
+  redGrabSphere: {fileID: 0}
+  purpleDice: {fileID: 0}
+  blueDice: {fileID: 0}
+  yellowDice: {fileID: 0}
+  redDice: {fileID: 0}
+  DiceFloor: {fileID: 0}
+  fortuneShopDone: 0
 --- !u!114 &1170714076
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -37259,7 +37459,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ed8c36e63c1a1f74fa97d4b534322885, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _fortuneText: {fileID: 1543825297}
+  _fortuneTextPurple: {fileID: 0}
+  _fortuneTextBlue: {fileID: 0}
+  _fortuneTextYellow: {fileID: 0}
+  _fortuneTextRed: {fileID: 0}
   _purplePresentScore: {fileID: 956566464}
   _yellowPresentScore: {fileID: 1659922269}
   _redPresentScore: {fileID: 36671534}
@@ -37810,10 +38013,10 @@ MonoBehaviour:
   button2: {fileID: 1170714074}
   button3: {fileID: 920007917}
   fortune: {fileID: 1543825297}
+  BottleUpCollider: {fileID: 0}
   buttonOne: 0
   buttonTwo: 0
   buttonThree: 0
-  numberOfPlayers: 0
 --- !u!114 &1231887854
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -37911,10 +38114,13 @@ MonoBehaviour:
   _button1: {fileID: 1300870602}
   _button2: {fileID: 1170714074}
   _button3: {fileID: 920007917}
+  _fortuneTextObj: {fileID: 0}
   choiceOne: {fileID: 834461566}
   choiceTwo: {fileID: 1249870285}
   _fortune: {fileID: 1543825299}
-  fortuneNum: 0
+  potionBottle: {fileID: 0}
+  purifierBottle: {fileID: 0}
+  fortuneNumber: 0
 --- !u!4 &1236796396 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1295042183985818043, guid: a0216f6abe621034ca17954a9b7a9bd0, type: 3}
@@ -38047,7 +38253,8 @@ MonoBehaviour:
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_fontSharedMaterials: []
+  m_fontSharedMaterials:
+  - {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
   m_fontColor32:
@@ -38152,6 +38359,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7e38e8f371cede64da4d6abdc41fba5a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  purpleSphere: {fileID: 0}
+  blueSphere: {fileID: 0}
+  yellowSphere: {fileID: 0}
+  redSphere: {fileID: 0}
+  purpleGrabSphere: {fileID: 0}
+  blueGrabSphere: {fileID: 0}
+  yellowGrabSphere: {fileID: 0}
+  redGrabSphere: {fileID: 0}
+  purpleDice: {fileID: 0}
+  blueDice: {fileID: 0}
+  yellowDice: {fileID: 0}
+  redDice: {fileID: 0}
+  DiceFloor: {fileID: 0}
+  fortuneShopDone: 0
 --- !u!114 &1243051006
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -39023,7 +39244,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 9dfc825aed78fcd4ba02077103263b40, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -40267,6 +40488,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7e38e8f371cede64da4d6abdc41fba5a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  purpleSphere: {fileID: 0}
+  blueSphere: {fileID: 0}
+  yellowSphere: {fileID: 0}
+  redSphere: {fileID: 0}
+  purpleGrabSphere: {fileID: 0}
+  blueGrabSphere: {fileID: 0}
+  yellowGrabSphere: {fileID: 0}
+  redGrabSphere: {fileID: 0}
+  purpleDice: {fileID: 0}
+  blueDice: {fileID: 0}
+  yellowDice: {fileID: 0}
+  redDice: {fileID: 0}
+  DiceFloor: {fileID: 0}
+  fortuneShopDone: 0
 --- !u!114 &1300870604
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -41472,10 +41707,10 @@ MonoBehaviour:
   button2: {fileID: 2069881227}
   button3: {fileID: 1509706436}
   fortune: {fileID: 443852567}
+  BottleUpCollider: {fileID: 0}
   buttonOne: 0
   buttonTwo: 0
   buttonThree: 0
-  numberOfPlayers: 0
 --- !u!114 &1339326210
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -41491,10 +41726,13 @@ MonoBehaviour:
   _button1: {fileID: 1340148073}
   _button2: {fileID: 2069881227}
   _button3: {fileID: 1509706436}
+  _fortuneTextObj: {fileID: 0}
   choiceOne: {fileID: 1266916799}
   choiceTwo: {fileID: 1953550397}
   _fortune: {fileID: 443852568}
-  fortuneNum: 0
+  potionBottle: {fileID: 0}
+  purifierBottle: {fileID: 0}
+  fortuneNumber: 0
 --- !u!114 &1339326211
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -41609,6 +41847,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7e38e8f371cede64da4d6abdc41fba5a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  purpleSphere: {fileID: 0}
+  blueSphere: {fileID: 0}
+  yellowSphere: {fileID: 0}
+  redSphere: {fileID: 0}
+  purpleGrabSphere: {fileID: 0}
+  blueGrabSphere: {fileID: 0}
+  yellowGrabSphere: {fileID: 0}
+  redGrabSphere: {fileID: 0}
+  purpleDice: {fileID: 0}
+  blueDice: {fileID: 0}
+  yellowDice: {fileID: 0}
+  redDice: {fileID: 0}
+  DiceFloor: {fileID: 0}
+  fortuneShopDone: 0
 --- !u!114 &1340148075
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -43020,7 +43272,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 9dfc825aed78fcd4ba02077103263b40, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -45539,6 +45791,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ingredients: []
   _cherryBombs: 0
+  fortuneDrawAmount: 0
+  fortuneDrawn: 0
+  fortuneDrawTime: 0
+  totalOfFortuneIngredients: 0
   pumpkinAmount: {fileID: 0}
   toadstallAmount: {fileID: 0}
   crowSkullAmount: {fileID: 0}
@@ -45547,6 +45803,7 @@ MonoBehaviour:
   mandrakeAmount: {fileID: 0}
   ghostsAmount: {fileID: 0}
   cherryBombAmount: {fileID: 0}
+  aboveCauldronText: {fileID: 0}
   insideBag: {fileID: 1481963192}
   bombs: 0
   crowSkull: 0
@@ -46732,7 +46989,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 9dfc825aed78fcd4ba02077103263b40, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -48075,6 +48332,12 @@ MonoBehaviour:
   bagBoard: {fileID: 1428281159}
   purpleSphere: {fileID: 658617839}
   purpleBagSphere: {fileID: 155969878}
+  redBagSphere: {fileID: 0}
+  redSphere: {fileID: 0}
+  yellowBagSphere: {fileID: 0}
+  yellowSphere: {fileID: 0}
+  blueBagSphere: {fileID: 0}
+  blueSphere: {fileID: 0}
   mandrakeSmallPrice: {fileID: 136280342}
   mandrakeMediumPrice: {fileID: 1844498769}
   mandrakeLargePrice: {fileID: 1363355464}
@@ -48100,21 +48363,55 @@ MonoBehaviour:
   mandrakeAmount: {fileID: 311977531}
   ghostsAmount: {fileID: 129640567}
   cherryBombAmount: {fileID: 127277}
-  button1: {fileID: 1857714016}
-  button2: {fileID: 303010949}
-  button3: {fileID: 2072346920}
-  Round1Sky: {fileID: 2100000, guid: 023808db2bfa00d44929aa2176d29c76, type: 2}
-  Round2Sky: {fileID: 2100000, guid: 39d27e80110a983468075fd1868610d7, type: 2}
-  Round3Sky: {fileID: 2100000, guid: 0d5771081eb9abb43b1792b52260d914, type: 2}
-  Round4Sky: {fileID: 2100000, guid: c051fe5a20f72814f9643eb10ebbd2fc, type: 2}
-  Round5Sky: {fileID: 2100000, guid: 6e00f8b39315691449f256740a5cb862, type: 2}
-  Round6Sky: {fileID: 2100000, guid: de1d750fefeeac642bf9b11a3978ccf5, type: 2}
-  Round7Sky: {fileID: 2100000, guid: 80fa4f34db87aad4d93c45188b19bfd6, type: 2}
-  Round8Sky: {fileID: 2100000, guid: d1fdb8e44b28da34d9e922cca0bc740e, type: 2}
-  aboveCauldronText: {fileID: 1782145406}
-  choiceOne: {fileID: 1932002233}
-  choiceTwo: {fileID: 208823326}
-  choiceThree: {fileID: 1327234145}
+  button1Purple: {fileID: 0}
+  button2Purple: {fileID: 0}
+  button3Purple: {fileID: 0}
+  button1Red: {fileID: 0}
+  button2Red: {fileID: 0}
+  button3Red: {fileID: 0}
+  button1Blue: {fileID: 0}
+  button2Blue: {fileID: 0}
+  button3Blue: {fileID: 0}
+  button1Yellow: {fileID: 0}
+  button2Yellow: {fileID: 0}
+  button3Yellow: {fileID: 0}
+  aboveCauldronTextPurple: {fileID: 0}
+  choiceOnePurple: {fileID: 0}
+  choiceTwoPurple: {fileID: 0}
+  choiceThreePurple: {fileID: 0}
+  aboveCauldronCanvasPurple: {fileID: 0}
+  aboveCauldronTextRed: {fileID: 0}
+  choiceOneRed: {fileID: 0}
+  choiceTwoRed: {fileID: 0}
+  choiceThreeRed: {fileID: 0}
+  aboveCauldronCanvasRed: {fileID: 0}
+  aboveCauldronTextBlue: {fileID: 0}
+  choiceOneBlue: {fileID: 0}
+  choiceTwoBlue: {fileID: 0}
+  choiceThreeBlue: {fileID: 0}
+  aboveCauldronCanvasBlue: {fileID: 0}
+  aboveCauldronTextYellow: {fileID: 0}
+  choiceOneYellow: {fileID: 0}
+  choiceTwoYellow: {fileID: 0}
+  choiceThreeYellow: {fileID: 0}
+  aboveCauldronCanvasYellow: {fileID: 0}
+  questionIngredients: {fileID: 0}
+  questionIngredientText: {fileID: 0}
+  DoneWithFortuneButton: {fileID: 0}
+  spiderStallSmall: {fileID: 0}
+  spiderStallmedium: {fileID: 0}
+  spiderStallLarge: {fileID: 0}
+  mandrakeStallSmall: {fileID: 0}
+  mandrakeStallMedium: {fileID: 0}
+  mandrakeStallLarge: {fileID: 0}
+  crowStallSmall: {fileID: 0}
+  crowStallMedium: {fileID: 0}
+  crowStallLarge: {fileID: 0}
+  mushroomSmall: {fileID: 0}
+  mushroomMedium: {fileID: 0}
+  mushroomLarge: {fileID: 0}
+  pumpkinStall: {fileID: 0}
+  mothStall: {fileID: 0}
 --- !u!1001 &1550450328
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -48238,7 +48535,8 @@ MonoBehaviour:
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 0161d805a3764c089bef00bfe00793f5, type: 2}
   m_sharedMaterial: {fileID: 2147374, guid: 0161d805a3764c089bef00bfe00793f5, type: 2}
-  m_fontSharedMaterials: []
+  m_fontSharedMaterials:
+  - {fileID: 2147374, guid: 0161d805a3764c089bef00bfe00793f5, type: 2}
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
   m_fontColor32:
@@ -48592,6 +48890,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7e38e8f371cede64da4d6abdc41fba5a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  purpleSphere: {fileID: 0}
+  blueSphere: {fileID: 0}
+  yellowSphere: {fileID: 0}
+  redSphere: {fileID: 0}
+  purpleGrabSphere: {fileID: 0}
+  blueGrabSphere: {fileID: 0}
+  yellowGrabSphere: {fileID: 0}
+  redGrabSphere: {fileID: 0}
+  purpleDice: {fileID: 0}
+  blueDice: {fileID: 0}
+  yellowDice: {fileID: 0}
+  redDice: {fileID: 0}
+  DiceFloor: {fileID: 0}
+  fortuneShopDone: 0
 --- !u!114 &1554562250
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -49720,6 +50032,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c59968e6aeb934f468a4b89efdfc679b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tickPresent: {fileID: 0}
+  crossPresent: {fileID: 0}
 --- !u!114 &1591359057
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -51522,7 +51836,8 @@ MonoBehaviour:
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_fontSharedMaterials: []
+  m_fontSharedMaterials:
+  - {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
   m_fontColor32:
@@ -53580,6 +53895,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e21b235e877b65a4cb509ddc1c81f4a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  FutureTick: {fileID: 0}
+  FutureCross: {fileID: 0}
 --- !u!114 &1723615242
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -56545,6 +56862,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e21b235e877b65a4cb509ddc1c81f4a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  FutureTick: {fileID: 0}
+  FutureCross: {fileID: 0}
 --- !u!114 &1839242290
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -56885,7 +57204,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 9dfc825aed78fcd4ba02077103263b40, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -58264,6 +58583,8 @@ MonoBehaviour:
   button3: {fileID: 1161818304}
   button4: {fileID: 851343888}
   button5: {fileID: 2072346920}
+  button6: {fileID: 0}
+  button7: {fileID: 0}
 --- !u!1 &1906484639
 GameObject:
   m_ObjectHideFlags: 0
@@ -58802,24 +59123,48 @@ MonoBehaviour:
   futureScore: {fileID: 1629544483}
   potExplodedCanvas: {fileID: 64171091}
   leftOverIngredient: {fileID: 1003002819}
+  rubylocationSphere: {fileID: 0}
   buttonsToAddLeftover: {fileID: 1035724119}
+  rubyForBowl: {fileID: 0}
   ingredients: []
   button1: {fileID: 0}
   button2: {fileID: 0}
   button3: {fileID: 0}
   button4: {fileID: 0}
   button5: {fileID: 0}
+  button6: {fileID: 0}
+  button7: {fileID: 0}
   aboveCauldronText: {fileID: 0}
   choiceOne: {fileID: 0}
   choiceTwo: {fileID: 0}
   choiceThree: {fileID: 0}
   choiceFour: {fileID: 0}
   choiceFive: {fileID: 0}
+  choiceSix: {fileID: 0}
+  choiceSeven: {fileID: 0}
+  rubyNumber: {fileID: 0}
+  bagSphere: {fileID: 0}
+  Ruby1: {fileID: 0}
+  Ruby2: {fileID: 0}
+  Ruby3: {fileID: 0}
+  Ruby4: {fileID: 0}
+  Ruby5: {fileID: 0}
+  Ruby6: {fileID: 0}
+  Round1Sky: {fileID: 0}
+  Round2Sky: {fileID: 0}
+  Round3Sky: {fileID: 0}
+  Round4Sky: {fileID: 0}
+  Round5Sky: {fileID: 0}
+  Round6Sky: {fileID: 0}
+  Round7Sky: {fileID: 0}
+  Round8Sky: {fileID: 0}
+  lastIngredient: 
   choiceOneCauldron: 0
   choiceTwoCauldron: 0
   choiceThreeCauldron: 0
   choiceFourCauldron: 0
   choiceFiveCauldron: 0
+  choiceSixCauldron: 0
   Score: 0
   mushroomRule: 3
   mandrakeRule: 4
@@ -60099,6 +60444,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7e38e8f371cede64da4d6abdc41fba5a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  purpleSphere: {fileID: 0}
+  blueSphere: {fileID: 0}
+  yellowSphere: {fileID: 0}
+  redSphere: {fileID: 0}
+  purpleGrabSphere: {fileID: 0}
+  blueGrabSphere: {fileID: 0}
+  yellowGrabSphere: {fileID: 0}
+  redGrabSphere: {fileID: 0}
+  purpleDice: {fileID: 0}
+  blueDice: {fileID: 0}
+  yellowDice: {fileID: 0}
+  redDice: {fileID: 0}
+  DiceFloor: {fileID: 0}
+  fortuneShopDone: 0
 --- !u!224 &1935223106 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 5941259525840272440, guid: 96f0860690eee7643838206aee28616c, type: 3}
@@ -60278,6 +60637,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _inputLobbyCode: {fileID: 693895382}
   players: 0
+  hostname: 
   _startMenu: {fileID: 383553723}
   maxConnection: 20
   transport: {fileID: 1937659254}
@@ -62340,24 +62700,48 @@ MonoBehaviour:
   futureScore: {fileID: 1259365167}
   potExplodedCanvas: {fileID: 932714553}
   leftOverIngredient: {fileID: 38300227}
+  rubylocationSphere: {fileID: 0}
   buttonsToAddLeftover: {fileID: 121600380}
+  rubyForBowl: {fileID: 0}
   ingredients: []
   button1: {fileID: 0}
   button2: {fileID: 0}
   button3: {fileID: 0}
   button4: {fileID: 0}
   button5: {fileID: 0}
+  button6: {fileID: 0}
+  button7: {fileID: 0}
   aboveCauldronText: {fileID: 0}
   choiceOne: {fileID: 0}
   choiceTwo: {fileID: 0}
   choiceThree: {fileID: 0}
   choiceFour: {fileID: 0}
   choiceFive: {fileID: 0}
+  choiceSix: {fileID: 0}
+  choiceSeven: {fileID: 0}
+  rubyNumber: {fileID: 0}
+  bagSphere: {fileID: 0}
+  Ruby1: {fileID: 0}
+  Ruby2: {fileID: 0}
+  Ruby3: {fileID: 0}
+  Ruby4: {fileID: 0}
+  Ruby5: {fileID: 0}
+  Ruby6: {fileID: 0}
+  Round1Sky: {fileID: 0}
+  Round2Sky: {fileID: 0}
+  Round3Sky: {fileID: 0}
+  Round4Sky: {fileID: 0}
+  Round5Sky: {fileID: 0}
+  Round6Sky: {fileID: 0}
+  Round7Sky: {fileID: 0}
+  Round8Sky: {fileID: 0}
+  lastIngredient: 
   choiceOneCauldron: 0
   choiceTwoCauldron: 0
   choiceThreeCauldron: 0
   choiceFourCauldron: 0
   choiceFiveCauldron: 0
+  choiceSixCauldron: 0
   Score: 0
   mushroomRule: 3
   mandrakeRule: 4
@@ -63993,6 +64377,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ingredients: []
   _cherryBombs: 0
+  fortuneDrawAmount: 0
+  fortuneDrawn: 0
+  fortuneDrawTime: 0
+  totalOfFortuneIngredients: 0
   pumpkinAmount: {fileID: 0}
   toadstallAmount: {fileID: 0}
   crowSkullAmount: {fileID: 0}
@@ -64001,6 +64389,7 @@ MonoBehaviour:
   mandrakeAmount: {fileID: 0}
   ghostsAmount: {fileID: 0}
   cherryBombAmount: {fileID: 0}
+  aboveCauldronText: {fileID: 0}
   insideBag: {fileID: 2034392879}
   bombs: 0
   crowSkull: 0
@@ -65121,6 +65510,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7e38e8f371cede64da4d6abdc41fba5a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  purpleSphere: {fileID: 0}
+  blueSphere: {fileID: 0}
+  yellowSphere: {fileID: 0}
+  redSphere: {fileID: 0}
+  purpleGrabSphere: {fileID: 0}
+  blueGrabSphere: {fileID: 0}
+  yellowGrabSphere: {fileID: 0}
+  redGrabSphere: {fileID: 0}
+  purpleDice: {fileID: 0}
+  blueDice: {fileID: 0}
+  yellowDice: {fileID: 0}
+  redDice: {fileID: 0}
+  DiceFloor: {fileID: 0}
+  fortuneShopDone: 0
 --- !u!114 &2069881229
 MonoBehaviour:
   m_ObjectHideFlags: 0

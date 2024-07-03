@@ -261,6 +261,13 @@ public class BuyIngredients : MonoBehaviour
         
         UpdateCoinText();
         _teleportationManager.ShopTeleportation();
+        if (_winnerManager.round == 7)
+        {
+            questionIngredients.SetActive(true);
+            questionIngredientText.text = "This round we have added one small cherry bomb to your bag, free of charge.";
+            _grabIngredient.AddToBagPermanantly(0);
+        }
+            
     }
 
     public void BuySmallToadstall()

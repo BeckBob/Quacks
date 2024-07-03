@@ -228,8 +228,7 @@ public class ChipPoints : MonoBehaviour
         AfterRoundChipEffects();
         await _fortuneManager.PostRoundFortuneEffects();
         
-        Debug.Log("pot exploded");
-        GameManager.Instance.UpdateGameState(GameState.RollDice);
+        
 
      
     }
@@ -808,8 +807,9 @@ public class ChipPoints : MonoBehaviour
         await CheckWhichChoice();
        
         ResetChoices();
-
-        
+        winnerManager.ReadyUp();
+        await winnerManager.CheckAllPlayersReady();
+        winnerManager.ResetReady();
         Coins = 0;  
         
 
@@ -832,7 +832,9 @@ public class ChipPoints : MonoBehaviour
         
         VictoryPoints = 0;
 
-
+        winnerManager.ReadyUp();
+        await winnerManager.CheckAllPlayersReady();
+        winnerManager.ResetReady();
 
         potExplodedCanvas.SetActive(false);
         GameManager.Instance.UpdateGameState(GameState.RollDice);
@@ -861,7 +863,9 @@ public class ChipPoints : MonoBehaviour
         ResetScore();
         cauldronScoreFront.text = Score.ToString();
         cauldronScoreBack.text = Score.ToString();
-
+        winnerManager.ReadyUp();
+        await winnerManager.CheckAllPlayersReady();
+        winnerManager.ResetReady();
         GameManager.Instance.UpdateGameState(GameState.RollDice);
 
     }
@@ -1007,7 +1011,7 @@ public class ChipPoints : MonoBehaviour
 
             if (gardenSpiderRule == 1)
             {
-                if (ingredientsList[ingredientsList.Count - 1].Contains("spider") || ingredientsList[ingredientsList.Count - 2].Contains("spider"))
+                if (ingredientsList[ingredientsList.Count - 1].Contains("spider") && _playerData.Rubies.Value >= 1 || ingredientsList[ingredientsList.Count - 2].Contains("spider") && _playerData.Rubies.Value >= 1)
                 {
                     buttonsToAddLeftover.SetActive(true);
                     aboveCauldronText.text = "You had a spider last or next to last in your pot, you may pay one ruby to to add a droplet to your pot permanatly";
@@ -1029,7 +1033,7 @@ public class ChipPoints : MonoBehaviour
 
                     ResetChoices();
                 }
-                if (ingredientsList[ingredientsList.Count - 1].Contains("spider") && ingredientsList[ingredientsList.Count - 2].Contains("spider"))
+                if (ingredientsList[ingredientsList.Count - 1].Contains("spider") && ingredientsList[ingredientsList.Count - 2].Contains("spider") && _playerData.Rubies.Value >= 1)
                 {
                     buttonsToAddLeftover.SetActive(true);
                     aboveCauldronText.text = "You had spiders both last or next to last in your pot, you may pay one ruby to to add a droplet to your pot permanatly for each spider";
@@ -2384,12 +2388,12 @@ public class ChipPoints : MonoBehaviour
         Debug.Log("Added coins");
         await _fortuneManager.AtTheVeryEndOfRound();
 
-        buttonsToAddLeftover.SetActive(false);
+        aboveCauldronText.text = "";
         quality.ResetCherryBombs();
         quality.SetCherryBombText();
         ResetInsidePot();
 
-        if (winnerManager.round == 8)
+        if (winnerManager.round == 9)
         {
             GameManager.Instance.UpdateGameState(GameState.DeclareWinner);
         }
@@ -2520,7 +2524,7 @@ public class ChipPoints : MonoBehaviour
         winnerManager.ReadyUp();
         await winnerManager.CheckAllPlayersReady();
         winnerManager.ResetReady();
-        ChangeSceneryDependingOnRound();
+        
         grabIngredient = FindObjectOfType<GrabIngredient>();
 
         
@@ -2543,6 +2547,10 @@ public class ChipPoints : MonoBehaviour
         ResetChoices();
         ResetStuffInBook();
         Debug.Log("about to go into fortune teller");
+        winnerManager.ReadyUp();
+        await winnerManager.CheckAllPlayersReady();
+        winnerManager.ResetReady();
+        ChangeSceneryDependingOnRound();
         GameManager.Instance.UpdateGameState(GameState.FortuneTeller);
     }
 
@@ -2702,8 +2710,9 @@ public class ChipPoints : MonoBehaviour
         { grabIngredient.AddToBagThisRound(2); }
         if (lastIngredient == "cherryBombThree")
         { grabIngredient.AddToBagThisRound(1); }
+        int ingredientsCount = ingredientsList.Count - 1;
 
-        ingredientsList.RemoveAt(ingredientsList.Count);
+        ingredientsList.RemoveAt(ingredientsCount);
     }
 
     public async Task MessageAboveCauldron(string message)
@@ -2801,6 +2810,15 @@ public class ChipPoints : MonoBehaviour
     {
         leftOverIngredientLocation = leftOverIngredient.transform.position;
         Instantiate(ingredients[num], leftOverIngredientLocation, Quaternion.identity);
+    }
+
+    public async Task calculateEndGameExtraPoints()
+    {
+        await MessageAboveCauldron("END OF GAME! Time to add up extra points!");
+        int pointsFromRubies = _playerData.Rubies.Value / 2;
+        await MessageAboveCauldron($"You get a victory point for every 2 Rubies, giving you {pointsFromRubies} Victory Points");
+        int pointsFromMoney = _playerData.Coins.Value / 5;
+        await MessageAboveCauldron($"You get a victory point for every 5 Coins, giving you {pointsFromMoney} Victory Points");
     }
 
 }

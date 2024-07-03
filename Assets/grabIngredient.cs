@@ -122,11 +122,11 @@ public class GrabIngredient : MonoBehaviour
     }
     public async Task CheckDrawnRightAmount()
     {
-        while (!EverythingDrawn() || bagContents.Count == 0)
+        while (!EverythingDrawn())
         {
-            int leftToDraw = fortuneDrawAmount - fortuneDrawn;
+            
             Debug.Log("no choice chosen");
-            aboveCauldronText.text = $"You have {leftToDraw} ingredients left to draw!";
+           
             await Task.Yield();
         }
         Debug.Log("choice MADE");
@@ -146,13 +146,13 @@ public class GrabIngredient : MonoBehaviour
     public bool EverythingDrawn()
     {
 
-        if (fortuneDrawn < fortuneDrawAmount || bagContents.Count > 0)
+        if (fortuneDrawn == fortuneDrawAmount || bagContents.Count == 0)
         {
-            return false;
+            return true;
         }
         else
         {
-            return true;
+            return false;
         }
 
     }
@@ -186,43 +186,46 @@ public class GrabIngredient : MonoBehaviour
                 int num = rand.Next(0, bagContents.Count -1);
                 int nextIngredient = bagContents[num];
                 InsideBagLocation = insideBag.transform.position;
+                fortuneDrawn++;
                 if (fortuneDrawn == 1)
                 {
                     drawnOne = Instantiate(ingredients[nextIngredient], InsideBagLocation, Quaternion.identity);
                     await Task.Delay(4000);
-                    Destroy(drawnOne);
+                   
 
                 }
                 if (fortuneDrawn == 2)
                 {
                     drawnTwo = Instantiate(ingredients[nextIngredient], InsideBagLocation, Quaternion.identity);
                     await Task.Delay(4000);
-                    Destroy(drawnTwo);
+                    
                 }
                 if (fortuneDrawn == 3)
                 {
                     drawnThree = Instantiate(ingredients[nextIngredient], InsideBagLocation, Quaternion.identity);
                     await Task.Delay(4000);
-                    Destroy(drawnThree);
+                   
                 }
                 if (fortuneDrawn == 4)
                 {
                     drawnFour = Instantiate(ingredients[nextIngredient], InsideBagLocation, Quaternion.identity);
                     await Task.Delay(4000);
-                    Destroy(drawnFour);
+                    
                 }
                 if (fortuneDrawn == 5)
                 {
                     drawnFive = Instantiate(ingredients[nextIngredient], InsideBagLocation, Quaternion.identity);
                     await Task.Delay(4000);
-                    Destroy(drawnFive);
+                  
                 }
                 ingredientToAddOneToPot.Add(num);
                 bagContents.RemoveAt(num);
                 CountIngredientsInBag();
                 CountDrawnIngredients(num);
                 CountDrawnIngredientsForUpgrading(num);
-                fortuneDrawn++;
+                 
+                int leftToDraw = fortuneDrawAmount - fortuneDrawn;
+                aboveCauldronText.text = $"You have {leftToDraw} ingredients left to draw!";
                 Debug.Log(fortuneDrawn);
             }
         }

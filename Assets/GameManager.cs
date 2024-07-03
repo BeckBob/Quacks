@@ -110,8 +110,9 @@ public class GameManager : MonoBehaviour
 
     }
 
-    private void DeclareWinner()
+    private async void DeclareWinner()
     {
+        await _chipPoints.calculateEndGameExtraPoints();
         _winnerManager.GameWinner();
     }
     private void BuyIngredients()

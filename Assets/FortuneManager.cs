@@ -185,6 +185,10 @@ public class FortuneManager : MonoBehaviour
                     _grabIngredient.ResetBagContents();
                     _grabIngredient.CountIngredientsInBag();
                 }
+                else
+                {
+                    await _chipPoints.MessageAboveCauldron($"You DON'T have the lowest Victory Points! No spider for yooou!");
+                }
                 _winnerManager.LowestVictoryPoints = 0;
                 ResetChoices();
                 //the player with the fewest victory points recieves one small spider
@@ -244,6 +248,7 @@ public class FortuneManager : MonoBehaviour
 
             _grabIngredient.fortuneDrawTime = true;
             await _grabIngredient.CheckDrawnRightAmount();
+            _grabIngredient.DeleteInstantiatedIngredients();
             _grabIngredient.ResetChoices();
             await _winnerManager.CalculateLowestDrawnIngredients();
             if (_grabIngredient.totalOfFortuneIngredients == _winnerManager.LowestDrawn)
@@ -289,6 +294,7 @@ public class FortuneManager : MonoBehaviour
             purpleDice.SetActive(true);
             DiceFloor.SetActive(true);
             await _winnerManager.CheckAllPlayersReady();
+            _winnerManager.ResetReady();
             DiceFloor.SetActive(false);
             // PRE ROUND DICE FUNCTION - "Everyone rolls the victory die once and get the bonus shown."
         }
@@ -311,6 +317,9 @@ public class FortuneManager : MonoBehaviour
 
             _grabIngredient.fortuneDrawTime = true;
             await _grabIngredient.CheckDrawnRightAmount();
+            _grabIngredient.DeleteInstantiatedIngredients();
+            _grabIngredient.ResetChoices();
+
             await _grabIngredient.SendDrawnIngredientsInfo();
             _grabIngredient.ResetBagContents();
             _grabIngredient.CountIngredientsInBag();
@@ -551,18 +560,26 @@ public class FortuneManager : MonoBehaviour
             if (_playerData.Colour.Value == "Purple" && !_winnerManager.purpleExploded.Value)
             {
                 await DrawIngredientsAndPutOneInPot();
+                _grabIngredient.ResetChoices();
+                _grabIngredient.DeleteInstantiatedIngredients();
             }
             if (_playerData.Colour.Value == "Red" && !_winnerManager.redExploded.Value)
             {
                 await DrawIngredientsAndPutOneInPot();
+                _grabIngredient.ResetChoices();
+                _grabIngredient.DeleteInstantiatedIngredients();
             }
             if (_playerData.Colour.Value == "Blue" && !_winnerManager.blueExploded.Value)
             {
                 await DrawIngredientsAndPutOneInPot();
+                _grabIngredient.ResetChoices();
+                _grabIngredient.DeleteInstantiatedIngredients();
             }
             if (_playerData.Colour.Value == "Yellow" && !_winnerManager.yellowExploded.Value)
             {
                 await DrawIngredientsAndPutOneInPot();
+                _grabIngredient.ResetChoices();
+                _grabIngredient.DeleteInstantiatedIngredients();
             }
             //AFTER ROUND you stopped without an explosion, draw up to 5 chips from your bag. You may place 1 of them in your pot.
         }

@@ -2,6 +2,7 @@ using Oculus.Interaction;
 using Oculus.Voice.Windows;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -26,6 +27,7 @@ public class DiceScript : MonoBehaviour
     FortuneManager fortuneManager;
     private bool RollTwiceAllowed = true;
     Vector3 speed;
+    Vector3 speed2;
     public bool alreadyCalled = false;
     // Start is called before the first frame update
 
@@ -39,22 +41,20 @@ public class DiceScript : MonoBehaviour
             grabIngredient = FindObjectOfType<GrabIngredient>();
             chipPoints = FindObjectOfType<ChipPoints>();
             string colour = playerData.Colour.Value.ToString();
-            Debug.Log(colour);
-         
-            Debug.Log(other.transform.tag);
+          
             winnerManager = FindObjectOfType<WinnerManager>();
-            Vector3 velocity = other.attachedRigidbody.velocity;
-            speed = velocity;
-            Debug.Log(velocity);
+            StartCoroutine((CheckVelocity(other)));
+            
+            
 
-            if (speed.x == 0f && speed.y == 0f && speed.z == 0f && !alreadyCalled && other.transform.tag == colour)
+            if (speed.x == 0f && speed.y == 0f && speed.z == 0f && speed2.x == 0f && speed2.y == 0f && speed2.z == 0f && !alreadyCalled && other.transform.tag == colour)
             {
                 Debug.Log("past if in dice");
                 switch (other.gameObject.name)
                 {
                     case "Side1":
 
-                        Debug.Log("plus one victory point");
+                        
                         alreadyCalled = true;
                         playerData.VictoryPoints.Value += 1;
                         await chipPoints.MessageAboveCauldron("You get 1 Victory point!!");
@@ -62,14 +62,14 @@ public class DiceScript : MonoBehaviour
 
                         break;
                     case "Side2":
-                        Debug.Log("Add two victory points");
+                       
                         alreadyCalled = true;
                         playerData.VictoryPoints.Value += 2;
                         await chipPoints.MessageAboveCauldron("You get 2 Victory points!");
                         DeactivateDice(colour);
                         break;
                     case "Side3":
-                        Debug.Log("Added pumpkin to bag");
+                        
                         alreadyCalled = true;
                         grabIngredient.AddToBagPermanantly(14);
                         chipPoints.ResetScore();
@@ -78,7 +78,7 @@ public class DiceScript : MonoBehaviour
                         DeactivateDice(colour);
                         break;
                     case "Side4":
-                        Debug.Log("Add ruby");
+                        
                         alreadyCalled = true;
                         playerData.Rubies.Value += 1;
                         chipPoints.ChangeRubyUI();
@@ -86,7 +86,7 @@ public class DiceScript : MonoBehaviour
                         DeactivateDice(colour);
                         break;
                     case "Side5":
-                        Debug.Log("Add droplet");
+                       
                         alreadyCalled = true;
                         chipPoints.AddDroplet();
                         chipPoints.ResetScore();
@@ -95,7 +95,7 @@ public class DiceScript : MonoBehaviour
                          DeactivateDice(colour);
                         break;
                     case "Side6":
-                        Debug.Log("Add one victory point");
+                        
                         alreadyCalled = true;
                         playerData.VictoryPoints.Value += 1;
                         await chipPoints.MessageAboveCauldron("You get 1 Victory point!");
@@ -109,10 +109,15 @@ public class DiceScript : MonoBehaviour
 
     }
 
-    private void CheckVelocity(Collider other)
+    IEnumerator CheckVelocity(Collider other)
     {
         Vector3 velocity = other.attachedRigidbody.velocity;
         speed = velocity;
+
+        yield return new WaitForSeconds(2);
+
+        Vector3 velocity1 = other.attachedRigidbody.velocity;
+        speed2 = velocity1;
     }
 
     private async void DeactivateDice(string DiceColour)
@@ -145,7 +150,7 @@ public class DiceScript : MonoBehaviour
             alreadyCalled = false;
             if (_fortuneNumber.fortuneNum == 20)
         {
-            return; 
+            winnerManager.ReadyUp();
         }
             if (_fortuneNumber.fortuneNum == 8 && RollTwiceAllowed)
             {
