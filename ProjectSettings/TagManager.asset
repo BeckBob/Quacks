@@ -71,3 +71,9 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: cauldron
+    uniqueID: 86149599
+    locked: 0
+  - name: potion
+    uniqueID: 2916208073
+    locked: 0

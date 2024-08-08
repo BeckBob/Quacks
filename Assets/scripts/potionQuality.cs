@@ -22,6 +22,11 @@ public class PotionQuality : MonoBehaviour
 
     public bool nextIngredientTime = true;
 
+    public float fadeTime = 2;
+    public float fadeStart = 0;
+    public Color objectColor = Color.green;
+    public Color fadeColor = Color.black;
+
     public void ResetCherryBombs()
     {
         _cherryBombs = 0;
@@ -122,6 +127,23 @@ public class PotionQuality : MonoBehaviour
     {
         potionOne.material.color = Color.green;
     }
+
+    
+
+
+    // Use this for initialization
+   
+
+    void ColourChanging()
+    {
+        potionOne.material.SetColor("_topColor", fadeColor); 
+        if (fadeStart < 1)
+        {
+            fadeStart += Time.deltaTime / fadeTime;
+        }
+
+    }
+
 }
 
 
