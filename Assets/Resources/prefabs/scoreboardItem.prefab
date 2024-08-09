@@ -457,7 +457,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   NameUI: {fileID: 7281385764529335996}
   VictoryPointUI: {fileID: 2016918663224620803}
-  image: {fileID: 0}
+  image: {fileID: 7192865052171992403}
   RatTails: {fileID: 7837064117547506231}
   Rubies: {fileID: 1742104368693698673}
 --- !u!1 &6829961322152337169

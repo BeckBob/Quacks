@@ -48,21 +48,23 @@ public class ScoreboardItem : MonoBehaviour
 
     private void OnColourChanged(FixedString128Bytes previousValue, FixedString128Bytes newValue)
     {
-        if (newValue == "Red")
+        switch (newValue.ToString())
         {
-            image.color = Color.red;
-        }
-        if (newValue == "Yellow")
-        {
-            image.color = Color.yellow;
-        }
-        if (newValue == "Purple")
-        {
-            image.color = Color.magenta;
-        }
-        if (newValue == "Blue")
-        {
-            image.color = Color.blue;
+            case "Red":
+                image.color = Color.red;
+                break;
+            case "Yellow":
+                image.color = Color.yellow;
+                break;
+            case "Purple":
+                image.color = Color.magenta;
+                break;
+            case "Blue":
+                image.color = Color.blue;
+                break;
+            default:
+                Debug.LogWarning($"Unknown color: {newValue}");
+                break;
         }
     }
     private void OnRatTailsChanged(int previousValue, int newValue)

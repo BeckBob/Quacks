@@ -177,11 +177,13 @@ public class GrabIngredient : MonoBehaviour
 
     private async void OnTriggerEnter(Collider other)
     {
+       
         if (fortuneDrawTime && bagContents.Count > 0 && fortuneDrawAmount > fortuneDrawn)
         {
             _potionQuality = FindObjectOfType<PotionQuality>();
             if (other.gameObject.CompareTag("hand"))
             {
+                
                 System.Random rand = new();
                 int num = rand.Next(0, bagContents.Count -1);
                 int nextIngredient = bagContents[num];
@@ -232,16 +234,18 @@ public class GrabIngredient : MonoBehaviour
         if (bagContents.Count > 0 && _cherryBombs <= _cherryBombLimit)
         {
             _potionQuality = FindObjectOfType<PotionQuality>();
+            Debug.Log(_potionQuality.nextIngredientTime);
             if (other.gameObject.CompareTag("hand") && _potionQuality.nextIngredientTime)
             {
-
+                Debug.Log("hand in bag");
+                Debug.Log(_potionQuality.nextIngredientTime);
                 System.Random rand = new();
                 int num = rand.Next(0, bagContents.Count -1);
                 int nextIngredient = bagContents[num];
                 InsideBagLocation = insideBag.transform.position;
 
                 Instantiate(ingredients[nextIngredient], InsideBagLocation, Quaternion.identity);
-                // new Vector3((float)-1.379, (float)4.927, (float)-5.763)
+                
                 bagContents.RemoveAt(num);
                 _potionQuality.FalseNextIngredientMethod();
                 CountIngredientsInBag();

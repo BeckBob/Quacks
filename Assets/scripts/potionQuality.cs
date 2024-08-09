@@ -3,6 +3,7 @@ using Unity.Netcode;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Events;
+using System.Collections;
 
 public class PotionQuality : MonoBehaviour 
 {
@@ -12,6 +13,8 @@ public class PotionQuality : MonoBehaviour
 
     public ChipPoints _chipPoints;
     GrabIngredient _grabIngredient;
+ 
+  
 
     [SerializeField] TextMeshProUGUI cherryBombsText;
     [SerializeField] TextMeshProUGUI cherryBombsText2;
@@ -22,10 +25,20 @@ public class PotionQuality : MonoBehaviour
 
     public bool nextIngredientTime = true;
 
-    public float fadeTime = 2;
-    public float fadeStart = 0;
+    private Color originalTopColor;
+    private Color originalVoronoiColor;
+    public float fadeDuration = 2.0f; 
+   
     public Color objectColor = Color.green;
     public Color fadeColor = Color.black;
+
+    private void Start()
+    {
+        
+        originalTopColor = potionOne.material.GetColor("_topColor");
+        originalVoronoiColor = potionOne.material.GetColor("_voronoiColor");
+    }
+
 
     public void ResetCherryBombs()
     {
@@ -80,9 +93,6 @@ public class PotionQuality : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        nextIngredientTime = true;
-       
-
         if (other.gameObject.CompareTag("cherryBombOne"))
         {
             OnEnterEvent.Invoke(other.gameObject);
@@ -90,8 +100,7 @@ public class PotionQuality : MonoBehaviour
 
             if (_cherryBombs > cherryBombLimit)
             {
-           
-                potionOne.material.color = Color.black;
+                StartCoroutine(FadeToColor(potionOne.material, fadeColor, Color.grey));
                 _chipPoints.PotExplosionEndRound();
             }
         }
@@ -102,9 +111,8 @@ public class PotionQuality : MonoBehaviour
 
             if (_cherryBombs > cherryBombLimit)
             {
-                potionOne.material.color = Color.black;
+                StartCoroutine(FadeToColor(potionOne.material, fadeColor, Color.grey));
                 _chipPoints.PotExplosionEndRound();
-
             }
         }
         else if (other.gameObject.CompareTag("cherryBombThree"))
@@ -114,37 +122,52 @@ public class PotionQuality : MonoBehaviour
 
             if (_cherryBombs > cherryBombLimit)
             {
-                potionOne.material.color = Color.black;
+                StartCoroutine(FadeToColor(potionOne.material, fadeColor, Color.grey));
                 _chipPoints.PotExplosionEndRound();
             }
         }
         _grabIngredient = FindObjectOfType<GrabIngredient>();
         _grabIngredient.updateCherryBombs();
+        nextIngredientTime = true;
         SetCherryBombText();
+    }
+
+    private IEnumerator FadeToColor(Material material, Color targetTopColor, Color targetVoronoiColor)
+    {
+        float elapsedTime = 0.0f;
+        Color startTopColor = material.GetColor("_topColor");
+        Color startVoronoiColor = material.GetColor("_voronoiColor");
+
+        while (elapsedTime < fadeDuration)
+        {
+            elapsedTime += Time.deltaTime;
+            float t = Mathf.Clamp01(elapsedTime / fadeDuration);
+
+            // Interpolate between the start and target colors
+            material.SetColor("_topColor", Color.Lerp(startTopColor, targetTopColor, t));
+            material.SetColor("_voronoiColor", Color.Lerp(startVoronoiColor, targetVoronoiColor, t));
+
+            yield return null; // Wait for the next frame
+        }
+
+        // Ensure final colors are set (useful if elapsedTime slightly undershoots)
+        material.SetColor("_topColor", targetTopColor);
+        material.SetColor("_voronoiColor", targetVoronoiColor);
     }
 
     public void ResetPotionColour()
     {
-        potionOne.material.color = Color.green;
+        potionOne.material.SetColor("_topColor", originalTopColor);
+        potionOne.material.SetColor("_voronoiColor", originalVoronoiColor);
     }
-
+}
     
 
 
-    // Use this for initialization
    
 
-    void ColourChanging()
-    {
-        potionOne.material.SetColor("_topColor", fadeColor); 
-        if (fadeStart < 1)
-        {
-            fadeStart += Time.deltaTime / fadeTime;
-        }
 
-    }
 
-}
 
 
 

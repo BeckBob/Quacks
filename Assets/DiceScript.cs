@@ -49,7 +49,7 @@ public class DiceScript : MonoBehaviour
 
             if (speed.x == 0f && speed.y == 0f && speed.z == 0f && speed2.x == 0f && speed2.y == 0f && speed2.z == 0f && !alreadyCalled && other.transform.tag == colour)
             {
-                Debug.Log("past if in dice");
+          
                 switch (other.gameObject.name)
                 {
                     case "Side1":

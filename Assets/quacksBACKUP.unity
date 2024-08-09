@@ -7794,7 +7794,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &140163703
 RectTransform:
   m_ObjectHideFlags: 0
@@ -8277,7 +8277,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &147108646
 Transform:
   m_ObjectHideFlags: 0
@@ -12434,7 +12434,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &247804061
 Transform:
   m_ObjectHideFlags: 0
@@ -14867,7 +14867,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &316394130
 RectTransform:
   m_ObjectHideFlags: 0
@@ -26449,7 +26449,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &557204544
 RectTransform:
   m_ObjectHideFlags: 0
@@ -31069,6 +31069,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   potionOne: {fileID: 1831556919}
   quality: {fileID: 658617842}
+  fadeDuration: 2
 --- !u!114 &658617842
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -31090,8 +31091,7 @@ MonoBehaviour:
   cherryBombsText2: {fileID: 1737632918}
   cherryBombLimit: 7
   nextIngredientTime: 1
-  fadeTime: 2
-  fadeStart: 0
+  fadeDuration: 2
   objectColor: {r: 0, g: 1, b: 0, a: 1}
   fadeColor: {r: 0, g: 0, b: 0, a: 1}
 --- !u!114 &658617843
@@ -40634,8 +40634,7 @@ MonoBehaviour:
   cherryBombsText2: {fileID: 497213397}
   cherryBombLimit: 7
   nextIngredientTime: 1
-  fadeTime: 2
-  fadeStart: 0
+  fadeDuration: 2
   objectColor: {r: 0, g: 1, b: 0, a: 1}
   fadeColor: {r: 0, g: 0, b: 0, a: 1}
 --- !u!114 &851316224
@@ -40652,6 +40651,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   potionOne: {fileID: 334152570}
   quality: {fileID: 851316222}
+  fadeDuration: 2
 --- !u!114 &851316225
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -42346,7 +42346,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: acbee6e283ebefe48bc78d786662217f, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -53292,15 +53292,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 74d98bea1d8ef444cbfa59ca118fecd6, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.0062339627
+      value: -0.01
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 74d98bea1d8ef444cbfa59ca118fecd6, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.7515633
+      value: 1.759
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 74d98bea1d8ef444cbfa59ca118fecd6, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.0041051544
+      value: 0.001
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 74d98bea1d8ef444cbfa59ca118fecd6, type: 3}
       propertyPath: m_LocalRotation.w
@@ -55187,8 +55187,7 @@ MonoBehaviour:
   cherryBombsText2: {fileID: 1580343711}
   cherryBombLimit: 7
   nextIngredientTime: 1
-  fadeTime: 2
-  fadeStart: 0
+  fadeDuration: 2
   objectColor: {r: 0, g: 1, b: 0, a: 1}
   fadeColor: {r: 0, g: 0, b: 0, a: 1}
 --- !u!114 &1133526961
@@ -55205,6 +55204,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   potionOne: {fileID: 1111423989}
   quality: {fileID: 1133526959}
+  fadeDuration: 2
 --- !u!114 &1133526962
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -62661,7 +62661,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1273768019
 RectTransform:
   m_ObjectHideFlags: 0
@@ -68804,7 +68804,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1409702867
 Transform:
   m_ObjectHideFlags: 0
@@ -70683,7 +70683,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1444931884
 Transform:
   m_ObjectHideFlags: 0
@@ -74829,7 +74829,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1518550746
 RectTransform:
   m_ObjectHideFlags: 0
@@ -89010,8 +89010,7 @@ MonoBehaviour:
   cherryBombsText2: {fileID: 1251083808}
   cherryBombLimit: 7
   nextIngredientTime: 1
-  fadeTime: 2
-  fadeStart: 0
+  fadeDuration: 2
   objectColor: {r: 0, g: 1, b: 0, a: 1}
   fadeColor: {r: 0, g: 0, b: 0, a: 1}
 --- !u!114 &1810291561
@@ -89028,6 +89027,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   potionOne: {fileID: 1400903215}
   quality: {fileID: 1810291559}
+  fadeDuration: 2
 --- !u!114 &1810291562
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -97336,7 +97336,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1985159314
 RectTransform:
   m_ObjectHideFlags: 0
