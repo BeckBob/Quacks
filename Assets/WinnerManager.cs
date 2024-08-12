@@ -167,32 +167,60 @@ public class WinnerManager : NetworkBehaviour
     public async Task CalculateLowestVictoryPoints()
     {
         Debug.Log("Calculating lowest Victory Points");
+
+        // Find PlayerData component
         _playerData = FindObjectOfType<PlayerData>();
-        // figure out who has the highest score and then get them to roll dice and initiate dice function
-        if (_playerData.Colour.Value == "Red")
+        if (_playerData == null)
         {
-            RedVictoryPoints.Value = _playerData.VictoryPoints.Value;
-            ReadyUp();
+            Debug.LogError("PlayerData not found!");
+            return;
         }
-        if (_playerData.Colour.Value == "Yellow")
+
+        string colourValue = _playerData.Colour.Value.ToString();
+
+        switch (colourValue)
         {
-            YellowVictoryPoints.Value = _playerData.VictoryPoints.Value;
-            ReadyUp();
+            case "Red":
+                RedVictoryPoints.Value = _playerData.VictoryPoints.Value;
+                break;
+            case "Yellow":
+                YellowVictoryPoints.Value = _playerData.VictoryPoints.Value;
+                break;
+            case "Blue":
+                BlueVictoryPoints.Value = _playerData.VictoryPoints.Value;
+                break;
+            case "Purple":
+                PurpleVictoryPoints.Value = _playerData.VictoryPoints.Value;
+                break;
+            default:
+                Debug.LogWarning("Unexpected player color: " + colourValue);
+                return;
         }
-        if (_playerData.Colour.Value == "Blue")
-        {
-            BlueVictoryPoints.Value = _playerData.VictoryPoints.Value;
-            ReadyUp();
-        }
-        if (_playerData.Colour.Value == "Purple")
-        {
-            PurpleVictoryPoints.Value = _playerData.VictoryPoints.Value;
-            ReadyUp();
-        }
+        ReadyUp();
+
+        // Await other async methods
         await CheckAllPlayersReady();
         ResetReady();
 
-        LowestVictoryPoints = new[] { RedVictoryPoints.Value, BlueVictoryPoints.Value, YellowVictoryPoints.Value, PurpleVictoryPoints.Value }.Min();   
+        // Calculate the lowest victory points
+        int[] victoryPoints = {
+            RedVictoryPoints.Value,
+            YellowVictoryPoints.Value,
+            BlueVictoryPoints.Value,
+            PurpleVictoryPoints.Value
+        };
+
+        // Ensure we have valid points before calculating minimum
+        if (victoryPoints.All(vp => vp >= 0))
+        {
+            LowestVictoryPoints = victoryPoints.Min();
+        }
+        else
+        {
+            Debug.LogError("Victory points array contains invalid data.");
+        }
+
+        Debug.Log("Lowest Victory Points: " + LowestVictoryPoints);
     }
 
     public async Task CalculateLowestRubies()

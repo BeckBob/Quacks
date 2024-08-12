@@ -64,6 +64,7 @@ public class LobbySettings : NetworkBehaviour
 
     private string oldColour = "Random";
     private bool _ready = false;
+   
 
     public int numberOfPlayers;
 
@@ -74,6 +75,7 @@ public class LobbySettings : NetworkBehaviour
         _networkConnect = FindObjectOfType<NetworkConnect>();
         _winnerManager = FindObjectOfType<WinnerManager>();
         _teleportationManager = FindObjectOfType<TeleportationManager>();
+       
         ToadstallRule.Value = 1;
         SpiderRule.Value = 1;
         CrowskullRule.Value = 1;
@@ -190,6 +192,7 @@ public class LobbySettings : NetworkBehaviour
             {
                 SetRules();
                 BuildRandomColourList();
+                
                 if (_playerData.Colour.Value == "Random")
                 {
                     FixedString128Bytes colour;
@@ -210,6 +213,7 @@ public class LobbySettings : NetworkBehaviour
             {
                 SetRules();
                 BuildRandomColourList();
+               
                 if (_playerData.Colour.Value == "Random")
                 {
                     FixedString128Bytes colour;

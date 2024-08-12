@@ -51,6 +51,7 @@ public class GameManager : MonoBehaviour
     private BuyIngredients _buyIngredients;
     private ChipPoints _chipPoints;
     private LobbySettings lobbySettings;
+  
     fortuneTeller _fortuneTeller;
     public GameState State;
 

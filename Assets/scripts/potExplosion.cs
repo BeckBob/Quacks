@@ -9,7 +9,7 @@ public class PotExplosion : MonoBehaviour
     string hexColor = "#209A00";
     Color topColor;
 
-    public float fadeDuration = 2.0f; // Duration for the fade effect
+    public float fadeDuration = 0.5f; // Duration for the fade effect
 
     private void OnTriggerEnter(Collider other)
     {

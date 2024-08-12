@@ -146,7 +146,7 @@ public class DiceScript : MonoBehaviour
             redWinnerCanvas.SetActive(false);
             yellowWinnerCanvas.SetActive(false);
             blueWinnerCanvas.SetActive(false);
-            //deactivate dice floor.
+            
             alreadyCalled = false;
             if (_fortuneNumber.fortuneNum == 20)
         {

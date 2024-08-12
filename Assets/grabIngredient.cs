@@ -228,17 +228,17 @@ public class GrabIngredient : MonoBehaviour
                  
                 int leftToDraw = fortuneDrawAmount - fortuneDrawn;
                 aboveCauldronText.text = $"You have {leftToDraw} ingredients left to draw!";
-                Debug.Log(fortuneDrawn);
+              
             }
         }
         if (bagContents.Count > 0 && _cherryBombs <= _cherryBombLimit)
         {
             _potionQuality = FindObjectOfType<PotionQuality>();
-            Debug.Log(_potionQuality.nextIngredientTime);
+            
             if (other.gameObject.CompareTag("hand") && _potionQuality.nextIngredientTime)
             {
-                Debug.Log("hand in bag");
-                Debug.Log(_potionQuality.nextIngredientTime);
+                
+                
                 System.Random rand = new();
                 int num = rand.Next(0, bagContents.Count -1);
                 int nextIngredient = bagContents[num];
@@ -304,24 +304,7 @@ public class GrabIngredient : MonoBehaviour
     }
 
     private void CountDrawnIngredients(int Num) {
-        // 0 - cherryBombOne
-        // 1 - cherryBombThree
-        // 2 - cherryBombTwo   
-        // 3 - crowSkullFour
-        // 4 - crowSkullOne
-        // 5 - crowSkullTwo
-        // 6 - ghostOne
-        // 7 - mandrakeFour
-        // 8 - mandrakeOne
-        // 9 - mandrakeTwo
-        // 10 - mothOne
-        // 11 - mushroomFour
-        // 12 - mushroomOne
-        // 13 - mushroomTwo
-        // 14 - pumpkin
-        // 15 - spiderFour
-        // 16 - spiderOne
-        // 17 - spiderTwo
+       
         if (Num == 0 || Num == 4 || Num == 6 || Num == 8 || Num == 10 || Num == 12 || Num == 14 || Num == 16)
         {
             totalOfFortuneIngredients++;

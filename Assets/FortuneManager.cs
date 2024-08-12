@@ -679,53 +679,77 @@ public class FortuneManager : MonoBehaviour
 
     public async Task RollDiceTwice()
     {
+       
         if (_fortuneTeller.fortuneNumber == 8)
         {
             EnableSpheres();
             await _chipPoints.MessageAboveCauldron("The fortune means the winner gets to roll twice this round!");
-            DisableSpheres();
-            if (_winnerManager.RoundWinnerScore.Value == _winnerManager.RedPoints.Value)
+            
+
+       
+            string winnerColor = DetermineWinnerColor();
+
+            if (!string.IsNullOrEmpty(winnerColor))
             {
-
-                redDice.SetActive(true);
-                if (_playerData.Colour.Value == "Red")
-                {
-                    DiceFloor.SetActive(true);
-                }
-                // UI announcing they won - in book and above head?
-                //instantiate dice in front of them and add whatever it lands on to their player Data
-            }
-            if (_winnerManager.RoundWinnerScore.Value == _winnerManager.YellowPoints.Value)
-            {
-
-                yellowDice.SetActive(true);
-                if (_playerData.Colour.Value == "Yellow")
-                {
-                    DiceFloor.SetActive(true);
-                }
-            }
-            if (_winnerManager.RoundWinnerScore.Value == _winnerManager.BluePoints.Value)
-            {
-
-                blueDice.SetActive(true);
-                if (_playerData.Colour.Value == "Blue")
-                {
-                    DiceFloor.SetActive(true);
-                }
-            }
-            if (_winnerManager.RoundWinnerScore.Value == _winnerManager.PurplePoints.Value)
-            {
-
-                purpleDice.SetActive(true);
-                if (_playerData.Colour.Value == "Purple")
-                {
-                    DiceFloor.SetActive(true);
-                }
-
-                //AFTER ROUND - any player that gets to roll the die this round rolls it twice.
+            
+                ActivateDiceForWinner(winnerColor);
             }
         }
+    }
+
+    private string DetermineWinnerColor()
+    {
+  
+        if (_winnerManager.RoundWinnerScore.Value == _winnerManager.RedPoints.Value)
+        {
+            return "Red";
         }
+        if (_winnerManager.RoundWinnerScore.Value == _winnerManager.YellowPoints.Value)
+        {
+            return "Yellow";
+        }
+        if (_winnerManager.RoundWinnerScore.Value == _winnerManager.BluePoints.Value)
+        {
+            return "Blue";
+        }
+        if (_winnerManager.RoundWinnerScore.Value == _winnerManager.PurplePoints.Value)
+        {
+            return "Purple";
+        }
+
+        return string.Empty; 
+    }
+
+    private void ActivateDiceForWinner(string color)
+    {
+        GameObject diceToActivate = null;
+
+        switch (color)
+        {
+            case "Red":
+                diceToActivate = redDice;
+                break;
+            case "Yellow":
+                diceToActivate = yellowDice;
+                break;
+            case "Blue":
+                diceToActivate = blueDice;
+                break;
+            case "Purple":
+                diceToActivate = purpleDice;
+                break;
+        }
+
+        
+        if (diceToActivate != null)
+        {
+            diceToActivate.SetActive(true);
+            if (_playerData.Colour.Value == color)
+            {
+                DiceFloor.SetActive(true);
+            }
+        }
+    }
 
     private async Task getMediumIngredient()
     {

@@ -9,6 +9,7 @@ using TMPro;
 using Unity.VisualScripting;
 using Unity.Collections.LowLevel.Unsafe;
 using System.Threading.Tasks;
+using UnityEditor.SceneManagement;
 
 
 
@@ -90,6 +91,8 @@ public class ChipPoints : MonoBehaviour
     public Material Round7Sky;
     public Material Round8Sky;
 
+    [SerializeField] private GameObject potionOne;
+
     public string lastIngredient;
 
     public bool choiceOneCauldron = false;
@@ -99,6 +102,8 @@ public class ChipPoints : MonoBehaviour
     public bool choiceFiveCauldron = false;
     public bool choiceSixCauldron =false;
     private int numberOfPlayers;
+
+    private float startHeightPotion;
 
     public static int InitialScore = 0;
 
@@ -147,7 +152,8 @@ public class ChipPoints : MonoBehaviour
         ingredients = new List<GameObject>(Resources.LoadAll<GameObject>("ingredients"));
         _fortuneManager = FindObjectOfType<FortuneManager>();
         CountIngredientsInPot();
-        
+        startHeightPotion = potionOne.transform.position.y;
+
 
     }
     //TWO FUNCTIONS
@@ -236,7 +242,9 @@ public class ChipPoints : MonoBehaviour
     {
         ingredientsList.Clear();
     }
-    public void ResetScore() { Score = InitialScore; }
+    public void ResetScore() { Score = InitialScore;
+        ChangePotionHeight();
+    }
 
     public async void OnTriggerEnter(Collider other)
     {
@@ -748,6 +756,7 @@ public class ChipPoints : MonoBehaviour
             cauldronScoreFront.text = Score.ToString();
             cauldronScoreBack.text = Score.ToString();
             CountIngredientsInPot();
+            ChangePotionHeight();
         }
     }
 
@@ -2551,6 +2560,7 @@ public class ChipPoints : MonoBehaviour
         await winnerManager.CheckAllPlayersReady();
         winnerManager.ResetReady();
         ChangeSceneryDependingOnRound();
+        ChangePotionHeight();
         GameManager.Instance.UpdateGameState(GameState.FortuneTeller);
     }
 
@@ -2729,6 +2739,32 @@ public class ChipPoints : MonoBehaviour
 
     }
 
+    private void ChangePotionHeight()
+    {
+        float Added = (float)(Score * 0.010); 
+        
+        float newHeight = startHeightPotion + Added; 
+       
+        float threshold = 0.01f;
+        float speed = 0.5f;
+
+        Debug.Log("Score: " + Score);
+        Debug.Log("Start Height: " + startHeightPotion);
+        Debug.Log("Current Position Y: " + potionOne.transform.position.y);
+        Debug.Log("Target Height Y: " + newHeight);
+
+       
+        if (Mathf.Abs(newHeight - potionOne.transform.position.y) > threshold)
+        {
+           
+            float targetY = Mathf.MoveTowards(potionOne.transform.position.y, newHeight, speed * Time.deltaTime);
+            potionOne.transform.position = new Vector3(
+                potionOne.transform.position.x,
+                targetY,
+                potionOne.transform.position.z
+            );
+        }
+    }
     public async Task MessageAboveCauldronMultipleChoice(int num, string message, string choice1, string choice2, string choice3, string choice4, string choice5)
     {
         buttonsToAddLeftover.SetActive(true);

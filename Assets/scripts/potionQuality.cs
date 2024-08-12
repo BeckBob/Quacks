@@ -27,7 +27,7 @@ public class PotionQuality : MonoBehaviour
 
     private Color originalTopColor;
     private Color originalVoronoiColor;
-    public float fadeDuration = 2.0f; 
+    public float fadeDuration = 1.0f; 
    
     public Color objectColor = Color.green;
     public Color fadeColor = Color.black;
