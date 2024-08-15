@@ -4326,17 +4326,17 @@
     "m_Type": "UnityEditor.ShaderGraph.SubGraphNode",
     "m_ObjectId": "825cc1d635914c068f72beea36ed4b28",
     "m_Group": {
-        "m_Id": ""
+        "m_Id": "15e78a3ddcb04c0aa45e10cd72e0e49a"
     },
     "m_Name": "Depth Fade",
     "m_DrawState": {
         "m_Expanded": true,
         "m_Position": {
             "serializedVersion": "2",
-            "x": -1647.0,
-            "y": 1094.0,
+            "x": -1671.0001220703125,
+            "y": 1021.0000610351563,
             "width": 212.0,
-            "height": 95.0001220703125
+            "height": 95.00006103515625
         }
     },
     "m_Slots": [
@@ -4349,7 +4349,7 @@
     ],
     "synonyms": [],
     "m_Precision": 0,
-    "m_PreviewExpanded": false,
+    "m_PreviewExpanded": true,
     "m_DismissedVersion": 0,
     "m_PreviewMode": 0,
     "m_CustomColors": {
