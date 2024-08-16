@@ -48,18 +48,12 @@ public class LobbyItem : MonoBehaviour
         if (newValue == "Purple")
         {
             image.color = Color.magenta;
-            rubies.color = Color.white;
-            ratTails.color = Color.white;
-            victoryPoint.color = Color.white;
-            NameUI.color = Color.white;
+            
         }
         if (newValue == "Blue")
         {
             image.color = Color.blue;
-            rubies.color = Color.white;
-            ratTails.color = Color.white;
-            victoryPoint.color = Color.white;
-            NameUI.color = Color.white;
+       
         }
         if (newValue == "Random")
         {

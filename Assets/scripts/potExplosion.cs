@@ -6,20 +6,20 @@ public class PotExplosion : MonoBehaviour
 {
     [SerializeField] private Renderer potionOne;
     public PotionQuality quality;
-    string hexColor = "#209A00";
+    string hexColor = "#090F1386";
     Color topColor;
 
-    public float fadeDuration = 0.5f; // Duration for the fade effect
+    public float fadeDuration = 0.5f; 
 
     private void OnTriggerEnter(Collider other)
     {
-        // Check if the collision is with a cherry bomb and if the cherryBombs count in quality is less than or equal to 7
+      
         if (other.gameObject.tag.Contains("cherryBomb") && quality.GetCherryBombs() <= quality.cherryBombLimit)
         {
-            // Start fading to red and magenta colors
+          
             StartCoroutine(FadeToColor(potionOne, Color.red, Color.magenta));
 
-            // Create a timer to return to the original color after 3 seconds
+            
             FunctionTimer.Create(() => StartCoroutine(ReturnColor()), 3f);
         }
     }
@@ -35,14 +35,14 @@ public class PotExplosion : MonoBehaviour
             elapsedTime += Time.deltaTime;
             float t = Mathf.Clamp01(elapsedTime / fadeDuration);
 
-            // Interpolate between the start and target colors
+            
             renderer.material.SetColor("_topColor", Color.Lerp(startTopColor, targetTopColor, t));
             renderer.material.SetColor("_voronoiColor", Color.Lerp(startVoronoiColor, targetVoronoiColor, t));
 
-            yield return null; // Wait for the next frame
+            yield return null; 
         }
 
-        // Ensure final colors are set
+       
         renderer.material.SetColor("_topColor", targetTopColor);
         renderer.material.SetColor("_voronoiColor", targetVoronoiColor);
     }
@@ -54,7 +54,7 @@ public class PotExplosion : MonoBehaviour
         Color startVoronoiColor = potionOne.material.GetColor("_voronoiColor");
         Color originalVoronoiColor = new Color(0.966518641f, 2f, 0.254716992f, 0.396078408f);
 
-        // Parse the top color from the hex string
+        
         if (UnityEngine.ColorUtility.TryParseHtmlString(hexColor, out topColor))
         {
             while (elapsedTime < fadeDuration)

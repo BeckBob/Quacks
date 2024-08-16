@@ -52,15 +52,27 @@ public class ScoreboardItem : MonoBehaviour
         {
             case "Red":
                 image.color = Color.red;
+                NameUI.color = Color.white;
+                VictoryPointUI.color = Color.white;
+                Rubies.color = Color.white;
+                RatTails.color = Color.white;
                 break;
             case "Yellow":
                 image.color = Color.yellow;
                 break;
             case "Purple":
                 image.color = Color.magenta;
+                NameUI.color = Color.white;
+                VictoryPointUI.color = Color.white;
+                Rubies.color = Color.white;
+                RatTails.color = Color.white;
                 break;
             case "Blue":
                 image.color = Color.blue;
+                NameUI.color = Color.white;
+                VictoryPointUI.color = Color.white;
+                Rubies.color = Color.white;
+                RatTails.color = Color.white;
                 break;
             default:
                 Debug.LogWarning($"Unknown color: {newValue}");
