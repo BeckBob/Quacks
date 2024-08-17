@@ -341,7 +341,7 @@ public class FortuneManager : MonoBehaviour
         {
             if (ingredient.Contains("cherryBomb") && firstCherryBombHappened == false)
             {
-                await _chipPoints.MessageAboveCauldronMultipleChoice(2, "Your first cherry bomb! Do you want to Remove it and put back in you bag?", "Remove Cherry Bomb", "Leave in pot", "", "", "");
+                await _chipPoints.MessageAboveCauldronMultipleChoice(2, "Your first cherry bomb! Do you want to Remove it and put back in you bag?", "Remove", "Leave in pot", "", "", "");
                 if (_chipPoints.choiceOneCauldron)
                 {
                     if (ingredient.Contains("One"))

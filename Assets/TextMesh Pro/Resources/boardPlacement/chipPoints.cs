@@ -2556,15 +2556,17 @@ public class ChipPoints : MonoBehaviour
     }
     public async void ReadyForNextRound()
     {
+        
         bagSphere.SetActive(true);
+        grabIngredient = FindObjectOfType<GrabIngredient>();
         Debug.Log("ready for next round function");
-  
+        grabIngredient.ResetBombs();
         ResetScore();
         winnerManager.ReadyUp();
         await winnerManager.CheckAllPlayersReady();
         winnerManager.ResetReady();
         
-        grabIngredient = FindObjectOfType<GrabIngredient>();
+        
 
         
         await winnerManager.CalculateRatTails();
@@ -2872,6 +2874,7 @@ public class ChipPoints : MonoBehaviour
 
 
         await CheckWhichChoice();
+        aboveCauldronText.text = "";
         Smoke.Stop();
     }
 

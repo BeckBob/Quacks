@@ -8,6 +8,7 @@ using Oculus.VoiceSDK.UX;
 using System.Threading.Tasks;
 using UnityEngine.InputSystem.OSX;
 using UnityEditor.Experimental.GraphView;
+using Newtonsoft.Json.Bson;
 
 public class GrabIngredient : MonoBehaviour
 {
@@ -89,6 +90,12 @@ public class GrabIngredient : MonoBehaviour
     {
         int index = bagContents.IndexOf(ingredientNumber);
         bagContents.RemoveAt(index);
+
+    }
+
+    public void ResetBombs()
+    {
+        _cherryBombs = 0;
 
     }
 

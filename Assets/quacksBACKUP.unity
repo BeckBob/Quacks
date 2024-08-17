@@ -58947,7 +58947,7 @@ ParticleSystem:
         atime6: 0
         atime7: 0
         m_Mode: 0
-        m_ColorSpace: 0
+        m_ColorSpace: -1
         m_NumColorKeys: 2
         m_NumAlphaKeys: 2
       minGradient:
@@ -63461,7 +63461,7 @@ Transform:
   m_GameObject: {fileID: 1193578074}
   serializedVersion: 2
   m_LocalRotation: {x: -0.7071068, y: -0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: -0.029, y: 4.625, z: -5.68}
+  m_LocalPosition: {x: -0.029, y: 5.089, z: -5.68}
   m_LocalScale: {x: 0.33709, y: 0.33708996, z: 0.33708996}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -102177,7 +102177,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -26, y: 64}
+  m_AnchoredPosition: {x: -26, y: 22}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1782145406
@@ -102211,7 +102211,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4283767390
-  m_fontColor: {r: 0.3679245, g: 0.10239409, b: 0.33226725, a: 1}
+  m_fontColor: {r: 0, g: 0.04355227, b: 0.33962262, a: 1}
   m_enableVertexGradient: 1
   m_colorMode: 2
   m_fontColorGradient:
@@ -107049,7 +107049,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 34.073, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: -0.24, y: 0.38}
+  m_AnchoredPosition: {x: -0.24, y: 0.1}
   m_SizeDelta: {x: 706, y: 242}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1903672369
