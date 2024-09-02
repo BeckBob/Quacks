@@ -968,7 +968,7 @@ GameObject:
   - component: {fileID: -6303983651483689240}
   m_Layer: 0
   m_Name: mandrakeOne
-  m_TagString: Untagged
+  m_TagString: mandrakeOne
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -981,9 +981,9 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5212847511353342201}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0.7283471, z: -0, w: 0.6852084}
-  m_LocalPosition: {x: -2.24658, y: 4.361, z: -4.385248}
-  m_LocalScale: {x: 0.022862073, y: 0.022862073, z: 0.022862073}
+  m_LocalRotation: {x: 0.4653969, y: 0.47557482, z: 0.37642622, w: 0.64462215}
+  m_LocalPosition: {x: 0.007, y: 5.005, z: 5.3551126}
+  m_LocalScale: {x: 0.018012341, y: 0.018012341, z: 0.018012341}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 271150057966095741}
@@ -1000,7 +1000,7 @@ Transform:
   - {fileID: 2829960207157339012}
   - {fileID: 6891430737774545342}
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: -93.496, z: 0}
+  m_LocalEulerAnglesHint: {x: 14.003, y: 83.225, z: 73.016}
 --- !u!54 &-6523578931097406141
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1639,6 +1639,6 @@ MeshCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 5
-  m_Convex: 0
+  m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 6255687079079774844, guid: 61db07f89e13b5149a9105503ba27e0d, type: 3}

@@ -38,6 +38,10 @@ public class BuyIngredients : MonoBehaviour
     [SerializeField] TextMeshProUGUI gardenSpiderMediumPrice;
     [SerializeField] TextMeshProUGUI gardenSpiderLargePrice;
 
+    [SerializeField] GameObject originalObjects;
+    [SerializeField] GameObject mandrakeObjects;
+    [SerializeField] GameObject ghostObjects;
+
     [SerializeField] TextMeshProUGUI coinsLeft;
     TeleportationManager _teleportationManager;
     GrabIngredient _grabIngredient;
@@ -148,12 +152,14 @@ public class BuyIngredients : MonoBehaviour
         _grabIngredient = FindObjectOfType<GrabIngredient>();
         _playerData = FindObjectOfType<PlayerData>();
         initialIngredients.SetActive(true);
+        originalObjects.SetActive(true);
         coinsBoard.SetActive(true);
         bagBoard.SetActive(true);
         UpdateAmountInBag();
         if (_winnerManager.round >= 3)
         {
             MandrakeStallStuff.SetActive(true);
+            mandrakeObjects.SetActive(true);
             if (_chipPoints.mandrakeRule == 1)
             {
                 mandrakeSmallPrice.text = "9";
@@ -170,6 +176,7 @@ public class BuyIngredients : MonoBehaviour
         if (_winnerManager.round >= 4)
         {
            ghostsBreathStallStuff.SetActive(true);
+            ghostObjects.SetActive(true);
             if (_chipPoints.ghostsBreathRule == 1)
             {
                 ghostsBreathPrice.text = "9";
@@ -705,6 +712,9 @@ public class BuyIngredients : MonoBehaviour
         _grabIngredient.ResetBagContents();
         _chipPoints.CountIngredientsInPot();
         initialIngredients.SetActive(false);
+        originalObjects.SetActive(false);
+        mandrakeObjects.SetActive(false);
+        ghostObjects.SetActive(false);
         coinsBoard.SetActive(false);
         bagBoard.SetActive(false);
         MandrakeStallStuff.SetActive(false);
@@ -1001,7 +1011,7 @@ public class BuyIngredients : MonoBehaviour
         
         mushroomMedium.SetActive(false);
         mushroomSmall.SetActive(false);
-       
+        originalObjects.SetActive(true);
         crowStallSmall.SetActive(false);
         crowStallMedium.SetActive(false);
         DoneWithFortuneButton.SetActive(true);
@@ -1013,6 +1023,7 @@ public class BuyIngredients : MonoBehaviour
         if (_winnerManager.round >= 3)
         {
             MandrakeStallStuff.SetActive(true);
+            mandrakeObjects.SetActive(true);
             mandrakeStallMedium.SetActive(false);
             mandrakeStallSmall.SetActive(false);
             mandrakeLargePrice.text = "0";
@@ -1032,12 +1043,13 @@ public class BuyIngredients : MonoBehaviour
         _chipPoints.SetRules();
         _grabIngredient.ResetBagContents();
         _chipPoints.CountIngredientsInPot();
-       
+       originalObjects.SetActive(false);
         boughtOne = false;
         _fortuneManager.fortuneShopDone = true;
         bagBoard.SetActive(false);
         if (_winnerManager.round >= 3)
         {
+            mandrakeObjects.SetActive(false);
             mandrakeStallSmall.SetActive(true);
             mandrakeStallMedium.SetActive(true);
             mandrakeStallLarge.SetActive(true);
@@ -1083,6 +1095,7 @@ public class BuyIngredients : MonoBehaviour
         _chipPoints.crowSkullRule = 0;
         _chipPoints.gardenSpiderRule = 0;
         _chipPoints.hawkMothRule = 0;
+        originalObjects.SetActive(true);
         initialIngredients.SetActive(true);
 
         spiderStallSmall.SetActive(false);
@@ -1103,7 +1116,8 @@ public class BuyIngredients : MonoBehaviour
         UpdateAmountInBag();
         if (_winnerManager.round >= 3)
         {
-            MandrakeStallStuff.SetActive(true);
+            mandrakeObjects.SetActive(true);
+            MandrakeStallStuff.SetActive(false);
             mandrakeStallLarge.SetActive(false);
             mandrakeStallSmall.SetActive(false);
             mandrakeMediumPrice.text = "0";
@@ -1132,6 +1146,7 @@ public class BuyIngredients : MonoBehaviour
         _chipPoints.crowSkullRule = 5;
         _chipPoints.gardenSpiderRule = 5;
         initialIngredients.SetActive(true);
+        originalObjects.SetActive(true);
 
         spiderStallmedium.SetActive(false);
         spiderStallLarge.SetActive(false);
@@ -1150,6 +1165,7 @@ public class BuyIngredients : MonoBehaviour
         UpdateAmountInBag();
         if (_winnerManager.round >= 3)
         {
+            mandrakeObjects.SetActive(true);
             MandrakeStallStuff.SetActive(true);
             mandrakeStallLarge.SetActive(false);
             mandrakeStallMedium.SetActive(false);

@@ -509,6 +509,7 @@ GameObject:
   - component: {fileID: 3660382147587814944}
   - component: {fileID: 831984453368946105}
   - component: {fileID: 1871680735310981279}
+  - component: {fileID: 8105562085412158254}
   m_Layer: 0
   m_Name: Cylinder.004
   m_TagString: Untagged
@@ -581,6 +582,28 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!64 &8105562085412158254
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4199610864516301831}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 6255687079079774844, guid: 61db07f89e13b5149a9105503ba27e0d, type: 3}
 --- !u!1 &5699154118492540495
 GameObject:
   m_ObjectHideFlags: 0
@@ -761,7 +784,7 @@ GameObject:
   - component: {fileID: -1757045942744140004}
   m_Layer: 0
   m_Name: mandrakeFour
-  m_TagString: Untagged
+  m_TagString: mandrakeFour
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -774,9 +797,9 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6700342965472708875}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: 0.56988126, z: -0, w: 0.8217271}
-  m_LocalPosition: {x: -2.582073, y: 4.362, z: -4.3183336}
-  m_LocalScale: {x: 0.03674322, y: 0.03674322, z: 0.03674322}
+  m_LocalRotation: {x: 0.4395517, y: 0.5056776, z: 0.4050907, w: 0.62208194}
+  m_LocalPosition: {x: 0.326, y: 5.067, z: 5.42}
+  m_LocalScale: {x: 0.045837164, y: 0.045837164, z: 0.045837164}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3660382147587814944}
@@ -793,7 +816,7 @@ Transform:
   - {fileID: 1619171933502954112}
   - {fileID: 4228364729870428882}
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 69.484, z: 0}
+  m_LocalEulerAnglesHint: {x: 7.885, y: 84.08, z: 73.255}
 --- !u!54 &5903656585199719239
 Rigidbody:
   m_ObjectHideFlags: 0
