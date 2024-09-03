@@ -273,6 +273,7 @@ public class ChipPoints : MonoBehaviour
         {
             SetSmokeColor("red");
         }
+        Debug.Log(other.gameObject.tag);
         ingredientsList.Add(other.gameObject.tag);
         extraPoints = 0; extraRubies = 0;
         lastIngredient = other.gameObject.tag;
@@ -2781,10 +2782,7 @@ public class ChipPoints : MonoBehaviour
         float threshold = 0.01f;
         float speed = 0.5f;
 
-        Debug.Log("Score: " + Score);
-        Debug.Log("Start Height: " + startHeightPotion);
-        Debug.Log("Current Position Y: " + potionOne.transform.position.y);
-        Debug.Log("Target Height Y: " + newHeight);
+       
 
        
         if (Mathf.Abs(newHeight - potionOne.transform.position.y) > threshold)
