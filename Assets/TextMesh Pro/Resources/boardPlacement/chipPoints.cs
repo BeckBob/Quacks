@@ -53,6 +53,8 @@ public class ChipPoints : MonoBehaviour
     Vector3 rubyInstantiationLocation;
     [SerializeField] GameObject rubyForBowl;
 
+    [SerializeField] GameObject bottleUp;
+
     NetworkConnect _networkConnect;
     public List<GameObject> ingredients;
     WinnerManager winnerManager;
@@ -2594,6 +2596,7 @@ public class ChipPoints : MonoBehaviour
         winnerManager.ResetReady();
         ChangeSceneryDependingOnRound();
         ChangePotionHeight();
+        bottleUp.GetComponent<bottleUpPotionTrigger>().ReserPotionBottle();
         GameManager.Instance.UpdateGameState(GameState.FortuneTeller);
     }
 
@@ -2612,6 +2615,7 @@ public class ChipPoints : MonoBehaviour
     {
         _playerData.Rubies.Value -= 2;
         _playerData.PurifierFull.Value = true;
+        bottleUp.GetComponent<bottleUpPotionTrigger>().ReserPurifier();
         ChangeRubyUI();
         //when have proper 3d model fill with the liquid.
     }

@@ -4,9 +4,11 @@ using UnityEngine;
 
 public class bottleUpPotionTrigger : MonoBehaviour
 {
-
+    [SerializeField] private Renderer potionBottle;
+    [SerializeField] private Renderer purifier;
     public ChipPoints chipPoints;
     PlayerData playerData;
+    
     public async void OnTriggerEnter(Collider other)
     {
 
@@ -17,12 +19,14 @@ public class bottleUpPotionTrigger : MonoBehaviour
             Debug.Log("bottled up");
             chipPoints.EndRoundSafely();
             gameObject.SetActive(false);
+            potionBottle.material.SetFloat("_Fill", 0.081f);
         }
         if (other.gameObject.CompareTag("purifier") && chipPoints.lastIngredient.Contains("cherryBomb") && playerData.PurifierFull.Value == true)
         {
             Debug.Log("purified");
             playerData.PurifierFull.Value = false;
             chipPoints.RemoveLastIngredient();
+            purifier.material.SetFloat("_Fill", 0);
             await chipPoints.MessageAboveCauldron("You removed the last cherrybomb in the pot");
 
         }
@@ -39,7 +43,19 @@ public class bottleUpPotionTrigger : MonoBehaviour
         if (other.gameObject.CompareTag("purifier") && !chipPoints.lastIngredient.Contains("cherryBomb") && playerData.PurifierFull.Value == false)
         {
 
-            await chipPoints.MessageAboveCauldron("The last ingredient in the pot wasn't a cherrybomb and purifier bottle is empty, YOU IDIOT.");
+            await chipPoints.MessageAboveCauldron("The last ingredient in the pot wasn't a cherrybomb AND the purifier bottle is empty, YOU IDIOT.");
         }
     }
+
+    public void ReserPotionBottle()
+    {
+        potionBottle.material.SetFloat("_Fill", 0);
+    }
+
+    public void ReserPurifier()
+    {
+        potionBottle.material.SetFloat("_Fill", 0.081f);
+    }
+
+
 }

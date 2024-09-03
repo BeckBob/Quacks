@@ -143,14 +143,14 @@ public class PotionQuality : MonoBehaviour
             elapsedTime += Time.deltaTime;
             float t = Mathf.Clamp01(elapsedTime / fadeDuration);
 
-            // Interpolate between the start and target colors
+            
             material.SetColor("_topColor", Color.Lerp(startTopColor, targetTopColor, t));
             material.SetColor("_voronoiColor", Color.Lerp(startVoronoiColor, targetVoronoiColor, t));
 
-            yield return null; // Wait for the next frame
+            yield return null; 
         }
 
-        // Ensure final colors are set (useful if elapsedTime slightly undershoots)
+        
         material.SetColor("_topColor", targetTopColor);
         material.SetColor("_voronoiColor", targetVoronoiColor);
     }
