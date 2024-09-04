@@ -49,6 +49,9 @@ public class ChipPoints : MonoBehaviour
     [SerializeField] GameObject leftOverIngredient;
     [SerializeField] GameObject rubylocationSphere;
     [SerializeField] GameObject buttonsToAddLeftover;
+
+    [SerializeField] AudioSource ghostClip;
+
     Vector3 leftOverIngredientLocation;
     Vector3 rubyInstantiationLocation;
     [SerializeField] GameObject rubyForBowl;
@@ -260,7 +263,10 @@ public class ChipPoints : MonoBehaviour
         ingredientsList.Add(other.gameObject.tag);
         extraPoints = 0; extraRubies = 0;
         lastIngredient = other.gameObject.tag;
-        
+
+        if (other.gameObject.tag.Contains("ghost")){
+            ghostClip.Play();
+        }
 
         if (mushroomRule == 1)
         {

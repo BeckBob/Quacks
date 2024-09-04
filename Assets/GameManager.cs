@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.Rendering.UI;
 using System;
 using Unity.Services.Lobbies.Models;
+using System.Runtime.CompilerServices;
 
 
 public class GameManager : MonoBehaviour
@@ -44,6 +45,12 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject _redPlayerSpace;
     private TeleportationManager _teleportationManager;
 
+    [SerializeField] private AudioSource menuMusic;
+    [SerializeField] private AudioSource shopMusic;
+    [SerializeField] private AudioSource morningMusic;
+    [SerializeField] private AudioSource noonMusic;
+    [SerializeField] private AudioSource afternoonMusic;
+    [SerializeField] private AudioSource eveningMusic;
 
     private FortuneNumber _fortuneNumber;
     private PlayerData _playerData;
@@ -55,6 +62,7 @@ public class GameManager : MonoBehaviour
     fortuneTeller _fortuneTeller;
     public GameState State;
 
+    private int gameRound = 0;
     
 
     public static event Action<GameState> OnGameStateChanged;
@@ -118,6 +126,7 @@ public class GameManager : MonoBehaviour
     }
     private void BuyIngredients()
     {
+
         if (_playerData.Colour.Value == "Purple")
         {
             _purpleSphere.SetActive(false);
@@ -149,6 +158,7 @@ public class GameManager : MonoBehaviour
             _bluePresentScore.SetActive(false);
             _blueFutureScore.SetActive(false);
         }
+        SetMusicForShop();
         _buyIngredients.SetUpStall();
     }
 
@@ -247,6 +257,8 @@ public class GameManager : MonoBehaviour
 
     private void HandleFortune()
     {
+        gameRound++;
+        SetMusicForRound();
         _fortuneTeller = FindObjectOfType<fortuneTeller>();
         _playerData = FindObjectOfType<PlayerData>();
         
@@ -278,7 +290,54 @@ public class GameManager : MonoBehaviour
         
     }
 
+    private void SetMusicForRound()
+    {
+        shopMusic.Stop();
+        if (gameRound == 1 || gameRound == 2)
+        {
+            menuMusic.Stop();
+            morningMusic.Play();
+        }
+        if (gameRound == 3 || gameRound == 4)
+        {
+            
+            noonMusic.Play();
+        }
+        if (gameRound == 5 || gameRound == 6)
+        {
+            
+            afternoonMusic.Play();
+        }
+        if (gameRound == 7 || gameRound == 8)
+        {
+            
+            eveningMusic.Play();
+        }
+    }
+
+    private void SetMusicForShop()
+    {
+        if (gameRound == 1 || gameRound == 2)
+        {
+            morningMusic.Stop();
+        }
+        if (gameRound == 3 || gameRound == 4)
+        {
+            noonMusic.Stop();
+        }
+        if (gameRound == 5 || gameRound == 6)
+        {
+            afternoonMusic.Stop();
+        }
+        if (gameRound == 7)
+        {
+            eveningMusic.Stop();
+        }
+        shopMusic.Play();
+    }
 }
+
+
 
 public enum GameState
 {

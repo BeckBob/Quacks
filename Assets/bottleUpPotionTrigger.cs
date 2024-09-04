@@ -6,6 +6,9 @@ public class bottleUpPotionTrigger : MonoBehaviour
 {
     [SerializeField] private Renderer potionBottle;
     [SerializeField] private Renderer purifier;
+    [SerializeField] private AudioSource bigPlop;
+    [SerializeField] private AudioSource smallPlop;
+    [SerializeField] private AudioSource mediumPlop;
     public ChipPoints chipPoints;
     PlayerData playerData;
     
@@ -44,6 +47,18 @@ public class bottleUpPotionTrigger : MonoBehaviour
         {
 
             await chipPoints.MessageAboveCauldron("The last ingredient in the pot wasn't a cherrybomb AND the purifier bottle is empty, YOU IDIOT.");
+        }
+        if (other.gameObject.tag.Contains("One"))
+        {
+            smallPlop.Play();
+        }
+        if (other.gameObject.tag.Contains("Two") || other.gameObject.tag.Contains("Three"))
+        {
+            mediumPlop.Play();
+        }
+        if (other.gameObject.tag.Contains("Four"))
+        {
+            bigPlop.Play();
         }
     }
 
