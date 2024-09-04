@@ -13,8 +13,9 @@ public class PotionQuality : MonoBehaviour
 
     public ChipPoints _chipPoints;
     GrabIngredient _grabIngredient;
- 
-  
+
+    [SerializeField] AudioSource _bubble;
+    [SerializeField] AudioSource _explosion;
 
     [SerializeField] TextMeshProUGUI cherryBombsText;
     [SerializeField] TextMeshProUGUI cherryBombsText2;
@@ -24,6 +25,7 @@ public class PotionQuality : MonoBehaviour
     public int cherryBombLimit = 7;
 
     public bool nextIngredientTime = true;
+    [SerializeField] ParticleSystem Smoke;
 
     private Color originalTopColor;
     private Color originalVoronoiColor;
@@ -39,7 +41,28 @@ public class PotionQuality : MonoBehaviour
         originalVoronoiColor = potionOne.material.GetColor("_voronoiColor");
     }
 
-
+    public void SetSmokeColor(string Colour)
+    {
+        var main = Smoke.main;
+        if (Colour == "black")
+        {
+            main.startColor = Color.black;
+            Smoke.Play();
+        }
+        if (Colour == "green")
+        {
+            main.startColor = Color.green;
+            Smoke.Play();
+        }
+        if (Colour == "red")
+        {
+            main.startColor = Color.red;
+            Smoke.Play();
+            FunctionTimer.Create(() => SetSmokeColor("green"), 5f);
+        }
+        
+        
+    }
     public void ResetCherryBombs()
     {
         _cherryBombs = 0;
@@ -100,8 +123,15 @@ public class PotionQuality : MonoBehaviour
 
             if (_cherryBombs > cherryBombLimit)
             {
-                StartCoroutine(FadeToColor(potionOne.material, fadeColor, Color.grey));
+                StartCoroutine(FadeToColor(potionOne.material, fadeColor, Color.black));
                 _chipPoints.PotExplosionEndRound();
+                _explosion.Play();
+                SetSmokeColor("black");
+            }
+            else
+            {
+                _bubble.Play();
+                SetSmokeColor("red");
             }
         }
         else if (other.gameObject.CompareTag("cherryBombTwo"))
@@ -111,8 +141,15 @@ public class PotionQuality : MonoBehaviour
 
             if (_cherryBombs > cherryBombLimit)
             {
-                StartCoroutine(FadeToColor(potionOne.material, fadeColor, Color.grey));
+                StartCoroutine(FadeToColor(potionOne.material, fadeColor, Color.black));
                 _chipPoints.PotExplosionEndRound();
+                _explosion.Play();
+                SetSmokeColor("black");
+            }
+            else
+            {
+                _bubble.Play();
+                SetSmokeColor("red");
             }
         }
         else if (other.gameObject.CompareTag("cherryBombThree"))
@@ -122,8 +159,15 @@ public class PotionQuality : MonoBehaviour
 
             if (_cherryBombs > cherryBombLimit)
             {
-                StartCoroutine(FadeToColor(potionOne.material, fadeColor, Color.grey));
+                StartCoroutine(FadeToColor(potionOne.material, fadeColor, Color.black));
                 _chipPoints.PotExplosionEndRound();
+                _explosion.Play();
+                SetSmokeColor("black");
+            }
+            else
+            {
+                _bubble.Play();
+                SetSmokeColor("red");
             }
         }
         _grabIngredient = FindObjectOfType<GrabIngredient>();

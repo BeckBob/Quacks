@@ -78,8 +78,6 @@ public class ChipPoints : MonoBehaviour
     [SerializeField] GameObject bagSphere;
 
 
-    [SerializeField] ParticleSystem Smoke;
-
     [SerializeField] GameObject Ruby1;
     [SerializeField] GameObject Ruby2;
     [SerializeField] GameObject Ruby3;
@@ -163,24 +161,10 @@ public class ChipPoints : MonoBehaviour
     }
     //TWO FUNCTIONS
 
-    void SetSmokeColor(string Colour)
-    {
-        var main = Smoke.main;
-        if (Colour == "black") {
-            main.startColor = Color.black; }
-        if (Colour == "green")
-        {
-            main.startColor = Color.green;
-        }
-        if (Colour == "red")
-        {
-            main.startColor = Color.red;
-        }
-    }
+
     public async void PotExplosionEndRound()
     {
-        SetSmokeColor("black");
-        Smoke.Play();
+        
 
         _playerData = FindObjectOfType<PlayerData>();
         if (crowSkullRule == 3)
@@ -271,15 +255,12 @@ public class ChipPoints : MonoBehaviour
 
     public async void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.tag.Contains("cherryBomb"))
-        {
-            SetSmokeColor("red");
-        }
+       
         Debug.Log(other.gameObject.tag);
         ingredientsList.Add(other.gameObject.tag);
         extraPoints = 0; extraRubies = 0;
         lastIngredient = other.gameObject.tag;
-        Smoke.Play();
+        
 
         if (mushroomRule == 1)
         {
@@ -785,7 +766,7 @@ public class ChipPoints : MonoBehaviour
             cauldronScoreBack.text = Score.ToString();
             CountIngredientsInPot();
             ChangePotionHeight();
-            FunctionTimer.Create(() => SetSmokeColor("green"), 5f);
+            
             
         }
     }
@@ -883,7 +864,7 @@ public class ChipPoints : MonoBehaviour
 
     public async void EndRoundSafely()
     {
-        Smoke.Play();
+        
         //afterRoundfFortuneEffects
         AfterRoundChipEffects();
         await _fortuneManager.PostRoundFortuneEffects();
@@ -2432,8 +2413,8 @@ public class ChipPoints : MonoBehaviour
         quality.ResetCherryBombs();
         quality.SetCherryBombText();
         ResetInsidePot();
-        Smoke.Stop();
-        SetSmokeColor("green");
+       
+        
 
         if (winnerManager.round == 9)
         {
@@ -2597,6 +2578,7 @@ public class ChipPoints : MonoBehaviour
         ChangeSceneryDependingOnRound();
         ChangePotionHeight();
         bottleUp.GetComponent<bottleUpPotionTrigger>().ReserPotionBottle();
+        quality.SetSmokeColor("green");
         GameManager.Instance.UpdateGameState(GameState.FortuneTeller);
     }
 
@@ -2764,7 +2746,7 @@ public class ChipPoints : MonoBehaviour
 
     public async Task MessageAboveCauldron(string message)
     {
-        Smoke.Play();
+        
         buttonsToAddLeftover.SetActive(true);
         button5.SetActive(true);
         aboveCauldronText.text = message;
@@ -2772,7 +2754,7 @@ public class ChipPoints : MonoBehaviour
         await CheckWhichChoice();
         ResetChoices();
         aboveCauldronText.text = "";
-        Smoke.Stop();
+        
 
 
     }
@@ -2802,7 +2784,7 @@ public class ChipPoints : MonoBehaviour
     }
     public async Task MessageAboveCauldronMultipleChoice(int num, string message, string choice1, string choice2, string choice3, string choice4, string choice5)
     {
-        Smoke.Play();
+        
         buttonsToAddLeftover.SetActive(true);
         if (num == 0)
         {
@@ -2877,7 +2859,7 @@ public class ChipPoints : MonoBehaviour
 
         await CheckWhichChoice();
         aboveCauldronText.text = "";
-        Smoke.Stop();
+        
     }
 
     public void InstantiateOverPot(int num)
