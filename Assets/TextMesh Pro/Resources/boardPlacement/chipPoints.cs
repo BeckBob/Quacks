@@ -159,6 +159,7 @@ public class ChipPoints : MonoBehaviour
         _fortuneManager = FindObjectOfType<FortuneManager>();
         CountIngredientsInPot();
         startHeightPotion = potionOne.transform.position.y;
+        winnerManager = FindObjectOfType<WinnerManager>();
 
 
     }
@@ -2786,6 +2787,11 @@ public class ChipPoints : MonoBehaviour
                 targetY,
                 potionOne.transform.position.z
             );
+            bottleUp.transform.position = new Vector3(
+               potionOne.transform.position.x,
+               targetY,
+               potionOne.transform.position.z
+           );
         }
     }
     public async Task MessageAboveCauldronMultipleChoice(int num, string message, string choice1, string choice2, string choice3, string choice4, string choice5)

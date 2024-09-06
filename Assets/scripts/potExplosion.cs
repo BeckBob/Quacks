@@ -20,7 +20,7 @@ public class PotExplosion : MonoBehaviour
             StartCoroutine(FadeToColor(potionOne, Color.red, Color.magenta));
 
             
-            FunctionTimer.Create(() => StartCoroutine(ReturnColor()), 3f);
+            FunctionTimer.Create(() => StartCoroutine(ReturnColor()), 5f);
         }
     }
 

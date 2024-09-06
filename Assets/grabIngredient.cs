@@ -190,7 +190,8 @@ public class GrabIngredient : MonoBehaviour
             _potionQuality = FindObjectOfType<PotionQuality>();
             if (other.gameObject.CompareTag("hand"))
             {
-                
+                fortuneDrawTime = false;
+
                 System.Random rand = new();
                 int num = rand.Next(0, bagContents.Count -1);
                 int nextIngredient = bagContents[num];
@@ -232,13 +233,17 @@ public class GrabIngredient : MonoBehaviour
                 CountIngredientsInBag();
                 CountDrawnIngredients(num);
                 CountDrawnIngredientsForUpgrading(num);
-                 
+
+                
+
                 int leftToDraw = fortuneDrawAmount - fortuneDrawn;
                 aboveCauldronText.text = $"You have {leftToDraw} ingredients left to draw!";
-              
+
+                FunctionTimer.Create(() => fortuneDrawTime = true, 5f);
+
             }
         }
-        if (bagContents.Count > 0 && _cherryBombs <= _cherryBombLimit)
+        else if (bagContents.Count > 0 && _cherryBombs <= _cherryBombLimit)
         {
             _potionQuality = FindObjectOfType<PotionQuality>();
             
@@ -259,6 +264,8 @@ public class GrabIngredient : MonoBehaviour
             }
         }
     }
+
+ 
 
     public void ResetBagContents()
     {

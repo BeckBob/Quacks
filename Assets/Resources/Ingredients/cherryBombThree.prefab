@@ -367,6 +367,7 @@ GameObject:
   - component: {fileID: 8611281738548554689}
   - component: {fileID: 8170224602078246090}
   - component: {fileID: 1919292742910452386}
+  - component: {fileID: 5691295286184200979}
   m_Layer: 0
   m_Name: cherryBombThree
   m_TagString: cherryBombThree
@@ -383,7 +384,7 @@ Transform:
   m_GameObject: {fileID: 6723563717865748532}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.530143, y: 4.1, z: -8.102652}
+  m_LocalPosition: {x: 0.72088015, y: 4.480066, z: -8.581355}
   m_LocalScale: {x: 0.110608056, y: 0.110608056, z: 0.110608056}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -610,3 +611,25 @@ MonoBehaviour:
   m_StartingSingleGrabTransformers: []
   m_StartingMultipleGrabTransformers: []
   m_AddDefaultGrabTransformers: 1
+--- !u!64 &5691295286184200979
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6723563717865748532}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 0}
