@@ -29,16 +29,20 @@ public class PotionQuality : MonoBehaviour
 
     private Color originalTopColor;
     private Color originalVoronoiColor;
+    private Color originalFoamColor;
     public float fadeDuration = 1.0f; 
    
     public Color objectColor = Color.green;
     public Color fadeColor = Color.black;
+
+    
 
     private void Start()
     {
         
         originalTopColor = potionOne.material.GetColor("_topColor");
         originalVoronoiColor = potionOne.material.GetColor("_voronoiColor");
+        originalFoamColor = potionOne.material.GetColor("_foamColour");
     }
 
     public void SetSmokeColor(string Colour)
@@ -46,12 +50,12 @@ public class PotionQuality : MonoBehaviour
         var main = Smoke.main;
         if (Colour == "black")
         {
-            main.startColor = Color.black;
+            main.startColor = Color.white;
             Smoke.Play();
         }
         if (Colour == "green")
         {
-            main.startColor = Color.green;
+            main.startColor = new Color(0.325601f, 0.5849056f, 0.2731399f, 1f);
             Smoke.Play();
         }
         if (Colour == "red")
@@ -123,7 +127,7 @@ public class PotionQuality : MonoBehaviour
 
             if (_cherryBombs > cherryBombLimit)
             {
-                StartCoroutine(FadeToColor(potionOne.material, fadeColor, Color.black));
+                StartCoroutine(FadeToColor(potionOne.material, fadeColor, Color.black, Color.black));
                 _chipPoints.PotExplosionEndRound();
                 _explosion.Play();
                 SetSmokeColor("black");
@@ -141,7 +145,7 @@ public class PotionQuality : MonoBehaviour
 
             if (_cherryBombs > cherryBombLimit)
             {
-                StartCoroutine(FadeToColor(potionOne.material, fadeColor, Color.black));
+                StartCoroutine(FadeToColor(potionOne.material, fadeColor, Color.black, Color.black));
                 _chipPoints.PotExplosionEndRound();
                 _explosion.Play();
                 SetSmokeColor("black");
@@ -159,7 +163,7 @@ public class PotionQuality : MonoBehaviour
 
             if (_cherryBombs > cherryBombLimit)
             {
-                StartCoroutine(FadeToColor(potionOne.material, fadeColor, Color.black));
+                StartCoroutine(FadeToColor(potionOne.material, fadeColor, Color.black, Color.black));
                 _chipPoints.PotExplosionEndRound();
                 _explosion.Play();
                 SetSmokeColor("black");
@@ -176,11 +180,12 @@ public class PotionQuality : MonoBehaviour
         SetCherryBombText();
     }
 
-    private IEnumerator FadeToColor(Material material, Color targetTopColor, Color targetVoronoiColor)
+    private IEnumerator FadeToColor(Material material, Color targetTopColor, Color targetVoronoiColor, Color targetFoamColour)
     {
         float elapsedTime = 0.0f;
         Color startTopColor = material.GetColor("_topColor");
         Color startVoronoiColor = material.GetColor("_voronoiColor");
+        Color startFoamColor = material.GetColor("_foamColour");
 
         while (elapsedTime < fadeDuration)
         {
@@ -190,6 +195,7 @@ public class PotionQuality : MonoBehaviour
             
             material.SetColor("_topColor", Color.Lerp(startTopColor, targetTopColor, t));
             material.SetColor("_voronoiColor", Color.Lerp(startVoronoiColor, targetVoronoiColor, t));
+            material.SetColor("_foamColour", Color.Lerp(startFoamColor, targetFoamColour, t));
 
             yield return null; 
         }
@@ -197,6 +203,7 @@ public class PotionQuality : MonoBehaviour
         
         material.SetColor("_topColor", targetTopColor);
         material.SetColor("_voronoiColor", targetVoronoiColor);
+        material.SetColor("_foamColour", startFoamColor);
     }
 
     public void ResetPotionColour()
