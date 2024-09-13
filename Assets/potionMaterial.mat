@@ -143,7 +143,7 @@ Material:
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _NormalsSpeed: {r: 0, g: 0.1, b: 0, a: 0}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
-    - _foamColour: {r: 1024, g: 1024, b: 1024, a: 1}
+    - _foamColour: {r: 1825.2128, g: 1825.2128, b: 1825.2128, a: 1}
     - _foamOffset: {r: 0, g: 0, b: 0, a: 0}
     - _sideColor: {r: 0.8113208, g: 0.34204894, b: 0.22579211, a: 0}
     - _topColor: {r: 0.03529412, g: 0.058546998, b: 0.07450981, a: 0.5254902}

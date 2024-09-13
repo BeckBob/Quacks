@@ -85,6 +85,11 @@ public class WinnerManager : NetworkBehaviour
     [SerializeField] GameObject BlueFutureCanvas;
     [SerializeField] GameObject YellowFutureCanvas;
 
+    [SerializeField] GameObject purpleConfetti;
+    [SerializeField] GameObject redConfetti;
+    [SerializeField] GameObject blueConfetti;
+    [SerializeField] GameObject yellowConfetti;
+
     [SerializeField] GameObject RedDice;
     [SerializeField] GameObject BlueDice;
     [SerializeField] GameObject YellowDice;
@@ -441,8 +446,7 @@ public class WinnerManager : NetworkBehaviour
         Debug.Log(GameWinnerScore.Value);
         if (GameWinnerScore.Value == RedVictoryPoints.Value)
         {
-            //add name of red player to array
-            //leave lobby button on book.
+            redConfetti.SetActive(true);
             if (_playerData.Colour.Value == "Red")
             {
                 aboveCauldronUIRed.SetActive(true);
@@ -460,12 +464,11 @@ public class WinnerManager : NetworkBehaviour
                 ResetReady();
                 ShowWinnerUI();
             }
-            // UI announcing they won - in book and above head?
-            //instantiate dice in front of them and add whatever it lands on to their player Data
+           
         }
         if (GameWinnerScore.Value == YellowVictoryPoints.Value)
         {
-            
+            yellowConfetti.SetActive(true);
             if (_playerData.Colour.Value == "Yellow")
             {
                 Debug.Log("YOU WON");
@@ -486,7 +489,7 @@ public class WinnerManager : NetworkBehaviour
         }
         if (GameWinnerScore.Value == BlueVictoryPoints.Value)
         {
-           
+           blueConfetti.SetActive(true);
             if (_playerData.Colour.Value == "Blue")
             {
                 Debug.Log("YOU WON");
@@ -507,7 +510,7 @@ public class WinnerManager : NetworkBehaviour
         }
         if (GameWinnerScore.Value == PurpleVictoryPoints.Value)
         {
-           
+           purpleConfetti.SetActive(true);
             if (_playerData.Colour.Value == "Purple")
             {
                 Debug.Log("YOU WON");
