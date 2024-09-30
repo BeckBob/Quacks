@@ -1,11 +1,19 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem; 
 
 public class AnimatorScript : MonoBehaviour
 {
    
     Animator animator;
+
+    public bool isWalking = false;
+
+    [SerializeField] private float speed = 2.0f;
+ 
+
+
     void Start()
     {
         animator = GetComponent<Animator>();
@@ -14,16 +22,19 @@ public class AnimatorScript : MonoBehaviour
     public void StartWalking()
     {
         animator.SetBool("isWalking", true);
+        isWalking = true;
     }
 
     public void StopWalking()
     {
         animator.SetBool("isWalking", false);
+        isWalking = false;
     }
 
-    public void StartTalking()
+    public void StartTalking(int time)
     {
         animator.SetBool("isTalking", true);
+        FunctionTimer.Create(() => StopTalking(), time);
     }
 
     public void StopTalking()
@@ -35,13 +46,28 @@ public class AnimatorScript : MonoBehaviour
     {
         animator.SetBool("isTalkingDramatic", false);
     }
-    public void StartDramaticTalking()
+    public void StartDramaticTalking(int time)
     {
         animator.SetBool("isTalkingDramatic", true);
+        FunctionTimer.Create(() => StopTalking(), time);
     }
 
     public void GoodJobAnimation()
     {
         animator.SetTrigger("goodJobTrigger");
+    }
+
+    public void TurnWizard()
+    {
+        transform.rotation *= Quaternion.Euler(0, 90, 0);
+    }
+
+    private void Update()
+    {
+        if (isWalking)
+        {
+            transform.Translate(Vector3.back * Time.deltaTime * speed);
+           
+        };
     }
 }

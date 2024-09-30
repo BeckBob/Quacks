@@ -22,14 +22,15 @@ public class fortuneTeller : MonoBehaviour
     [SerializeField] GameObject potionBottle;
     [SerializeField] GameObject purifierBottle;
 
+    AnimatorScript _animatorScript; 
     
     private string _fortuneText;
    
    //ublic ChoiceOne _choiceOne;
    //lic ChoiceTwo _choiceTwo;
-    void Awake()
+    void Start()
     {
-      
+      _animatorScript = GetComponent<AnimatorScript>();
     
 
     }
@@ -64,7 +65,7 @@ public class fortuneTeller : MonoBehaviour
             choiceOne.text = "Pick one ingredient worth 4 points";
             choiceTwo.text = "trade rat tails for victory points";
             Debug.Log(choiceOne.text);
-
+            _animatorScript.StartTalking(4);
             //PRE- ROUND FUNCTION let them pick a 1 4 chip for one button that leads to shop layout AND other one adds victory point for every rat tail
         }
         if (fortuneNum == 1)
@@ -72,16 +73,19 @@ public class fortuneTeller : MonoBehaviour
             _button3.SetActive(true);
             //close fortune button
             //AFTER-ROUND FUNCTION give extra ruby is end on ruby space
+            _animatorScript.StartTalking(6);
         }
         if (fortuneNum == 2)
         {
             _button3.SetActive(true);
             //close fortune button
             //AFTER-ROUND FUNCTION if pot explodes player++ gets a level 2 ingredient.
+            _animatorScript.StartTalking(6);
         }
         if (fortuneNum == 3)
         {
             _button3.SetActive(true);
+            _animatorScript.StartTalking(6);
             //close fortune buttom
             //DURING-ROUND FUNCTION first cherry bomb out multiple choice to remove ingredient or leave it. - if remove - add back to bag contents list and undo score changes.
         }
@@ -89,7 +93,7 @@ public class fortuneTeller : MonoBehaviour
         {
             _button1.SetActive(true);
             _button2.SetActive(true);
-           
+            _animatorScript.StartTalking(6);
 
             choiceOne.text = "trade rat tails for rubies";
             choiceTwo.text = "keep rat tails";
@@ -101,13 +105,15 @@ public class fortuneTeller : MonoBehaviour
         {
             _button3.SetActive(true);
             //close fortune button
-        
+            _animatorScript.StartTalking(6);
+
             //PRE-ROUND add 2 to cherrybomb limit END OF ROUND Minus two.
         }
         if(fortuneNum==6)
         {
             _button3.SetActive(true);
             //PRE ROUND Double the number of rat tails this round
+            _animatorScript.StartTalking(6);
         }
         if(fortuneNum==7)
         {
@@ -118,22 +124,26 @@ public class fortuneTeller : MonoBehaviour
 
             choiceOne.text = "take 4 victory points";
             choiceTwo.text = "remove one white chip from bag";
+            _animatorScript.StartTalking(6);
             //PRE ROUND - take 4 victory points or remove one white chip from your bag
         }
         if(fortuneNum==8)
         {
             _button3.SetActive(true);
             //AFTER ROUND - any player that gets to roll the die this round rolls it twice.
+            _animatorScript.StartTalking(6);
         }
         if (fortuneNum == 9)
         {
             _button3.SetActive(true);
             //PRE ROUND - the player with the fewest victory points recieves one small spider
+            _animatorScript.StartTalking(6);
         }
         if (fortuneNum == 10)
         {
             _button3.SetActive(true);
             //AFTER ROUND - if you reach a scoring space with a ruby this round you get 2 extra victory points, even if your pot explodes.
+            _animatorScript.StartTalking(6);
         }
         if (fortuneNum == 11)
         {
@@ -143,18 +153,20 @@ public class fortuneTeller : MonoBehaviour
 
             choiceOne.text = "take 1 moth or any medium ingredient";
             choiceTwo.text = "take 3 rubies";
+            _animatorScript.StartTalking(6);
             //PRE ROUND - either open up shop with only medium ingredients and moth or add 3 rubies to players inventory
         }
         if (fortuneNum == 12)
         {
             _button3.SetActive(true);
             //PRE ROUND - adds droplet to everyones potion.
+            _animatorScript.StartTalking(6);
         }
         if (fortuneNum == 13)
         {
             _button1.SetActive(true);
             _button2.SetActive(true);
-        
+            _animatorScript.StartTalking(6);
 
             choiceOne.text = "add 2 droplets";
             choiceTwo.text = "take one ghosts breath";
@@ -164,11 +176,14 @@ public class fortuneTeller : MonoBehaviour
         {
             _button3.SetActive(true);
             //AFTER ROUND you stopped without an explosion, draw up to 5 chips from your bag. You may place 1 of them in your pot.
+            _animatorScript.StartTalking(6);
         }
         if (fortuneNum == 15)
         {
             _button3.SetActive(true);
             //Pre Round All players draw 5 ingredients.The player with the lowest sum takes a medium skull, everyone else gets a ruby.
+            _animatorScript.StartTalking(6);
+
         }
         if (fortuneNum == 16)
         {
@@ -176,47 +191,65 @@ public class fortuneTeller : MonoBehaviour
             _button2.SetActive(true);
             //hoiceOne = FindObjectOfType<ChoiceOne>();
             //hoiceTwo = FindObjectOfType<ChoiceTwo>();
+            _animatorScript.StartTalking(6);
+
 
             choiceOne.text = "trade";
             choiceTwo.text = "keep rubies";
             //PRE ROUND - You can trade 1 ruby for any small ingredient - open shop if choose trade but with only small ingredients
+            _animatorScript.StartTalking(6);
+
         }
         if (fortuneNum == 17)
         {
             _button3.SetActive(true);
+            _animatorScript.StartTalking(6);
+
             //DURING ROUND In this round, every pumpkin add an extra 1 to potion. -have this set a boolean true in chippoints that adds 1 in pumpkin if statements
         }
         if (fortuneNum == 18)
         {
             _button3.SetActive(true);
+            _animatorScript.StartTalking(6);
+
             //AFTERROUND-the end of the round all flasks get a free refill.
         }
-        if(fortuneNum == 19)
+        if (fortuneNum == 19)
         {
             _button3.SetActive(true);
+            _animatorScript.StartTalking(6);
+
             // END OF ROUND - "If your white chips total exactly 7 at the end of the round you get to add a droplet to your potion.
         }
-        if(fortuneNum== 20)
+        if (fortuneNum== 20)
         {
             _button3.SetActive(true);
+            _animatorScript.StartTalking(6);
+
             // PRE ROUND DICE FUNCTION - "Everyone rolls the victory die once and get the bonus shown."
         }
-        if(fortuneNum == 21)
+        if (fortuneNum == 21)
         {
             _button3.SetActive(true) ;
+            _animatorScript.StartTalking(6);
+
             // PRE ROUND - "The player with the fewest rubies receive one ruby."
         }
-        if(fortuneNum == 22)
+        if (fortuneNum == 22)
         {
             _button3.SetActive(true);
+            _animatorScript.StartTalking(6);
+
             //DURING ROUND MULTIPLE CHOICE BUTTONS APPEAR - After you have places the first 5 ingredients in your pot, choose to continue OR begin the round all over again – but you get this choice only once."
         }
-        if(fortuneNum == 23)
+        if (fortuneNum == 23)
         {
             _button3.SetActive(true);
+            _animatorScript.StartTalking(6);
+
             //PRE ROUND - "Draw 4 chips from your bag/ You may trade in 1 of them for a chip of the same colour with the next higher value. If you can’t make a trade take a small spider. Put all chips back in the bag." - shop pops up with all the icons of the ingredients drawn.
         }
-        Debug.Log("buttons should be active");
+      
     }
 
     // do ifs for each index and what the fortune does, if multiple choice if leads to function for all multiple choice ones to let you choose otherwise just a button to press okay. functions for fortunes that effect pre game, mid game or after game that we then call in the game manager.

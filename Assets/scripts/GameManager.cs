@@ -45,12 +45,17 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject _redPlayerSpace;
     private TeleportationManager _teleportationManager;
 
+    AnimatorScript _animationScript;
+
     [SerializeField] private AudioSource menuMusic;
     [SerializeField] private AudioSource shopMusic;
     [SerializeField] private AudioSource morningMusic;
     [SerializeField] private AudioSource noonMusic;
     [SerializeField] private AudioSource afternoonMusic;
     [SerializeField] private AudioSource eveningMusic;
+
+    [SerializeField] private GameObject wizardLocation;
+    [SerializeField] private GameObject wizardCharacter;
 
     private FortuneNumber _fortuneNumber;
     private PlayerData _playerData;
@@ -63,6 +68,8 @@ public class GameManager : MonoBehaviour
     public GameState State;
 
     private int gameRound = 0;
+
+    Vector3 centralSpot;
     
 
     public static event Action<GameState> OnGameStateChanged;
@@ -76,6 +83,8 @@ public class GameManager : MonoBehaviour
         _buyIngredients = FindObjectOfType<BuyIngredients>();
         _chipPoints = FindObjectOfType<ChipPoints>();
         lobbySettings = FindObjectOfType<LobbySettings>();
+        _animationScript = FindObjectOfType<AnimatorScript>();
+        centralSpot = wizardLocation.transform.position;
     }
 
     void Start()
@@ -191,8 +200,9 @@ public class GameManager : MonoBehaviour
     {
         
             _winnerManager.RoundWinner();
-      
-        
+            _animationScript.StopWalking();
+            wizardCharacter.transform.position = centralSpot;
+
     }
 
     private void HandleLobby()
@@ -210,6 +220,7 @@ public class GameManager : MonoBehaviour
 
     private async void HandlePotionMaking()
     {
+        _animationScript.StartWalking();
         _playerData = FindObjectOfType<PlayerData>();
 
         _winnerManager.ReadyUp();
@@ -261,7 +272,7 @@ public class GameManager : MonoBehaviour
         SetMusicForRound();
         _fortuneTeller = FindObjectOfType<fortuneTeller>();
         _playerData = FindObjectOfType<PlayerData>();
-        
+        NewRoundWiz();
         _purplePlayerSpace.SetActive(true);
         _yellowPlayerSpace.SetActive(true);
         _redPlayerSpace.SetActive(true);
@@ -288,6 +299,15 @@ public class GameManager : MonoBehaviour
         _fortuneNumber.FortuneNumberGenerator();
         
         
+    }
+
+    private void NewRoundWiz()
+    {
+        wizardCharacter.transform.position = centralSpot;
+
+        _animationScript.StartDramaticTalking(3);
+
+        //do if statements for which sound bite to use for round 1, 2, etc.
     }
 
     private void SetMusicForRound()
