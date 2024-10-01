@@ -16,10 +16,7 @@ public class LobbyItem : MonoBehaviour
 
     [SerializeField]
     Image image;
-    [SerializeField]
-    TextMeshProUGUI victoryPoint;
-    [SerializeField] TextMeshProUGUI rubies;
-    [SerializeField] TextMeshProUGUI ratTails;
+
 
 
     public void TrackPlayer(GameObject player)

@@ -62,6 +62,8 @@ public class ChipPoints : MonoBehaviour
     public List<GameObject> ingredients;
     WinnerManager winnerManager;
     GrabIngredient grabIngredient;
+    AnimatorScript _animatorScript;
+
     [SerializeField] GameObject button1;
     [SerializeField] GameObject button2;
     [SerializeField] GameObject button3;
@@ -160,7 +162,7 @@ public class ChipPoints : MonoBehaviour
         CountIngredientsInPot();
         startHeightPotion = potionOne.transform.position.y;
         winnerManager = FindObjectOfType<WinnerManager>();
-
+        _animatorScript = FindObjectOfType<AnimatorScript>();
 
     }
     //TWO FUNCTIONS
@@ -2494,14 +2496,15 @@ public class ChipPoints : MonoBehaviour
             choiceOne.text = "Buy droplet";
             button2.SetActive(true);
             int rubiesToSpend = _playerData.Rubies.Value;
-            
+
             if (_playerData.PurifierFull.Value == false)
             {
                 buttonsToAddLeftover.SetActive(true);
                 button5.SetActive(true);
+                _animatorScript.StartTalking(5);
                 aboveCauldronText.text = $"You have {rubiesToSpend} rubies, do you want to buy a droplet or refill your purifier potion?";
                 choiceTwo.text = "Buy refill of purifier potion";
-                
+
                 await CheckWhichChoice();
                 if (choiceOneCauldron)
                 {
@@ -2526,6 +2529,7 @@ public class ChipPoints : MonoBehaviour
             else
             {
                 buttonsToAddLeftover.SetActive(true);
+                _animatorScript.StartTalking(4);
                 aboveCauldronText.text = $"You have {rubiesToSpend} rubies, do you want to buy a droplet?";
                 choiceTwo.text = "Skip";
 
@@ -2541,6 +2545,15 @@ public class ChipPoints : MonoBehaviour
                 ResetChoices();
 
             }
+        }
+        else
+        {
+            buttonsToAddLeftover.SetActive(true);
+            _animatorScript.StartTalking(4);
+            aboveCauldronText.text = $"You don't have enough rubies to spend!";
+            choiceTwo.text = "Okay";
+            await CheckWhichChoice();
+            ResetChoices();
         }
         Debug.Log("end spend rubies ui");
         ReadyForNextRound();
@@ -2565,6 +2578,7 @@ public class ChipPoints : MonoBehaviour
         int ratTails = _playerData.RatTails.Value;
         buttonsToAddLeftover.SetActive(true);
         button5.SetActive(true);
+        _animatorScript.StartTalking(4);
         aboveCauldronText.text = $"You have {ratTails} rat tails to add to your pot this round";
         Score += ratTails;
         
@@ -2578,7 +2592,7 @@ public class ChipPoints : MonoBehaviour
         resetScoreText();
         ResetChoices();
         ResetStuffInBook();
-        Debug.Log("about to go into fortune teller");
+       
         winnerManager.ReadyUp();
         await winnerManager.CheckAllPlayersReady();
         winnerManager.ResetReady();
@@ -2597,7 +2611,8 @@ public class ChipPoints : MonoBehaviour
        _playerData.Rubies.Value -= 2;
        ResetScore();
        resetScoreText();
-       ChangeRubyUI(); 
+       ChangeRubyUI();
+       _animatorScript.StartTalking(1);
     }
 
     public void FillPurifier()
@@ -2606,6 +2621,7 @@ public class ChipPoints : MonoBehaviour
         _playerData.PurifierFull.Value = true;
         bottleUp.GetComponent<bottleUpPotionTrigger>().ReserPurifier();
         ChangeRubyUI();
+        _animatorScript.StartTalking(1);
         //when have proper 3d model fill with the liquid.
     }
 
@@ -2884,8 +2900,10 @@ public class ChipPoints : MonoBehaviour
     {
         await MessageAboveCauldron("END OF GAME! Time to add up extra points!");
         int pointsFromRubies = _playerData.Rubies.Value / 2;
+        _animatorScript.StartTalking(5);
         await MessageAboveCauldron($"You get a victory point for every 2 Rubies, giving you {pointsFromRubies} Victory Points");
         int pointsFromMoney = _playerData.Coins.Value / 5;
+        _animatorScript.StartTalking(5);
         await MessageAboveCauldron($"You get a victory point for every 5 Coins, giving you {pointsFromMoney} Victory Points");
     }
 

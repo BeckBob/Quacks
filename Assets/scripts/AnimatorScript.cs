@@ -8,6 +8,8 @@ public class AnimatorScript : MonoBehaviour
    
     Animator animator;
 
+    WizardTurnCollolider turnCollolider;
+
     public bool isWalking = false;
 
     [SerializeField] private float speed = 2.0f;
@@ -17,6 +19,7 @@ public class AnimatorScript : MonoBehaviour
     void Start()
     {
         animator = GetComponent<Animator>();
+        turnCollolider = FindObjectOfType<WizardTurnCollolider>();
     }
 
     public void StartWalking()
@@ -29,6 +32,7 @@ public class AnimatorScript : MonoBehaviour
     {
         animator.SetBool("isWalking", false);
         isWalking = false;
+        turnCollolider.resetFirstTurn();
     }
 
     public void StartTalking(int time)
@@ -40,6 +44,7 @@ public class AnimatorScript : MonoBehaviour
     public void StopTalking()
     {
         animator.SetBool("isTalking", false);
+
     }
 
     public void StopDramaticTalking()
@@ -49,7 +54,8 @@ public class AnimatorScript : MonoBehaviour
     public void StartDramaticTalking(int time)
     {
         animator.SetBool("isTalkingDramatic", true);
-        FunctionTimer.Create(() => StopTalking(), time);
+        
+        FunctionTimer.Create(() => StopDramaticTalking(), time);
     }
 
     public void GoodJobAnimation()

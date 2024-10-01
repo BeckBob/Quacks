@@ -28,9 +28,9 @@ public class fortuneTeller : MonoBehaviour
    
    //ublic ChoiceOne _choiceOne;
    //lic ChoiceTwo _choiceTwo;
-    void Start()
+    void Awake()
     {
-      _animatorScript = GetComponent<AnimatorScript>();
+      _animatorScript = FindObjectOfType<AnimatorScript>();
     
 
     }

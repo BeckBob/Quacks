@@ -333,13 +333,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 7956921862830868617}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 160d6a7a199a4c54381329813dd77de6, type: 3}
+  m_Script: {fileID: 11500000, guid: 22018e995ade55648988249431ff1da8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   NameUI: {fileID: 3472459127974292317}
   Tick: {fileID: 3808135404410579816}
   Cross: {fileID: 4533314162768021896}
   image: {fileID: 4944604482884080000}
+  victoryPoint: {fileID: 0}
+  rubies: {fileID: 0}
+  ratTails: {fileID: 0}
 --- !u!1 &8012585595211497255
 GameObject:
   m_ObjectHideFlags: 0

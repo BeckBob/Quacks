@@ -34,6 +34,8 @@ TagManager:
   - Red
   - Blue
   - Purple
+  - wizard
+  - walkSpot
   layers:
   - Default
   - TransparentFX

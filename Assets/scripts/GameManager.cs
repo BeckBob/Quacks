@@ -6,6 +6,8 @@ using UnityEngine.Rendering.UI;
 using System;
 using Unity.Services.Lobbies.Models;
 using System.Runtime.CompilerServices;
+using TMPro;
+using System.Threading.Tasks;
 
 
 public class GameManager : MonoBehaviour
@@ -63,7 +65,9 @@ public class GameManager : MonoBehaviour
     private BuyIngredients _buyIngredients;
     private ChipPoints _chipPoints;
     private LobbySettings lobbySettings;
-  
+
+    [SerializeField] private TextMeshProUGUI _bigText;
+
     fortuneTeller _fortuneTeller;
     public GameState State;
 
@@ -193,6 +197,7 @@ public class GameManager : MonoBehaviour
         }
         _chipPoints = FindObjectOfType<ChipPoints>();
         _chipPoints.SpendRubiesUI();
+       
 
     }
     
@@ -266,13 +271,14 @@ public class GameManager : MonoBehaviour
         _chipPoints.ResetStuffInBook();
     }
 
-    private void HandleFortune()
+    private async void HandleFortune()
     {
         gameRound++;
         SetMusicForRound();
         _fortuneTeller = FindObjectOfType<fortuneTeller>();
         _playerData = FindObjectOfType<PlayerData>();
-        NewRoundWiz();
+        
+        
         _purplePlayerSpace.SetActive(true);
         _yellowPlayerSpace.SetActive(true);
         _redPlayerSpace.SetActive(true);
@@ -295,19 +301,44 @@ public class GameManager : MonoBehaviour
         {
             _fortuneTextYellow.SetActive(true);
         }
-
+        await NewRoundWiz();
         _fortuneNumber.FortuneNumberGenerator();
         
         
     }
 
-    private void NewRoundWiz()
+    private async Task NewRoundWiz()
     {
         wizardCharacter.transform.position = centralSpot;
 
         _animationScript.StartDramaticTalking(3);
 
-        //do if statements for which sound bite to use for round 1, 2, etc.
+    
+        string[] roundMessages =
+        {
+        "Round One!", "Round Two!", "Round Three!",
+        "Round Four!", "Round Five!", "Round Six!",
+        "Round Seven!", "Round Eight!"
+    };
+
+       
+        if (gameRound > 0 && gameRound <= roundMessages.Length)
+        {
+            await bigScreenText(roundMessages[gameRound - 1], 3);
+        }
+    }
+
+    private async Task bigScreenText(string text, int time)
+    {
+        _bigText.text = text;
+        await Task.Delay(time * 1000);  
+        undoBigScreenText();
+    }
+
+    private void undoBigScreenText () 
+        {
+        _bigText.text = "";
+        
     }
 
     private void SetMusicForRound()

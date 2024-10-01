@@ -69,6 +69,8 @@ public class WinnerManager : NetworkBehaviour
     private PlayerData _playerData;
     private ChipPoints _chipPoints;
     private GrabIngredient _grabIngredient;
+    private AnimatorScript _animatorScript;
+
     private int numberOfPlayers;
     private int MothNumbersBeaten;
     private bool TwoPlayerDraw = false;
@@ -126,6 +128,7 @@ public class WinnerManager : NetworkBehaviour
     {
 
         _networkConnect = FindObjectOfType<NetworkConnect>();
+        _animatorScript = FindObjectOfType<AnimatorScript>();
         YellowExists.Value = false;
         BlueExists.Value = false;
         RedExists.Value = false;
@@ -369,6 +372,7 @@ public class WinnerManager : NetworkBehaviour
             RedDice.SetActive(true);
             if (_playerData.Colour.Value == "Red")
             {
+                _animatorScript.GoodJobAnimation();
                 RedFutureCanvas.SetActive(false);
                 RedRoundWinCanvas.SetActive(true);
                 DiceFloor.SetActive(true);
@@ -386,6 +390,7 @@ public class WinnerManager : NetworkBehaviour
             YellowDice.SetActive(true);
             if (_playerData.Colour.Value == "Yellow")
             {
+                _animatorScript.GoodJobAnimation();
                 YellowFutureCanvas.SetActive(false);
                 YellowRoundWinCanvas.SetActive(true);
                 DiceFloor.SetActive(true);
@@ -402,7 +407,7 @@ public class WinnerManager : NetworkBehaviour
             BlueDice.SetActive(true);
             if (_playerData.Colour.Value == "Blue")
             {
-           
+                _animatorScript.GoodJobAnimation();
                 BlueFutureCanvas.SetActive(false);
                 BlueRoundWinCanvas.SetActive(true);
                 DiceFloor.SetActive(true);
@@ -418,6 +423,7 @@ public class WinnerManager : NetworkBehaviour
             PurpleDice.SetActive(true);
             if (_playerData.Colour.Value == "Purple")
             {
+                _animatorScript.GoodJobAnimation();
                 PurpleFutureCanvas.SetActive(false);
                 PurpleRoundWinCanvas.SetActive(true);
                 DiceFloor.SetActive(true);
@@ -452,6 +458,7 @@ public class WinnerManager : NetworkBehaviour
             redConfetti.SetActive(true);
             if (_playerData.Colour.Value == "Red")
             {
+                _animatorScript.GoodJobAnimation();
                 aboveCauldronUIRed.SetActive(true);
                 aboveCauldronTextRed.text = "YOU WON!";
                 Debug.Log("YOU WON");
@@ -474,6 +481,7 @@ public class WinnerManager : NetworkBehaviour
             yellowConfetti.SetActive(true);
             if (_playerData.Colour.Value == "Yellow")
             {
+                _animatorScript.GoodJobAnimation();
                 Debug.Log("YOU WON");
                 winners.Add(_playerData.Name.Value.ToString());
                 aboveCauldronUIYellow.SetActive(true);
@@ -495,6 +503,7 @@ public class WinnerManager : NetworkBehaviour
            blueConfetti.SetActive(true);
             if (_playerData.Colour.Value == "Blue")
             {
+                _animatorScript.GoodJobAnimation();
                 Debug.Log("YOU WON");
                 winners.Add(_playerData.Name.Value.ToString());
                 aboveCauldronUIBlue.SetActive(true);
@@ -516,6 +525,7 @@ public class WinnerManager : NetworkBehaviour
            purpleConfetti.SetActive(true);
             if (_playerData.Colour.Value == "Purple")
             {
+                _animatorScript.GoodJobAnimation();
                 Debug.Log("YOU WON");
                 winners.Add(_playerData.Name.Value.ToString()); 
                 aboveCauldronUIPurple.SetActive(true);
@@ -530,6 +540,7 @@ public class WinnerManager : NetworkBehaviour
                 await CheckAllPlayersReady();
                 ResetReady();
                 ShowWinnerUI();
+                
             }
         }
         
