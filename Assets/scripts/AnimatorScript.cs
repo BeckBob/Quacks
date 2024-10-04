@@ -13,8 +13,13 @@ public class AnimatorScript : MonoBehaviour
     public bool isWalking = false;
 
     [SerializeField] private float speed = 2.0f;
- 
 
+    public Transform player;
+   
+    [SerializeField] Transform firstWalkSpot;
+
+    public float rotationSpeed = 3.0f;
+    public float rotationTolerance = 5.0f;
 
     void Start()
     {
@@ -68,6 +73,10 @@ public class AnimatorScript : MonoBehaviour
         transform.rotation *= Quaternion.Euler(0, 90, 0);
     }
 
+    public void TurnToWalk()
+    { 
+    }
+
     private void Update()
     {
         if (isWalking)
@@ -75,5 +84,26 @@ public class AnimatorScript : MonoBehaviour
             transform.Translate(Vector3.back * Time.deltaTime * speed);
            
         };
+
+        if (!isWalking)
+        {
+            Vector3 playerDirection = player.position - transform.position;
+            Quaternion targetRotation = Quaternion.LookRotation(playerDirection);
+
+            // Calculate the angle between the current rotation and the target rotation
+            float angle = Quaternion.Angle(transform.rotation, targetRotation);
+
+            // Update the Animator parameter to control the turning animation
+            animator.SetFloat("TurnSpeed", angle);
+
+            // Rotate the NPC smoothly
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
+
+            // Stop rotating if the angle is within the tolerance
+            if (angle <= rotationTolerance)
+            {
+                animator.SetFloat("TurnSpeed", 0f);
+            }
+        }
     }
 }
