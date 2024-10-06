@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem; 
+using UnityEngine.InputSystem;
+using System.Threading.Tasks;
+using UnityEngine.EventSystems;
 
 public class AnimatorScript : MonoBehaviour
 {
@@ -20,6 +22,8 @@ public class AnimatorScript : MonoBehaviour
 
     public float rotationSpeed = 3.0f;
     public float rotationTolerance = 5.0f;
+
+    public bool isWalkingToTurn = false;
 
     void Start()
     {
@@ -73,27 +77,24 @@ public class AnimatorScript : MonoBehaviour
         transform.rotation *= Quaternion.Euler(0, 90, 0);
     }
 
-    public void TurnToWalk()
+    public async Task TurnToWalk()
     {
-        Vector3 spotDirection = transform.position - firstWalkSpot.position;
-        Quaternion targetRotation = Quaternion.LookRotation(spotDirection);
-
-        
-        float angle = Quaternion.Angle(transform.rotation, targetRotation);
-
-        
-        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
+       isWalkingToTurn = true;
+        await Task.Delay(10 * 1000);
+        isWalkingToTurn = false;
     }
 
     private void Update()
     {
         if (isWalking)
         {
-            transform.Translate(Vector3.back * Time.deltaTime * speed);
-           
-        };
+            // Translate only on the XZ plane (horizontal movement)
+            Vector3 moveDirection = Vector3.back * Time.deltaTime * speed;
+            moveDirection.y = 0;  // Ensure no vertical movement
+            transform.Translate(moveDirection);
+        }
 
-        if (!isWalking)
+        if (!isWalking && !isWalkingToTurn)
         {
             Vector3 playerDirection = transform.position - player.position; 
             Quaternion targetRotation = Quaternion.LookRotation(playerDirection);
@@ -106,6 +107,18 @@ public class AnimatorScript : MonoBehaviour
 
             // Stop rotating if the angle is within the tolerance
             
+        }
+        if (isWalkingToTurn)
+        {
+            Vector3 spotDirection = transform.position - firstWalkSpot.position;
+            spotDirection.y = 0;
+            Quaternion targetRotation = Quaternion.LookRotation(spotDirection);
+
+
+            float angle = Quaternion.Angle(transform.rotation, targetRotation);
+
+
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
         }
     }
 }

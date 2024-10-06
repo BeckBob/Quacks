@@ -10,14 +10,15 @@ public class WizardTurnCollolider : MonoBehaviour
     AnimatorScript _animatorScript;
     void Start()
     {
-        _animatorScript = GetComponent<AnimatorScript>();
+        _animatorScript = FindObjectOfType<AnimatorScript>();
     }
     public bool firstTurn = false;
     public void OnTriggerEnter(Collider other)
     {
-
+        Debug.Log("in Collider");
         if (other.gameObject.tag.Contains("wizard"))
         {
+            Debug.Log("Wizard in Collider");
             _animatorScript.TurnWizard();
             if (!firstTurn)
             {
