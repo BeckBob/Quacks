@@ -124,7 +124,7 @@ public class GrabIngredient : MonoBehaviour
 
     void Start()
     {
-        ingredients = new List<GameObject>(Resources.LoadAll<GameObject>("ingredients"));
+        ingredients = new List<GameObject>(Resources.LoadAll<GameObject>("Ingredients"));
         CountIngredientsInBag();
     }
     public async Task CheckDrawnRightAmount()

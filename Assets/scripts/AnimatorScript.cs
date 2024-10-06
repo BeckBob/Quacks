@@ -74,7 +74,15 @@ public class AnimatorScript : MonoBehaviour
     }
 
     public void TurnToWalk()
-    { 
+    {
+        Vector3 spotDirection = transform.position - firstWalkSpot.position;
+        Quaternion targetRotation = Quaternion.LookRotation(spotDirection);
+
+        
+        float angle = Quaternion.Angle(transform.rotation, targetRotation);
+
+        
+        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
     }
 
     private void Update()
@@ -87,23 +95,17 @@ public class AnimatorScript : MonoBehaviour
 
         if (!isWalking)
         {
-            Vector3 playerDirection = player.position - transform.position;
+            Vector3 playerDirection = transform.position - player.position; 
             Quaternion targetRotation = Quaternion.LookRotation(playerDirection);
 
             // Calculate the angle between the current rotation and the target rotation
             float angle = Quaternion.Angle(transform.rotation, targetRotation);
 
-            // Update the Animator parameter to control the turning animation
-            animator.SetFloat("TurnSpeed", angle);
-
             // Rotate the NPC smoothly
             transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
 
             // Stop rotating if the angle is within the tolerance
-            if (angle <= rotationTolerance)
-            {
-                animator.SetFloat("TurnSpeed", 0f);
-            }
+            
         }
     }
 }

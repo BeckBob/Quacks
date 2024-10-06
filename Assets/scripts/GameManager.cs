@@ -225,6 +225,7 @@ public class GameManager : MonoBehaviour
 
     private async void HandlePotionMaking()
     {
+        _animationScript.TurnToWalk();
         _animationScript.StartWalking();
         _playerData = FindObjectOfType<PlayerData>();
 
