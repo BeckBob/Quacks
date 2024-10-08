@@ -177,7 +177,7 @@ public class GameManager : MonoBehaviour
 
     private void SpendRubies()
     {
-      
+        shopMusic.Stop();
         if (_playerData.Colour.Value == "Purple")
         {
             _purpleSphere.SetActive(true);
@@ -203,10 +203,10 @@ public class GameManager : MonoBehaviour
     
     private void RollDice()
     {
-        
-            _winnerManager.RoundWinner();
-            _animationScript.StopWalking();
-            wizardCharacter.transform.position = centralSpot;
+        _animationScript.StopWalking();
+        wizardCharacter.transform.position = centralSpot;
+        _winnerManager.RoundWinner();
+           
 
     }
 

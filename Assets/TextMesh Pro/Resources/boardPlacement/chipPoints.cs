@@ -2548,7 +2548,7 @@ public class ChipPoints : MonoBehaviour
         }
         else
         {
-            buttonsToAddLeftover.SetActive(true);
+            button5.SetActive(true);
             _animatorScript.StartTalking(4);
             aboveCauldronText.text = $"You don't have enough rubies to spend!";
             choiceTwo.text = "Okay";

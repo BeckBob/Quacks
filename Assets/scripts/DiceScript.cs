@@ -116,8 +116,6 @@ public class DiceScript : MonoBehaviour
 
         yield return new WaitForSeconds(2);
 
-        Vector3 velocity1 = other.attachedRigidbody.velocity;
-        speed2 = velocity1;
     }
 
     private async void DeactivateDice(string DiceColour)

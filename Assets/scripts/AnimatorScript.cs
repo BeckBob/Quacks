@@ -80,7 +80,7 @@ public class AnimatorScript : MonoBehaviour
     public async Task TurnToWalk()
     {
        isWalkingToTurn = true;
-        await Task.Delay(10 * 1000);
+        await Task.Delay(3 * 1000);
         isWalkingToTurn = false;
     }
 
@@ -88,9 +88,9 @@ public class AnimatorScript : MonoBehaviour
     {
         if (isWalking)
         {
-            // Translate only on the XZ plane (horizontal movement)
+            
             Vector3 moveDirection = Vector3.back * Time.deltaTime * speed;
-            moveDirection.y = 0;  // Ensure no vertical movement
+            moveDirection.y = 0;  
             transform.Translate(moveDirection);
         }
 
@@ -99,13 +99,13 @@ public class AnimatorScript : MonoBehaviour
             Vector3 playerDirection = transform.position - player.position; 
             Quaternion targetRotation = Quaternion.LookRotation(playerDirection);
 
-            // Calculate the angle between the current rotation and the target rotation
+           
             float angle = Quaternion.Angle(transform.rotation, targetRotation);
 
-            // Rotate the NPC smoothly
+          
             transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
 
-            // Stop rotating if the angle is within the tolerance
+           
             
         }
         if (isWalkingToTurn)

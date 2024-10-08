@@ -24,7 +24,7 @@ public class Wobble : MonoBehaviour
     }
     private void Update()
     {
-        if (rend.material.GetFloat("_Fill") == 0)
+        if (rend.material.GetFloat("_Fill") > 0)
         {
             time += Time.deltaTime;
             // decrease wobble over time
