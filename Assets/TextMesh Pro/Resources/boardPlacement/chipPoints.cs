@@ -2425,7 +2425,7 @@ public class ChipPoints : MonoBehaviour
        
         
 
-        if (winnerManager.round == 9)
+        if (winnerManager.round == 8)
         {
             GameManager.Instance.UpdateGameState(GameState.DeclareWinner);
         }

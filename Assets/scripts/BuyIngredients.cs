@@ -506,7 +506,7 @@ public class BuyIngredients : MonoBehaviour
     public void BuySmallSpider()
     {
 
-        if (_chipPoints.gardenSpiderRule == 5 && !boughtOne)
+        if (_chipPoints.gardenSpiderRule == 0 && !boughtOne)
         {
             _grabIngredient.AddToBagPermanantly(16);
             boughtOne = true;
@@ -883,25 +883,25 @@ public class BuyIngredients : MonoBehaviour
             ToadstoolAsk = true;
             if (_winnerManager.SpiderRule.Value == 1)
             {
-                questionIngredientText.text = "For each spider that is the LAST or NEXT-TO-LAST chip in your pot, you may pay 1 ruby to add one droplet to the pot.";
+                questionIngredientText.text = "If the previously placed chip was white, add its value to the red chip and move the red chip that many spaces.";
             }
             if (_winnerManager.SpiderRule.Value == 2)
             {
-                questionIngredientText.text = "If your Cherrybombs add up to exactly 7, when the round ends choose to add the collective value of all spiders in your pot.";
+                questionIngredientText.text = "As soon as 1 or more Toadstool are in the pot, each following cherryBomb is moved two spaces.";
             }
             if (_winnerManager.SpiderRule.Value == 3)
             {
-                questionIngredientText.text = "For each spider that is the LAST or NEXT-TO-LAST ingredient in your pot, you receive one ruby.";
+                questionIngredientText.text = "If there are 1/2 pumpkins in your pot your toasdstool adds 1 extra point. If there are 3+ pumpkins add 2 extra points.";
             }
             if (_winnerManager.SpiderRule.Value == 4)
             {
-                questionIngredientText.text = " For each spider that is the LAST or NEXT-TO-LAST In your post take one of the indicated ingredients. 1 = Pumpkin. 2 = Crowskull or Toadstool. 3 = Mandrake or GhostsBreath.";
+                questionIngredientText.text = "Put the toadstall to the side, after you have stopped drawing, choose to either use it this turn OR save it for the end of a future turn.";
             }
         }
         else
         {
             questionIngredients.SetActive(false);
-            SpiderAsk = false;
+            ToadstoolAsk = false;
         }
     }
 

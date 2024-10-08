@@ -50,7 +50,7 @@ public class WinnerManager : NetworkBehaviour
     public NetworkVariable<bool> RedExists = new NetworkVariable<bool>();
     public NetworkVariable<bool> PurpleExists = new NetworkVariable<bool>();
 
-    public int round = 0;
+    public int round = 1;
 
     public NetworkVariable<int> ToadstallRule = new NetworkVariable<int>();
     public NetworkVariable<int> SpiderRule = new NetworkVariable<int>();

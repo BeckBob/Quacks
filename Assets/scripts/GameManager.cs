@@ -89,6 +89,16 @@ public class GameManager : MonoBehaviour
         lobbySettings = FindObjectOfType<LobbySettings>();
         _animationScript = FindObjectOfType<AnimatorScript>();
         centralSpot = wizardLocation.transform.position;
+
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject); // Ensure the GameManager persists between scenes
+        }
+        else
+        {
+            Destroy(gameObject); // Avoid multiple instances
+        }
     }
 
     void Start()
@@ -204,7 +214,16 @@ public class GameManager : MonoBehaviour
     private void RollDice()
     {
         _animationScript.StopWalking();
+
+        Animator animator = wizardCharacter.GetComponent<Animator>();
+        if (animator != null)
+        {
+            animator.enabled = false;
+        }
         wizardCharacter.transform.position = centralSpot;
+        animator.enabled = true;
+
+
         _winnerManager.RoundWinner();
            
 
@@ -310,7 +329,14 @@ public class GameManager : MonoBehaviour
 
     private async Task NewRoundWiz()
     {
+        Animator animator = wizardCharacter.GetComponent<Animator>();
+        if (animator != null)
+        {
+            animator.enabled = false;
+        }
         wizardCharacter.transform.position = centralSpot;
+        animator.enabled = true;
+        
 
         _animationScript.StartDramaticTalking(3);
 
