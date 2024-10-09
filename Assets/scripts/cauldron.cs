@@ -1,3 +1,4 @@
+using Meta.WitAi;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -11,9 +12,10 @@ public class cauldron : MonoBehaviour
         GetComponent<TriggerZone>().OnEnterEvent.AddListener(InsideCauldron);
     }
 
-    
+
     public void InsideCauldron(GameObject go)
     {
-        go.SetActive(false);    }
+        Destroy(go, 5);
+            }
 
 }

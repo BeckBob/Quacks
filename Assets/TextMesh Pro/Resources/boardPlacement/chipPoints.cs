@@ -10,6 +10,7 @@ using Unity.VisualScripting;
 using Unity.Collections.LowLevel.Unsafe;
 using System.Threading.Tasks;
 using UnityEditor.SceneManagement;
+using Meta.WitAi;
 
 
 
@@ -256,7 +257,7 @@ public class ChipPoints : MonoBehaviour
         ingredientsList.Clear();
     }
     public void ResetScore() { Score = InitialScore;
-        ChangePotionHeight();
+        ResetPotionHeight();
     }
 
     public async void OnTriggerEnter(Collider other)
@@ -2627,41 +2628,23 @@ public class ChipPoints : MonoBehaviour
 
     public void ChangeSceneryDependingOnRound()
     {
+       
         if (winnerManager.round == 2)
-        {
-            RenderSettings.skybox = Round2Sky;
-            //maybe also change shade of lighting
-
-        }
-        if (winnerManager.round == 3)
         {
             RenderSettings.skybox = Round3Sky;
 
         }
         if (winnerManager.round == 4)
         {
-            RenderSettings.skybox = Round4Sky;
-
-        }
-        if (winnerManager.round == 5)
-        {
             RenderSettings.skybox = Round5Sky;
 
         }
         if (winnerManager.round == 6)
         {
-            RenderSettings.skybox = Round6Sky;
-
-        }
-        if (winnerManager.round == 7)
-        {
             RenderSettings.skybox = Round7Sky;
 
         }
-        if (winnerManager.round == 8)
-        {
-            RenderSettings.skybox = Round8Sky;
-        }
+    
     }
 
     public void ResetSky()
@@ -2782,6 +2765,35 @@ public class ChipPoints : MonoBehaviour
 
     }
 
+    private void ResetPotionHeight()
+    {
+        float Added = (float)(Score * 0.010);
+
+        float newHeight = startHeightPotion + Added;
+
+        float threshold = 0.01f;
+        float speed = 5f;
+
+
+
+
+        if (Mathf.Abs(newHeight - potionOne.transform.position.y) > threshold)
+        {
+
+            float targetY = Mathf.MoveTowards(potionOne.transform.position.y, newHeight, speed * Time.deltaTime);
+            potionOne.transform.position = new Vector3(
+                potionOne.transform.position.x,
+                targetY,
+                potionOne.transform.position.z
+            );
+            bottleUp.transform.position = new Vector3(
+               potionOne.transform.position.x,
+               targetY,
+               potionOne.transform.position.z
+           );
+        }
+    }
+
     private void ChangePotionHeight()
     {
         float Added = (float)(Score * 0.010); 
@@ -2795,7 +2807,7 @@ public class ChipPoints : MonoBehaviour
 
        
         if (Mathf.Abs(newHeight - potionOne.transform.position.y) > threshold)
-        {
+        { 
            
             float targetY = Mathf.MoveTowards(potionOne.transform.position.y, newHeight, speed * Time.deltaTime);
             potionOne.transform.position = new Vector3(

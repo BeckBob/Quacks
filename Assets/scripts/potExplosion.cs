@@ -30,7 +30,7 @@ public class PotExplosion : MonoBehaviour
         if (other.gameObject.tag.Contains("cherryBomb") && quality.GetCherryBombs() <= quality.cherryBombLimit)
         {
           
-            StartCoroutine(FadeToColor(potionOne, Color.red, Color.magenta, Color.red));
+            StartCoroutine(FadeToColor(potionOne, Color.red, Color.yellow, Color.red));
 
             
             FunctionTimer.Create(() => StartCoroutine(ReturnColor()), 5f);

@@ -145,7 +145,7 @@ public class PotionQuality : MonoBehaviour
 
             if (_cherryBombs > cherryBombLimit)
             {
-                StartCoroutine(FadeToColor(potionOne.material, fadeColor, Color.black, Color.black));
+                StartCoroutine(FadeToColor(potionOne.material, fadeColor, Color.black, Color.red));
                 _chipPoints.PotExplosionEndRound();
                 _explosion.Play();
                 SetSmokeColor("black");
@@ -163,7 +163,7 @@ public class PotionQuality : MonoBehaviour
 
             if (_cherryBombs > cherryBombLimit)
             {
-                StartCoroutine(FadeToColor(potionOne.material, fadeColor, Color.black, Color.black));
+                StartCoroutine(FadeToColor(potionOne.material, fadeColor, Color.black, Color.red));
                 _chipPoints.PotExplosionEndRound();
                 _explosion.Play();
                 SetSmokeColor("black");

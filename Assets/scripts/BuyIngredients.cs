@@ -156,7 +156,7 @@ public class BuyIngredients : MonoBehaviour
         coinsBoard.SetActive(true);
         bagBoard.SetActive(true);
         UpdateAmountInBag();
-        if (_winnerManager.round >= 3)
+        if (_winnerManager.round >= 2)
         {
             MandrakeStallStuff.SetActive(true);
             mandrakeObjects.SetActive(true);
@@ -173,7 +173,7 @@ public class BuyIngredients : MonoBehaviour
                 mandrakeLargePrice.text = "18";
             }
         }
-        if (_winnerManager.round >= 4)
+        if (_winnerManager.round >= 3)
         {
            ghostsBreathStallStuff.SetActive(true);
             ghostObjects.SetActive(true);
@@ -268,7 +268,7 @@ public class BuyIngredients : MonoBehaviour
         
         UpdateCoinText();
         _teleportationManager.ShopTeleportation();
-        if (_winnerManager.round == 7)
+        if (_winnerManager.round == 6)
         {
             questionIngredients.SetActive(true);
             questionIngredientText.text = "This round we have added one small cherry bomb to your bag, free of charge.";
@@ -417,7 +417,7 @@ public class BuyIngredients : MonoBehaviour
             _playerData.Coins.Value -= 4;
             _grabIngredient.AddToBagPermanantly(4);
         }
-        if (_chipPoints.crowSkullRule == 2 || _chipPoints.crowSkullRule == 3 || _chipPoints.crowSkullRule == 4 && _playerData.Coins.Value >= 5)
+        if (_chipPoints.crowSkullRule == 2 && _playerData.Coins.Value >= 5 || _chipPoints.crowSkullRule == 3 && _playerData.Coins.Value >= 5 || _chipPoints.crowSkullRule == 4 && _playerData.Coins.Value >= 5)
         {
             _playerData.Coins.Value -= 5;
             _grabIngredient.AddToBagPermanantly(4);
@@ -443,7 +443,7 @@ public class BuyIngredients : MonoBehaviour
             _playerData.Coins.Value -= 8;
             _grabIngredient.AddToBagPermanantly(5);
         }
-        if (_chipPoints.crowSkullRule == 2 || _chipPoints.crowSkullRule == 3 || _chipPoints.crowSkullRule == 4 && _playerData.Coins.Value >= 10)
+        if (_chipPoints.crowSkullRule == 2 && _playerData.Coins.Value >= 10 || _chipPoints.crowSkullRule == 3 && _playerData.Coins.Value >= 10 || _chipPoints.crowSkullRule == 4 && _playerData.Coins.Value >= 10)
         {
             _playerData.Coins.Value -= 10;
             _grabIngredient.AddToBagPermanantly(5);
@@ -468,7 +468,7 @@ public class BuyIngredients : MonoBehaviour
             _playerData.Coins.Value -= 14;
             _grabIngredient.AddToBagPermanantly(3);
         }
-        if (_chipPoints.crowSkullRule == 2 || _chipPoints.crowSkullRule == 3 || _chipPoints.crowSkullRule == 4 && _playerData.Coins.Value >= 19)
+        if (_chipPoints.crowSkullRule == 2 && _playerData.Coins.Value >= 19 || _chipPoints.crowSkullRule == 3 && _playerData.Coins.Value >= 19 || _chipPoints.crowSkullRule == 4 && _playerData.Coins.Value >= 19)
         {
             _playerData.Coins.Value -= 19;
             _grabIngredient.AddToBagPermanantly(3);
@@ -506,18 +506,18 @@ public class BuyIngredients : MonoBehaviour
     public void BuySmallSpider()
     {
 
-        if (_chipPoints.gardenSpiderRule == 0 && !boughtOne)
+        if (_chipPoints.gardenSpiderRule == 5 && !boughtOne)
         {
             _grabIngredient.AddToBagPermanantly(16);
             boughtOne = true;
             _playerData.Rubies.Value--;
         }
-        if (_chipPoints.gardenSpiderRule == 1 || _chipPoints.gardenSpiderRule == 3 && _playerData.Coins.Value >= 4)
+        if (_chipPoints.gardenSpiderRule == 1 && _playerData.Coins.Value >= 4 || _chipPoints.gardenSpiderRule == 3 && _playerData.Coins.Value >= 4)
         {
             _playerData.Coins.Value -= 4;
             _grabIngredient.AddToBagPermanantly(16);
         }
-        if (_chipPoints.gardenSpiderRule == 2 || _chipPoints.gardenSpiderRule == 4 && _playerData.Coins.Value >= 6)
+        if (_chipPoints.gardenSpiderRule == 2 && _playerData.Coins.Value >= 6 || _chipPoints.gardenSpiderRule == 4 && _playerData.Coins.Value >= 6)
         {
             _playerData.Coins.Value -= 6;
             _grabIngredient.AddToBagPermanantly(16);
@@ -539,12 +539,12 @@ public class BuyIngredients : MonoBehaviour
             _grabIngredient.AddToBagPermanantly(17);
             boughtOne = true;
         }
-        if (_chipPoints.gardenSpiderRule == 1 || _chipPoints.gardenSpiderRule == 3 && _playerData.Coins.Value >= 8)
+        if (_chipPoints.gardenSpiderRule == 1 && _playerData.Coins.Value >= 8 || _chipPoints.gardenSpiderRule == 3 && _playerData.Coins.Value >= 8)
         {
             _playerData.Coins.Value -= 8;
             _grabIngredient.AddToBagPermanantly(17);
         }
-        if (_chipPoints.gardenSpiderRule == 2 || _chipPoints.gardenSpiderRule == 4 && _playerData.Coins.Value >= 11)
+        if (_chipPoints.gardenSpiderRule == 2 && _playerData.Coins.Value >= 11 || _chipPoints.gardenSpiderRule == 4 && _playerData.Coins.Value >= 11)
         {
             _playerData.Coins.Value -= 11;
             _grabIngredient.AddToBagPermanantly(17);
@@ -565,7 +565,7 @@ public class BuyIngredients : MonoBehaviour
             _grabIngredient.AddToBagPermanantly(15);
             boughtOne = true;
         }
-        if (_chipPoints.gardenSpiderRule == 1 || _chipPoints.gardenSpiderRule == 3 && _playerData.Coins.Value >= 14)
+        if (_chipPoints.gardenSpiderRule == 1 && _playerData.Coins.Value >= 14 || _chipPoints.gardenSpiderRule == 3 && _playerData.Coins.Value >= 14)
         {
             _playerData.Coins.Value -= 14;
             _grabIngredient.AddToBagPermanantly(15);

@@ -48,7 +48,7 @@ public class bottleUpPotionTrigger : MonoBehaviour
 
             await chipPoints.MessageAboveCauldron("The last ingredient in the pot wasn't a cherrybomb AND the purifier bottle is empty, YOU IDIOT.");
         }
-        if (other.gameObject.tag.Contains("One"))
+        if (other.gameObject.tag.Contains("One") && !other.gameObject.tag.Contains("pumpkin"))
         {
             smallPlop.Play();
         }
@@ -56,7 +56,7 @@ public class bottleUpPotionTrigger : MonoBehaviour
         {
             mediumPlop.Play();
         }
-        if (other.gameObject.tag.Contains("Four"))
+        if (other.gameObject.tag.Contains("Four") || other.gameObject.tag.Contains("pumpkin"))
         {
             bigPlop.Play();
         }
