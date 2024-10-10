@@ -18,6 +18,6 @@ public class MenuManager : MonoBehaviour
 
     private void GameManagerOnOnGameStateChanged(GameState state)
     {
-        _selectFortune.SetActive(state == GameState.FortuneTeller);
+        
     }
 }

@@ -557,8 +557,8 @@ public class FortuneManager : MonoBehaviour
         }
         if (_fortuneTeller.fortuneNumber == 14)
         {
-            if (_playerData.Colour.Value == "Purple" && !_winnerManager.purpleExploded.Value)
-            {
+            //if (_playerData.Colour.Value == "Purple" && !_winnerManager.purpleExploded.Value)
+          /*  {
                 await DrawIngredientsAndPutOneInPot();
                 _grabIngredient.ResetChoices();
                 _grabIngredient.DeleteInstantiatedIngredients();
@@ -580,7 +580,7 @@ public class FortuneManager : MonoBehaviour
                 await DrawIngredientsAndPutOneInPot();
                 _grabIngredient.ResetChoices();
                 _grabIngredient.DeleteInstantiatedIngredients();
-            }
+            }*/
             //AFTER ROUND you stopped without an explosion, draw up to 5 chips from your bag. You may place 1 of them in your pot.
         }
         if (_fortuneTeller.fortuneNumber == 18)
@@ -760,15 +760,16 @@ public class FortuneManager : MonoBehaviour
 
     private async Task DrawIngredientsAndPutOneInPot()
     {
-        _grabIngredient.fortuneDrawAmount = 5;
+        Debug.Log("fortune 14 after round effects that i think break the game");
+        //_grabIngredient.fortuneDrawAmount = 5;
 
-        _grabIngredient.fortuneDrawTime = true;
-        await _grabIngredient.CheckDrawnRightAmount();
-        await _grabIngredient.SendDrawnIngredientsInfoToAddToPot();
-        _grabIngredient.ResetBagContents();
-        _grabIngredient.CountIngredientsInBag();
-        _grabIngredient.DeleteInstantiatedIngredients();
-        _grabIngredient.ResetChoices();
+        //_grabIngredient.fortuneDrawTime = true;
+        //await _grabIngredient.CheckDrawnRightAmount();
+        //await _grabIngredient.SendDrawnIngredientsInfoToAddToPot();
+        // _grabIngredient.ResetBagContents();
+        //_grabIngredient.CountIngredientsInBag();
+        //_grabIngredient.DeleteInstantiatedIngredients();
+        //_grabIngredient.ResetChoices();
     }
 
     public async Task AtTheVeryEndOfRound()

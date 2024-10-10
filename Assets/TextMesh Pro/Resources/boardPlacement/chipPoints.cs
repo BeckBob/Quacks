@@ -852,11 +852,11 @@ public class ChipPoints : MonoBehaviour
     {
         _playerData = FindObjectOfType<PlayerData>();
 
-        //buttonsToAddLeftover.SetActive(true);
+        buttonsToAddLeftover.SetActive(true);
         button5.SetActive(true);
         aboveCauldronText.text = $"added {Coins} Coins";
         await CheckWhichChoice();
-        //buttonsToAddLeftover.SetActive(false);
+        buttonsToAddLeftover.SetActive(false);
         ResetChoices();
 
         
@@ -2510,18 +2510,12 @@ public class ChipPoints : MonoBehaviour
                 if (choiceOneCauldron)
                 {
                     BuyDrop();
-                    if (_playerData.Rubies.Value >= 2)
-                    {
-                        SpendRubiesUI();
-                    }
+                   
                 }
                 if (choiceTwoCauldron)
                 {
                     FillPurifier();
-                    if (_playerData.Rubies.Value >= 2)
-                    {
-                        SpendRubiesUI();
-                    }
+                 
                 }
 
                 ResetChoices();
@@ -2549,6 +2543,7 @@ public class ChipPoints : MonoBehaviour
         }
         else
         {
+            buttonsToAddLeftover.SetActive(true);
             button5.SetActive(true);
             _animatorScript.StartTalking(4);
             aboveCauldronText.text = $"You don't have enough rubies to spend!";

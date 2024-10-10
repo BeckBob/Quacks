@@ -15,7 +15,7 @@ public class cauldron : MonoBehaviour
 
     public void InsideCauldron(GameObject go)
     {
-        Destroy(go, 5);
+        Destroy(go, 15);
             }
 
 }
