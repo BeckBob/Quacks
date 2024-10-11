@@ -7,7 +7,7 @@ using UnityEngine.EventSystems;
 
 public class AnimatorScript : MonoBehaviour
 {
-   
+
     Animator animator;
 
     WizardTurnCollolider turnCollolider;
@@ -17,8 +17,10 @@ public class AnimatorScript : MonoBehaviour
     [SerializeField] private float speed = 2.0f;
 
     public Transform player;
-   
+
     [SerializeField] Transform firstWalkSpot;
+
+    [SerializeField] private AudioSource walking;
 
     public float rotationSpeed = 3.0f;
     public float rotationTolerance = 5.0f;
@@ -40,6 +42,7 @@ public class AnimatorScript : MonoBehaviour
     public void StopWalking()
     {
         animator.SetBool("isWalking", false);
+        walking.Stop();
         isWalking = false;
         turnCollolider.resetFirstTurn();
     }
@@ -92,6 +95,7 @@ public class AnimatorScript : MonoBehaviour
             Vector3 moveDirection = Vector3.back * Time.deltaTime * speed;
             moveDirection.y = 0;  
             transform.Translate(moveDirection);
+            walking.Play();
         }
 
         if (!isWalking && !isWalkingToTurn)

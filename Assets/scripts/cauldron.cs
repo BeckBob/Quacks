@@ -15,7 +15,16 @@ public class cauldron : MonoBehaviour
 
     public void InsideCauldron(GameObject go)
     {
-        Destroy(go, 15);
+        if (!go.name.Contains("Dice"))
+            if (go.tag.Contains("ghost"))
+            {
+                GameObject foo = go.transform.parent.gameObject;
+              
+                Destroy(foo, 15);
+            }
+            else {
+                Destroy(go, 15);
+            }
             }
 
 }

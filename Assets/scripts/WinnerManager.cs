@@ -113,7 +113,12 @@ public class WinnerManager : NetworkBehaviour
     [SerializeField] GameObject aboveCauldronButtonBlue;
     [SerializeField] TextMeshProUGUI aboveCauldronTextBlue;
 
-   
+    [SerializeField] private AudioSource winningRound;
+    [SerializeField] private AudioSource winningGame;
+    [SerializeField] private AudioSource LosingGame;
+    [SerializeField] private AudioSource LosingRound;
+
+    [SerializeField] private AudioSource LastRoundMusic;
 
 
     [SerializeField] GameObject aboveCauldronUIYellow;
@@ -373,6 +378,7 @@ public class WinnerManager : NetworkBehaviour
             if (_playerData.Colour.Value == "Red")
             {
                 _animatorScript.GoodJobAnimation();
+                winningRound.Play();
                 RedFutureCanvas.SetActive(false);
                 RedRoundWinCanvas.SetActive(true);
                 DiceFloor.SetActive(true);
@@ -391,6 +397,7 @@ public class WinnerManager : NetworkBehaviour
             if (_playerData.Colour.Value == "Yellow")
             {
                 _animatorScript.GoodJobAnimation();
+                winningRound.Play();
                 YellowFutureCanvas.SetActive(false);
                 YellowRoundWinCanvas.SetActive(true);
                 DiceFloor.SetActive(true);
@@ -408,6 +415,7 @@ public class WinnerManager : NetworkBehaviour
             if (_playerData.Colour.Value == "Blue")
             {
                 _animatorScript.GoodJobAnimation();
+                winningRound.Play();
                 BlueFutureCanvas.SetActive(false);
                 BlueRoundWinCanvas.SetActive(true);
                 DiceFloor.SetActive(true);
@@ -424,6 +432,7 @@ public class WinnerManager : NetworkBehaviour
             if (_playerData.Colour.Value == "Purple")
             {
                 _animatorScript.GoodJobAnimation();
+                winningRound.Play();
                 PurpleFutureCanvas.SetActive(false);
                 PurpleRoundWinCanvas.SetActive(true);
                 DiceFloor.SetActive(true);
@@ -438,6 +447,7 @@ public class WinnerManager : NetworkBehaviour
         }
         else
         {
+            LosingRound.Play();
             ReadyUp();
             await CheckAllPlayersReady();
 
@@ -452,16 +462,19 @@ public class WinnerManager : NetworkBehaviour
         
         ResetReady();
         GameWinnerScore.Value = new[] { RedVictoryPoints.Value, BlueVictoryPoints.Value, YellowVictoryPoints.Value, PurpleVictoryPoints.Value }.Max();
-        Debug.Log(GameWinnerScore.Value);
+
+        LastRoundMusic.Stop();
+
         if (GameWinnerScore.Value == RedVictoryPoints.Value)
         {
             redConfetti.SetActive(true);
             if (_playerData.Colour.Value == "Red")
             {
                 _animatorScript.GoodJobAnimation();
+                winningGame.Play();
                 aboveCauldronUIRed.SetActive(true);
                 aboveCauldronTextRed.text = "YOU WON!";
-                Debug.Log("YOU WON");
+                
                 winners.Add(_playerData.Name.Value.ToString());
                 ReadyUp();
                 await CheckAllPlayersReady();
@@ -469,6 +482,7 @@ public class WinnerManager : NetworkBehaviour
             }
             else
             {
+                LosingGame.Play();
                 ReadyUp();
                 await CheckAllPlayersReady();
                 ResetReady();
@@ -482,7 +496,8 @@ public class WinnerManager : NetworkBehaviour
             if (_playerData.Colour.Value == "Yellow")
             {
                 _animatorScript.GoodJobAnimation();
-                Debug.Log("YOU WON");
+                winningGame.Play();
+                
                 winners.Add(_playerData.Name.Value.ToString());
                 aboveCauldronUIYellow.SetActive(true);
                 aboveCauldronTextYellow.text = "YOU WON!";
@@ -492,6 +507,7 @@ public class WinnerManager : NetworkBehaviour
             }
             else
             {
+                LosingGame.Play();
                 ReadyUp();
                 await CheckAllPlayersReady();
                 ResetReady();
@@ -504,7 +520,8 @@ public class WinnerManager : NetworkBehaviour
             if (_playerData.Colour.Value == "Blue")
             {
                 _animatorScript.GoodJobAnimation();
-                Debug.Log("YOU WON");
+                winningGame.Play();
+
                 winners.Add(_playerData.Name.Value.ToString());
                 aboveCauldronUIBlue.SetActive(true);
                 aboveCauldronTextBlue.text = "YOU WON!";
@@ -514,6 +531,7 @@ public class WinnerManager : NetworkBehaviour
             }
             else
             {
+                LosingGame.Play();
                 ReadyUp();
                 await CheckAllPlayersReady();
                 ResetReady();
@@ -526,7 +544,8 @@ public class WinnerManager : NetworkBehaviour
             if (_playerData.Colour.Value == "Purple")
             {
                 _animatorScript.GoodJobAnimation();
-                Debug.Log("YOU WON");
+                winningGame.Play();
+
                 winners.Add(_playerData.Name.Value.ToString()); 
                 aboveCauldronUIPurple.SetActive(true);
                 aboveCauldronTextPurple.text = "YOU WON!";
@@ -536,6 +555,7 @@ public class WinnerManager : NetworkBehaviour
             }
             else
             {
+                LosingGame.Play();
                 ReadyUp();
                 await CheckAllPlayersReady();
                 ResetReady();
