@@ -258,6 +258,8 @@ public class FortuneManager : MonoBehaviour
                 _grabIngredient.ResetBagContents();
                 _grabIngredient.CountIngredientsInBag();
                 
+
+
             }
             else
             {
@@ -271,6 +273,7 @@ public class FortuneManager : MonoBehaviour
             _grabIngredient.ResetChoices();
             _chipPoints.ResetScore();
             _chipPoints.resetScoreText();
+            _quality.nextIngredientTime = true;
 
             //Pre Round All players draw 5 ingredients.The player with the lowest sum takes a medium skull, everyone else gets a ruby.
         }

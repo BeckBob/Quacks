@@ -20,10 +20,10 @@ public class cauldron : MonoBehaviour
             {
                 GameObject foo = go.transform.parent.gameObject;
               
-                Destroy(foo, 15);
+                Destroy(foo, 25);
             }
             else {
-                Destroy(go, 15);
+                Destroy(go, 25);
             }
             }
 
