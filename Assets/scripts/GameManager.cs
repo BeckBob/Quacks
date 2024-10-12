@@ -413,7 +413,22 @@ public class GameManager : MonoBehaviour
         }
         shopMusic.Play();
     }
+
+
+    public void ResetGame()
+    {
+        eveningMusic.Stop();
+        menuMusic.Play();
+        gameRound = 0;
+        _purplePlayerSpace.SetActive(false);
+        _yellowPlayerSpace.SetActive(false);
+        _redPlayerSpace.SetActive(false);
+        _BluePlayerSpace.SetActive(false);
+        undoBigScreenText();
+    }
 }
+
+
 
 
 

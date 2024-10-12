@@ -36,6 +36,7 @@ public class AnimatorScript : MonoBehaviour
     public void StartWalking()
     {
         animator.SetBool("isWalking", true);
+        walking.Play();
         isWalking = true;
     }
 
@@ -87,6 +88,23 @@ public class AnimatorScript : MonoBehaviour
         isWalkingToTurn = false;
     }
 
+    public void ResetGame()
+    {
+        isWalking = false;
+        isWalkingToTurn = false;
+
+        animator.SetBool("isWalking", false);
+        animator.SetBool("isTalking", false);
+        animator.SetBool("isTalkingDramatic", false);
+
+        walking.Stop();
+
+        transform.position = Vector3.zero; // Example: Reset to original position
+        transform.rotation = Quaternion.identity; // Reset rotation
+
+        turnCollolider.resetFirstTurn();
+    }
+
     private void Update()
     {
         if (isWalking)
@@ -95,7 +113,7 @@ public class AnimatorScript : MonoBehaviour
             Vector3 moveDirection = Vector3.back * Time.deltaTime * speed;
             moveDirection.y = 0;  
             transform.Translate(moveDirection);
-            walking.Play();
+            
         }
 
         if (!isWalking && !isWalkingToTurn)

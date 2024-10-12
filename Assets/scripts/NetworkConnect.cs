@@ -12,6 +12,7 @@ using Unity.Services.Relay.Models;
 using Unity.Services.Relay;
 using UnityEngine.UI;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class NetworkConnect : MonoBehaviour
 {
@@ -24,6 +25,27 @@ public class NetworkConnect : MonoBehaviour
     private Lobby currentLobby;
     public int maxConnection = 20;
     public UnityTransport transport;
+
+    GameManager gameManager;
+    PlayerData playerData;
+    GrabIngredient grabIngredient;
+
+    GameObject purpleConfetti;
+    GameObject blueConfetti;
+    GameObject redConfetti; 
+    GameObject yellowConfetti;
+
+    WinnerManager winnerManager;
+
+    AnimatorScript animatorScript;
+    ChipPoints chipPoints;
+
+
+
+    [SerializeField] private GameObject _bigBook;
+
+    private Vector3 playerStartPos;
+    public GameObject player;
 
     [SerializeField] private GameObject _startMenu;
     [SerializeField] private GameObject _lobbyMenu;
@@ -43,6 +65,7 @@ public class NetworkConnect : MonoBehaviour
         _lobbyCodeText = FindObjectOfType<LobbyCodeText>();
         _lobbyTextVBscript = FindObjectOfType<LobbytextVBscript>();
         _networkManagerInstance = NetworkManager.Singleton;
+        playerStartPos = player.transform.position;
     }
 
     public async void Create()
@@ -131,16 +154,33 @@ public class NetworkConnect : MonoBehaviour
         {
             string playerId = AuthenticationService.Instance.PlayerId;
             await LobbyService.Instance.RemovePlayerAsync(currentLobby.Id, playerId);
-            _lobbyMenu.SetActive(false);
-            _startMenu.SetActive(true);
-            _lobbyCodeText.SetLobbyCode("");
-            _lobbyTextVBscript.SetLobbyCode("");
-            GameManager.Instance.UpdateGameState(GameState.StartMenu);
+           
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+            
         }
         catch (LobbyServiceException e)
         {
             Debug.LogError("Failed to leave lobby: " + e);
         }
+    }
+
+    public void ReplayGame()
+    {
+        player.transform.position = playerStartPos;
+        _bigBook.SetActive(true);
+        yellowConfetti.SetActive(false);
+        redConfetti.SetActive(false);
+        blueConfetti.SetActive(false);
+        purpleConfetti.SetActive(false);
+        animatorScript.ResetGame();
+        GameManager.Instance.UpdateGameState(GameState.Lobby);
+
+        playerData.ResetGame();
+        grabIngredient.ResetGame();
+        gameManager.ResetGame();
+        chipPoints.ResetGame();
+        gameManager.ResetGame();
+
     }
 
     private void GetUserName()

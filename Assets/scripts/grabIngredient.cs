@@ -630,6 +630,13 @@ public class GrabIngredient : MonoBehaviour
 
     }
 
+    public void ResetGame()
+    {
+        bagContents = new() { 14, 16, 1, 2, 2, 0, 0, 0 };
+        resetBagContents = new() { 14, 16, 1, 2, 2, 0, 0, 0 };
+        CountIngredientsInBag();
+    }
+
     private int GetNumberOfUpgrade (int Num)
     {
 

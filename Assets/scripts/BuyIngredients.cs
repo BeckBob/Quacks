@@ -719,6 +719,7 @@ public class BuyIngredients : MonoBehaviour
         bagBoard.SetActive(false);
         MandrakeStallStuff.SetActive(false);
         ghostsBreathStallStuff.SetActive(false);
+        questionIngredients.SetActive(false);
         DeactivateSpheres();
         GameManager.Instance.UpdateGameState(GameState.SpendRubies);
     }
@@ -1075,7 +1076,7 @@ public class BuyIngredients : MonoBehaviour
         initialIngredients.SetActive(false);
 
         DoneWithFortuneButton.SetActive(false);
-
+        questionIngredients.SetActive(false);
         DeactivateSpheres();
         _teleportationManager.StartGameTeleportation();
     }

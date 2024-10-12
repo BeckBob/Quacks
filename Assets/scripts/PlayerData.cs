@@ -49,6 +49,19 @@ public class PlayerData : NetworkBehaviour
         isReady.Value = !isReady.Value;   
     }
 
+    public void ResetGame()
+    {
+        Coins.Value = 0;
+        Score.Value = 0;
+        Rubies.Value = 0;
+        RatTails.Value = 0;
+        PurifierFull.Value = true;
+        VictoryPoints.Value = 0;
+        isReady.Value = false;
+        Colour.Value = "Random";
+
+    }
+
     private void GetUserName()
     {
         Oculus.Platform.Users.GetLoggedInUser().OnComplete(GetLoggedInUserCallback);

@@ -69,7 +69,7 @@ public class LobbySettings : NetworkBehaviour
     public int numberOfPlayers;
 
     public List<string> AvailableColours = new List<string>();
-    void Start()
+    void Awake()
     {
 
         _networkConnect = FindObjectOfType<NetworkConnect>();

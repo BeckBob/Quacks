@@ -126,6 +126,11 @@ public class WinnerManager : NetworkBehaviour
     [SerializeField] TextMeshProUGUI aboveCauldronTextYellow;
     [SerializeField] TextMeshProUGUI winnerText;
 
+    [SerializeField] GameObject purpleEndGameCanvas;
+    [SerializeField] GameObject redEndGameCanvas;
+    [SerializeField] GameObject yellowEndGameCanvas;
+    [SerializeField] GameObject blueEndGameCanvas;
+
 
     List<string> winners = new();
     // Start is called before the first frame update
@@ -479,6 +484,7 @@ public class WinnerManager : NetworkBehaviour
                 ReadyUp();
                 await CheckAllPlayersReady();
                 ResetReady();
+                endRoundCanvas();
             }
             else
             {
@@ -504,6 +510,7 @@ public class WinnerManager : NetworkBehaviour
                 ReadyUp();
                 await CheckAllPlayersReady();
                 ResetReady();
+                endRoundCanvas();
             }
             else
             {
@@ -528,6 +535,7 @@ public class WinnerManager : NetworkBehaviour
                 ReadyUp();
                 await CheckAllPlayersReady();
                 ResetReady();
+                endRoundCanvas();
             }
             else
             {
@@ -552,6 +560,7 @@ public class WinnerManager : NetworkBehaviour
                 ReadyUp();
                 await CheckAllPlayersReady();
                 ResetReady();
+                endRoundCanvas();
             }
             else
             {
@@ -566,7 +575,7 @@ public class WinnerManager : NetworkBehaviour
         
     }
 
-    public async void ShowWinnerUI()
+    public void ShowWinnerUI()
     {
         if (winners.Count == 1)
         {
@@ -587,15 +596,27 @@ public class WinnerManager : NetworkBehaviour
         {
             DecideWhichCauldronUI($"How did you all get the same points? what a pointless game");
         }
+        endRoundCanvas();
+       
+    }
 
-        await _chipPoints.MessageAboveCauldronMultipleChoice(2, "", "Play Again", "Leave", "", "", "");
-        if (_chipPoints.choiceOneCauldron)
+    private void endRoundCanvas()
+    {
+        if(_playerData.Colour.Value == "Purple")
         {
-            //put them back to the book/ new lobby
+            purpleEndGameCanvas.SetActive(true);
         }
-        if (_chipPoints.choiceTwoCauldron)
+        if (_playerData.Colour.Value == "Yellow")
         {
-            //leave lobby and go back to home screen
+            yellowEndGameCanvas.SetActive(true);
+        }
+        if (_playerData.Colour.Value == "Blue")
+        {
+            blueEndGameCanvas.SetActive(true);
+        }
+        if (_playerData.Colour.Value == "Red")
+        {
+            redEndGameCanvas.SetActive(true);
         }
     }
     public void ReadyUp()
@@ -1024,6 +1045,38 @@ public class WinnerManager : NetworkBehaviour
             aboveCauldronUIRed.SetActive(true);
             aboveCauldronTextRed.text = textAboveCauldron;
         }
+    }
+
+
+    public void ResetGame()
+    {
+        redEndGameCanvas.SetActive(false);
+        purpleEndGameCanvas.SetActive(false);
+        yellowEndGameCanvas.SetActive(false);
+        blueEndGameCanvas.SetActive(false);
+        round = 1;
+        PurpleVictoryPoints.Value = 0;
+        RedVictoryPoints.Value = 0;
+        BlueVictoryPoints.Value= 0;
+        YellowVictoryPoints.Value = 0;
+        TwoPlayerDraw = false;
+        RoundWinnerScore.Value = 0;
+        GameWinnerScore.Value = 0;
+        PurpleRubies.Value = 0;
+        RedRubies.Value = 0;
+        BlueRubies.Value = 0;
+        YellowRubies.Value = 0;
+        RedExists.Value = false;
+        BlueExists.Value = false;
+        YellowExists.Value = false;
+        PurpleExists.Value = false;
+        ResetReady();
+        ratTailTopScore.Value = 0;
+        redExploded.Value = false;
+        purpleExploded.Value = false;
+        yellowExploded.Value = false;
+        blueExploded.Value = false;
+
     }
 
     }

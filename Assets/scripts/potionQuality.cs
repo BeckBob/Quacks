@@ -30,7 +30,7 @@ public class PotionQuality : MonoBehaviour
     private Color originalTopColor;
     private Color originalVoronoiColor;
     private Color originalFoamColor;
-    public float fadeDuration = 3f; 
+    public float fadeDuration = 5f; 
    
     public Color objectColor = Color.green;
     public Color fadeColor = Color.black;
@@ -64,8 +64,15 @@ public class PotionQuality : MonoBehaviour
             Smoke.Play();
             FunctionTimer.Create(() => SetSmokeColor("green"), 5f);
         }
-        
-        
+        if (Colour == "purple")
+        {
+            Color customPurple = new Color(0.5f, 0f, 0.5f);
+            main.startColor = customPurple;
+            Smoke.Play();
+            FunctionTimer.Create(() => SetSmokeColor("green"), 5f);
+        }
+
+
     }
     public void ResetCherryBombs()
     {
@@ -127,7 +134,7 @@ public class PotionQuality : MonoBehaviour
 
             if (_cherryBombs > cherryBombLimit)
             {
-                StartCoroutine(FadeToColor(potionOne.material, fadeColor, Color.black, Color.black));
+                StartCoroutine(FadeToColor(potionOne.material, fadeColor, Color.red, Color.black));
                 _chipPoints.PotExplosionEndRound();
                 _explosion.Play();
                 SetSmokeColor("black");
@@ -145,7 +152,7 @@ public class PotionQuality : MonoBehaviour
 
             if (_cherryBombs > cherryBombLimit)
             {
-                StartCoroutine(FadeToColor(potionOne.material, fadeColor, Color.black, Color.red));
+                StartCoroutine(FadeToColor(potionOne.material, fadeColor, Color.red, Color.red));
                 _chipPoints.PotExplosionEndRound();
                 _explosion.Play();
                 SetSmokeColor("black");
@@ -163,7 +170,7 @@ public class PotionQuality : MonoBehaviour
 
             if (_cherryBombs > cherryBombLimit)
             {
-                StartCoroutine(FadeToColor(potionOne.material, fadeColor, Color.black, Color.red));
+                StartCoroutine(FadeToColor(potionOne.material, fadeColor, Color.red, Color.red));
                 _chipPoints.PotExplosionEndRound();
                 _explosion.Play();
                 SetSmokeColor("black");

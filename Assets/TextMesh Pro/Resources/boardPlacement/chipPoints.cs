@@ -2642,9 +2642,19 @@ public class ChipPoints : MonoBehaviour
     
     }
 
-    public void ResetSky()
+    public void ResetGame()
     {
         RenderSettings.skybox = Round1Sky;
+        ChangeRubyUI();
+        ResetScore();
+        resetScoreText();
+        ResetInsidePot();
+        ResetPotionHeight();
+        bottleUp.GetComponent<bottleUpPotionTrigger>().ReserPotionBottle();
+        quality.ResetPotionColour();
+        quality.ResetCherryBombLimit();
+        quality.SetCherryBombText();
+
     }
 
     public void ChangeRubyUI()
