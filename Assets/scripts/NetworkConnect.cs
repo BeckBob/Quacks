@@ -13,6 +13,7 @@ using Unity.Services.Relay;
 using UnityEngine.UI;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using System.Threading.Tasks;
 
 public class NetworkConnect : MonoBehaviour
 {
@@ -26,20 +27,30 @@ public class NetworkConnect : MonoBehaviour
     public int maxConnection = 20;
     public UnityTransport transport;
 
+
     GameManager gameManager;
     PlayerData playerData;
     GrabIngredient grabIngredient;
 
-    GameObject purpleConfetti;
-    GameObject blueConfetti;
-    GameObject redConfetti; 
-    GameObject yellowConfetti;
+    public static NetworkConnect Instance { get; private set; }
+
+    [SerializeField] GameObject purpleConfetti;
+    [SerializeField] GameObject blueConfetti;
+    [SerializeField] GameObject redConfetti;
+    [SerializeField] GameObject yellowConfetti;
 
     WinnerManager winnerManager;
 
     AnimatorScript animatorScript;
     ChipPoints chipPoints;
 
+    [SerializeField] GameObject winnerManagerObject;
+    [SerializeField] GameObject gameManagerObject;
+    [SerializeField] GameObject lobbySettingsObject;
+    [SerializeField] GameObject fortuneNumObject;
+
+    [SerializeField] GameObject mainMenu;
+    [SerializeField] GameObject lobbyMenu;
 
 
     [SerializeField] private GameObject _bigBook;
@@ -49,10 +60,25 @@ public class NetworkConnect : MonoBehaviour
 
     [SerializeField] private GameObject _startMenu;
     [SerializeField] private GameObject _lobbyMenu;
+    
+
 
     private async void Awake()
     {
+        // Check if there is already an instance of NetworkConnect
+        if (Instance != null)
+        {
+            // If the existing instance is not this, destroy it
+            Destroy(Instance.gameObject);
+        }
+
+        // Set this instance as the current instance
+        Instance = this;
+
         await UnityServices.InitializeAsync();
+
+          
+       
         AuthenticationService.Instance.SignedIn += () =>
         {
             Debug.Log("Signed in " + AuthenticationService.Instance.PlayerId);
@@ -62,14 +88,34 @@ public class NetworkConnect : MonoBehaviour
 
     private void Start()
     {
+        if (transport == null)
+        {
+            transport = FindObjectOfType<UnityTransport>();
+        }
+
+
         _lobbyCodeText = FindObjectOfType<LobbyCodeText>();
         _lobbyTextVBscript = FindObjectOfType<LobbytextVBscript>();
+        animatorScript = FindObjectOfType<AnimatorScript>();
+        playerData = FindObjectOfType<PlayerData>();
         _networkManagerInstance = NetworkManager.Singleton;
         playerStartPos = player.transform.position;
     }
 
+    private bool IsNetworkManagerReadyToHost()
+    {
+        return NetworkManager.Singleton != null && !NetworkManager.Singleton.IsListening;
+    }
+
     public async void Create()
     {
+
+        if (NetworkManager.Singleton.IsListening)
+        {
+            Debug.LogError("Cannot start Host. A network instance is already running.");
+            return;
+        }
+
         try
         {
             Allocation allocation = await RelayService.Instance.CreateAllocationAsync(maxConnection);
@@ -95,6 +141,7 @@ public class NetworkConnect : MonoBehaviour
             players = _networkManagerInstance.ConnectedClients.Count;
 
             _startMenu.SetActive(false);
+            ActivateNetworkScripts();
             GameManager.Instance.UpdateGameState(GameState.Lobby);
             GetUserName();
         }
@@ -119,6 +166,7 @@ public class NetworkConnect : MonoBehaviour
             NetworkManager.Singleton.StartClient();
             _startMenu.SetActive(false);
             players = _networkManagerInstance.ConnectedClients.Count;
+            ActivateNetworkScripts();
             GameManager.Instance.UpdateGameState(GameState.Lobby);
         }
         catch (Exception e)
@@ -140,6 +188,7 @@ public class NetworkConnect : MonoBehaviour
             NetworkManager.Singleton.StartClient();
             _startMenu.SetActive(false);
             players = _networkManagerInstance.ConnectedClients.Count;
+            ActivateNetworkScripts();
             GameManager.Instance.UpdateGameState(GameState.Lobby);
         }
         catch (Exception e)
@@ -153,16 +202,53 @@ public class NetworkConnect : MonoBehaviour
         try
         {
             string playerId = AuthenticationService.Instance.PlayerId;
+
+            // Remove the player from the lobby
             await LobbyService.Instance.RemovePlayerAsync(currentLobby.Id, playerId);
+
            
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+           if (NetworkManager.Singleton.IsHost || NetworkManager.Singleton.IsServer)
+           {
+                //Shutdown the network and transport layers
+                ShutdownNetworkAndTransport();
+            }
+        
             
+            await Task.Delay(200);
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+
+            Debug.Log("Successfully left the lobby and reset network.");
         }
         catch (LobbyServiceException e)
         {
             Debug.LogError("Failed to leave lobby: " + e);
         }
     }
+
+    private void ShutdownNetworkAndTransport()
+    {
+        if (NetworkManager.Singleton != null && NetworkManager.Singleton.IsListening)
+        {
+            DontDestroyOnLoad(lobbySettingsObject);
+
+            NetworkManager.Singleton.Shutdown();
+
+            if (NetworkManager.Singleton != null)
+            {
+                Destroy(NetworkManager.Singleton.gameObject);
+            }
+        }
+
+       
+    }
+
+    private void ActivateNetworkScripts()
+    {
+        fortuneNumObject.SetActive(true);
+        winnerManagerObject.SetActive(true);
+    }
+
+
 
     public void ReplayGame()
     {

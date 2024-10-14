@@ -4,11 +4,19 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.Events;
 using System.Collections;
+using UnityEngine.EventSystems;
+using UnityEngine.XR.Interaction.Toolkit.UI;
+using UnityEngine.XR.Interaction.Toolkit;
+using Oculus.Interaction;
 
 public class PotionQuality : MonoBehaviour 
 {
     [SerializeField] private Renderer potionOne;
-  
+    private XRUIInputModule InputModule => EventSystem.current.currentInputModule as XRUIInputModule;
+
+    [SerializeField] XRRayInteractor rightInteractor;
+    [SerializeField] XRRayInteractor leftInteractor;
+
     public UnityEvent<GameObject> OnEnterEvent;
 
     public ChipPoints _chipPoints;
@@ -21,7 +29,7 @@ public class PotionQuality : MonoBehaviour
     [SerializeField] TextMeshProUGUI cherryBombsText2;
 
     private int _cherryBombs = 0;
-  
+    
     public int cherryBombLimit = 7;
 
     public bool nextIngredientTime = true;
@@ -30,7 +38,7 @@ public class PotionQuality : MonoBehaviour
     private Color originalTopColor;
     private Color originalVoronoiColor;
     private Color originalFoamColor;
-    public float fadeDuration = 5f; 
+    public float fadeDuration = 6f; 
    
     public Color objectColor = Color.green;
     public Color fadeColor = Color.black;
@@ -74,6 +82,16 @@ public class PotionQuality : MonoBehaviour
 
 
     }
+
+    public bool IsPotExploded()
+    {
+        if (_cherryBombs > cherryBombLimit)
+        {
+            return true;
+        }
+        else { return false; }
+    }
+
     public void ResetCherryBombs()
     {
         _cherryBombs = 0;
@@ -138,11 +156,13 @@ public class PotionQuality : MonoBehaviour
                 _chipPoints.PotExplosionEndRound();
                 _explosion.Play();
                 SetSmokeColor("black");
+                HapticFeedbackExplosion(1,3);
             }
             else
             {
                 _bubble.Play();
                 SetSmokeColor("red");
+                HapticFeedbackExplosion(1, 5);
             }
         }
         else if (other.gameObject.CompareTag("cherryBombTwo"))
@@ -156,11 +176,14 @@ public class PotionQuality : MonoBehaviour
                 _chipPoints.PotExplosionEndRound();
                 _explosion.Play();
                 SetSmokeColor("black");
+                HapticFeedbackExplosion(1, 3);
             }
             else
             {
+                
                 _bubble.Play();
                 SetSmokeColor("red");
+                HapticFeedbackExplosion(1, 5);
             }
         }
         else if (other.gameObject.CompareTag("cherryBombThree"))
@@ -174,12 +197,18 @@ public class PotionQuality : MonoBehaviour
                 _chipPoints.PotExplosionEndRound();
                 _explosion.Play();
                 SetSmokeColor("black");
+                HapticFeedbackExplosion(1, 3);
             }
             else
             {
                 _bubble.Play();
                 SetSmokeColor("red");
+                HapticFeedbackExplosion(1, 5);
             }
+        }
+        else if (other.gameObject.tag.Contains("ghost"))
+        {
+            SetSmokeColor("purple");
         }
         _grabIngredient = FindObjectOfType<GrabIngredient>();
         _grabIngredient.updateCherryBombs();
@@ -218,6 +247,13 @@ public class PotionQuality : MonoBehaviour
         potionOne.material.SetColor("_topColor", originalTopColor);
         potionOne.material.SetColor("_voronoiColor", originalVoronoiColor);
     }
+
+    private void HapticFeedbackExplosion(float intensity, int time)
+    {
+        leftInteractor.xrController.SendHapticImpulse(intensity, time);
+        rightInteractor.xrController.SendHapticImpulse(intensity, time);
+    }
+
 }
     
 

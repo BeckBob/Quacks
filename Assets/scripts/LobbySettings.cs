@@ -64,7 +64,7 @@ public class LobbySettings : NetworkBehaviour
 
     private string oldColour = "Random";
     private bool _ready = false;
-   
+ 
 
     public int numberOfPlayers;
 
@@ -72,10 +72,19 @@ public class LobbySettings : NetworkBehaviour
     void Awake()
     {
 
+       
+
+
         _networkConnect = FindObjectOfType<NetworkConnect>();
         _winnerManager = FindObjectOfType<WinnerManager>();
         _teleportationManager = FindObjectOfType<TeleportationManager>();
        
+       
+    
+    }
+
+    public void InitiateRules()
+    {
         ToadstallRule.Value = 1;
         SpiderRule.Value = 1;
         CrowskullRule.Value = 1;
@@ -87,13 +96,13 @@ public class LobbySettings : NetworkBehaviour
         redPicked.Value = false;
         bluePicked.Value = false;
         purplePicked.Value = false;
-    
     }
     
     public void AddRuleDropdowns()
     {
         _networkConnect = FindObjectOfType<NetworkConnect>();
         _playerData = FindObjectOfType<PlayerData>();
+        InitiateRules();
         if (_playerData.Name.Value == _networkConnect.hostname)
         {
             DropDown1.SetActive(true);

@@ -130,7 +130,7 @@ public class WinnerManager : NetworkBehaviour
     [SerializeField] GameObject redEndGameCanvas;
     [SerializeField] GameObject yellowEndGameCanvas;
     [SerializeField] GameObject blueEndGameCanvas;
-
+    
 
     List<string> winners = new();
     // Start is called before the first frame update
@@ -155,6 +155,8 @@ public class WinnerManager : NetworkBehaviour
         blueExploded.Value = false;
 
     }
+
+ 
 
     public async Task CalculateRatTails()
     {

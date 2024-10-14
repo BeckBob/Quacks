@@ -113,7 +113,8 @@ public class AnimatorScript : MonoBehaviour
             Vector3 moveDirection = Vector3.back * Time.deltaTime * speed;
             moveDirection.y = 0;  
             transform.Translate(moveDirection);
-            
+        
+
         }
 
         if (!isWalking && !isWalkingToTurn)

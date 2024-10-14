@@ -19,10 +19,11 @@ public class cauldron : MonoBehaviour
             if (go.tag.Contains("ghost"))
             {
                 GameObject foo = go.transform.parent.gameObject;
-              
+                foo.SetActive(false);
                 Destroy(foo, 25);
             }
             else {
+                go.SetActive(false);
                 Destroy(go, 25);
             }
             }

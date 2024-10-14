@@ -8,6 +8,7 @@ using Unity.Services.Lobbies.Models;
 using System.Runtime.CompilerServices;
 using TMPro;
 using System.Threading.Tasks;
+using Unity.Netcode;
 
 
 public class GameManager : MonoBehaviour
@@ -66,6 +67,8 @@ public class GameManager : MonoBehaviour
     private ChipPoints _chipPoints;
     private LobbySettings lobbySettings;
 
+    [SerializeField] private GameObject networkObject;
+
     [SerializeField] private TextMeshProUGUI _bigText;
 
     fortuneTeller _fortuneTeller;
@@ -79,7 +82,9 @@ public class GameManager : MonoBehaviour
     public static event Action<GameState> OnGameStateChanged;
     void Awake()
     {
-        Instance = this;
+            Instance = this;
+ 
+   
 
         _fortuneNumber = FindObjectOfType<FortuneNumber>();
         _teleportationManager = FindObjectOfType<TeleportationManager>();
@@ -90,19 +95,14 @@ public class GameManager : MonoBehaviour
         _animationScript = FindObjectOfType<AnimatorScript>();
         centralSpot = wizardLocation.transform.position;
 
-        if (Instance == null)
-        {
-            Instance = this;
-            DontDestroyOnLoad(gameObject); // Ensure the GameManager persists between scenes
-        }
-        else
-        {
-            Destroy(gameObject); // Avoid multiple instances
-        }
+    
+          
+     
     }
 
     void Start()
     {
+       
         UpdateGameState(GameState.StartMenu);
     }
     public void UpdateGameState(GameState newState) 
@@ -239,7 +239,7 @@ public class GameManager : MonoBehaviour
 
     private void HandleStartMenu()
     {
-        
+        networkObject.SetActive(true);
     }
 
     private async void HandlePotionMaking()

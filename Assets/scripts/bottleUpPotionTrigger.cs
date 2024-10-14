@@ -11,18 +11,24 @@ public class bottleUpPotionTrigger : MonoBehaviour
     [SerializeField] private AudioSource mediumPlop;
     public ChipPoints chipPoints;
     PlayerData playerData;
+    PotionQuality quality;
     
     public async void OnTriggerEnter(Collider other)
     {
 
         chipPoints = FindObjectOfType<ChipPoints>();
         playerData = FindObjectOfType<PlayerData>();
-        if (other.gameObject.CompareTag("potionBottle"))
+        quality = FindObjectOfType<PotionQuality>();
+        if (other.gameObject.CompareTag("potionBottle") && !quality.IsPotExploded() && quality.nextIngredientTime)
         { 
             Debug.Log("bottled up");
             chipPoints.EndRoundSafely();
             gameObject.SetActive(false);
             potionBottle.material.SetFloat("_Fill", 0.081f);
+        }
+        if (other.gameObject.CompareTag("potionBottle") && !quality.IsPotExploded() && !quality.nextIngredientTime)
+        {
+            await chipPoints.MessageAboveCauldron("You MUST put ingredient you pulled from bag into pot before you can bottle it!");
         }
         if (other.gameObject.CompareTag("purifier") && chipPoints.lastIngredient.Contains("cherryBomb") && playerData.PurifierFull.Value == true)
         {
