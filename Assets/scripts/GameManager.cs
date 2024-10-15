@@ -71,6 +71,15 @@ public class GameManager : MonoBehaviour
 
     [SerializeField] private TextMeshProUGUI _bigText;
 
+    public Light sceneLight;
+    public Color newColor;
+    public Color afternoonColor;
+    public Color sunsetColor;
+    public Color eveningColor;
+
+
+    private Material objectMaterial;
+
     fortuneTeller _fortuneTeller;
     public GameState State;
 
@@ -95,7 +104,7 @@ public class GameManager : MonoBehaviour
         _animationScript = FindObjectOfType<AnimatorScript>();
         centralSpot = wizardLocation.transform.position;
 
-    
+        
           
      
     }
@@ -104,6 +113,8 @@ public class GameManager : MonoBehaviour
     {
        
         UpdateGameState(GameState.StartMenu);
+        ChangeColor(newColor);
+
     }
     public void UpdateGameState(GameState newState) 
     {  
@@ -223,7 +234,7 @@ public class GameManager : MonoBehaviour
         wizardCharacter.transform.position = centralSpot;
         animator.enabled = true;
 
-
+        _winnerManager = FindObjectOfType<WinnerManager>();
         _winnerManager.RoundWinner();
            
 
@@ -247,7 +258,7 @@ public class GameManager : MonoBehaviour
         await _animationScript.TurnToWalk();
         _animationScript.StartWalking();
         _playerData = FindObjectOfType<PlayerData>();
-
+        _winnerManager = FindObjectOfType<WinnerManager>();
         _winnerManager.ReadyUp();
         await _winnerManager.CheckAllPlayersReady();
         _winnerManager.ResetReady();
@@ -322,6 +333,7 @@ public class GameManager : MonoBehaviour
             _fortuneTextYellow.SetActive(true);
         }
         await NewRoundWiz();
+        _fortuneNumber = FindObjectOfType<FortuneNumber>();
         _fortuneNumber.FortuneNumberGenerator();
         
         
@@ -375,21 +387,25 @@ public class GameManager : MonoBehaviour
         {
             menuMusic.Stop();
             morningMusic.Play();
+            ChangeColor(newColor);
         }
         if (gameRound == 3 || gameRound == 4)
         {
             
             noonMusic.Play();
+            ChangeColor(afternoonColor);
         }
         if (gameRound == 5 || gameRound == 6)
         {
             
             afternoonMusic.Play();
+            ChangeColor(sunsetColor);
         }
         if (gameRound == 7 || gameRound == 8)
         {
             
             eveningMusic.Play();
+            ChangeColor(eveningColor);
         }
     }
 
@@ -425,6 +441,20 @@ public class GameManager : MonoBehaviour
         _redPlayerSpace.SetActive(false);
         _BluePlayerSpace.SetActive(false);
         undoBigScreenText();
+    }
+
+    public void ChangeColor(Color color)
+    {
+        if (sceneLight != null)
+        {
+            sceneLight.color = color;
+            //sceneLight.type = LightType.Spot; // Change to a Spotlight
+            //sceneLight.intensity = 2.0f; // Set the intensity to 2.0 (or any desired value)
+        }
+        else
+        {
+            Debug.LogWarning("No Light component assigned!");
+        }
     }
 }
 

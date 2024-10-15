@@ -141,14 +141,7 @@ public class GrabIngredient : MonoBehaviour
 
     }
 
-    public void DeleteInstantiatedIngredients()
-    {
-        Destroy(drawnOne);
-        Destroy(drawnTwo);
-        Destroy(drawnThree);
-        Destroy(drawnFour);
-        Destroy(drawnFive);
-    }
+ 
 
     public bool EverythingDrawn()
     {
@@ -197,38 +190,12 @@ public class GrabIngredient : MonoBehaviour
                 int nextIngredient = bagContents[num];
                 InsideBagLocation = insideBag.transform.position;
                 fortuneDrawn++;
-                if (fortuneDrawn == 1)
-                {
+                
                     drawnOne = Instantiate(ingredients[nextIngredient], InsideBagLocation, Quaternion.identity);
-                    await Task.Delay(4000);
-                   
-
-                }
-                if (fortuneDrawn == 2)
-                {
-                    drawnTwo = Instantiate(ingredients[nextIngredient], InsideBagLocation, Quaternion.identity);
-                    await Task.Delay(4000);
-                    
-                }
-                if (fortuneDrawn == 3)
-                {
-                    drawnThree = Instantiate(ingredients[nextIngredient], InsideBagLocation, Quaternion.identity);
-                    await Task.Delay(4000);
-                   
-                }
-                if (fortuneDrawn == 4)
-                {
-                    drawnFour = Instantiate(ingredients[nextIngredient], InsideBagLocation, Quaternion.identity);
-                    await Task.Delay(4000);
-                    
-                }
-                if (fortuneDrawn == 5)
-                {
-                    drawnFive = Instantiate(ingredients[nextIngredient], InsideBagLocation, Quaternion.identity);
-                    await Task.Delay(4000);
-                  
-                }
+                    await Task.Delay(1000);
+                 
                 ingredientToAddOneToPot.Add(num);
+                ingredientsToUpgrade.Add(num);
                 bagContents.RemoveAt(num);
                 CountIngredientsInBag();
                 CountDrawnIngredients(num);
@@ -236,10 +203,12 @@ public class GrabIngredient : MonoBehaviour
 
                 
 
-                int leftToDraw = fortuneDrawAmount - fortuneDrawn;
+                int leftToDraw = fortuneDrawAmount -= fortuneDrawn;
                 aboveCauldronText.text = $"You have {leftToDraw} ingredients left to draw!";
 
                 FunctionTimer.Create(() => fortuneDrawTime = true, 5f);
+
+                Destroy(drawnOne);
 
             }
         }

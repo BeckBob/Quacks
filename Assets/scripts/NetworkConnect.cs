@@ -252,6 +252,8 @@ public class NetworkConnect : MonoBehaviour
 
     public void ReplayGame()
     {
+        playerData = FindObjectOfType<PlayerData>();
+
         player.transform.position = playerStartPos;
         _bigBook.SetActive(true);
         yellowConfetti.SetActive(false);

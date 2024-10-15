@@ -31,7 +31,7 @@ public class PotExplosion : MonoBehaviour
         currentFoamColor = originalFoamColor;
     }
 
-    private void OnTriggerEnter(Collider other)
+/*    private void OnTriggerEnter(Collider other)
     {
         Color customPurple = new Color(0.5f, 0f, 0.5f);  // Equivalent to RGB(128, 0, 128)
         Color customPink = new Color(1f, 0.75f, 0.8f);   // Equivalent to RGB(255, 192, 203)
@@ -47,7 +47,7 @@ public class PotExplosion : MonoBehaviour
             FunctionTimer.Create(() => StartCoroutine(ReturnColor()), 5f);
         }
     }
-
+*/
     private IEnumerator FadeToColor(Renderer renderer, Color targetTopColor, Color targetVoronoiColor, Color targetFoamColour)
     {
         float elapsedTime = 0.0f;

@@ -248,7 +248,7 @@ public class FortuneManager : MonoBehaviour
 
             _grabIngredient.fortuneDrawTime = true;
             await _grabIngredient.CheckDrawnRightAmount();
-            _grabIngredient.DeleteInstantiatedIngredients();
+        
             _grabIngredient.ResetChoices();
             await _winnerManager.CalculateLowestDrawnIngredients();
             if (_grabIngredient.totalOfFortuneIngredients == _winnerManager.LowestDrawn)
@@ -269,7 +269,7 @@ public class FortuneManager : MonoBehaviour
                 
             }
 
-            _grabIngredient.DeleteInstantiatedIngredients();
+   
             _grabIngredient.ResetChoices();
             _chipPoints.ResetScore();
             _chipPoints.resetScoreText();
@@ -320,13 +320,13 @@ public class FortuneManager : MonoBehaviour
 
             _grabIngredient.fortuneDrawTime = true;
             await _grabIngredient.CheckDrawnRightAmount();
-            _grabIngredient.DeleteInstantiatedIngredients();
+           
             _grabIngredient.ResetChoices();
 
             await _grabIngredient.SendDrawnIngredientsInfo();
             _grabIngredient.ResetBagContents();
             _grabIngredient.CountIngredientsInBag();
-            _grabIngredient.DeleteInstantiatedIngredients();
+           
             
             
 
@@ -413,6 +413,7 @@ public class FortuneManager : MonoBehaviour
 
     public async Task PostRoundFortuneEffects()
     {
+        _winnerManager = FindObjectOfType<WinnerManager>();
         firstCherryBombHappened = false;
         firstFiveIngredientsHappened = false;
         EnableSpheres();
@@ -429,8 +430,7 @@ public class FortuneManager : MonoBehaviour
             {
                 await _chipPoints.MessageAboveCauldron("Boooohooooo! You didn't reach a ruby level, no extra fortune ruby for you");
             }
-            //close fortune button
-            //AFTER-ROUND FUNCTION give extra ruby is end on ruby space
+        
         }
         if (_fortuneTeller.fortuneNumber == 2)
         {
@@ -553,37 +553,37 @@ public class FortuneManager : MonoBehaviour
         {
             if (_chipPoints.RubiesThisRound)
             {
-                await _chipPoints.MessageAboveCauldron("Ruby on this level, you get 2 extra victory points because of fortune!");
+                await _chipPoints.MessageAboveCauldron("Ruby on this level, you get 2 extra victory points!");
                 _playerData.VictoryPoints.Value += 2;
             }
             //AFTER ROUND - if you reach a scoring space with a ruby this round you get 2 extra victory points, even if your pot explodes.
         }
         if (_fortuneTeller.fortuneNumber == 14)
         {
-            //if (_playerData.Colour.Value == "Purple" && !_winnerManager.purpleExploded.Value)
-          /*  {
+            if (_playerData.Colour.Value == "Purple" && !_winnerManager.purpleExploded.Value)
+           {
                 await DrawIngredientsAndPutOneInPot();
                 _grabIngredient.ResetChoices();
-                _grabIngredient.DeleteInstantiatedIngredients();
+               
             }
             if (_playerData.Colour.Value == "Red" && !_winnerManager.redExploded.Value)
             {
                 await DrawIngredientsAndPutOneInPot();
                 _grabIngredient.ResetChoices();
-                _grabIngredient.DeleteInstantiatedIngredients();
+              
             }
             if (_playerData.Colour.Value == "Blue" && !_winnerManager.blueExploded.Value)
             {
                 await DrawIngredientsAndPutOneInPot();
                 _grabIngredient.ResetChoices();
-                _grabIngredient.DeleteInstantiatedIngredients();
+               
             }
             if (_playerData.Colour.Value == "Yellow" && !_winnerManager.yellowExploded.Value)
             {
                 await DrawIngredientsAndPutOneInPot();
                 _grabIngredient.ResetChoices();
-                _grabIngredient.DeleteInstantiatedIngredients();
-            }*/
+              
+            }
             //AFTER ROUND you stopped without an explosion, draw up to 5 chips from your bag. You may place 1 of them in your pot.
         }
         if (_fortuneTeller.fortuneNumber == 18)
@@ -756,6 +756,7 @@ public class FortuneManager : MonoBehaviour
 
     private async Task getMediumIngredient()
     {
+        await _chipPoints.MessageAboveCauldron($"The player to your right had their pot explode! This means you get to pick a medium ingredient!");
         _buyIngredients.SetUpShopForFortune11(2);
         await CheckWhichChoice();
         ResetChoices();
@@ -764,15 +765,15 @@ public class FortuneManager : MonoBehaviour
     private async Task DrawIngredientsAndPutOneInPot()
     {
         Debug.Log("fortune 14 after round effects that i think break the game");
-        //_grabIngredient.fortuneDrawAmount = 5;
+        _grabIngredient.fortuneDrawAmount = 5;
 
-        //_grabIngredient.fortuneDrawTime = true;
-        //await _grabIngredient.CheckDrawnRightAmount();
-        //await _grabIngredient.SendDrawnIngredientsInfoToAddToPot();
-        // _grabIngredient.ResetBagContents();
-        //_grabIngredient.CountIngredientsInBag();
-        //_grabIngredient.DeleteInstantiatedIngredients();
-        //_grabIngredient.ResetChoices();
+        _grabIngredient.fortuneDrawTime = true;
+        await _grabIngredient.CheckDrawnRightAmount();
+        await _grabIngredient.SendDrawnIngredientsInfoToAddToPot();
+        _grabIngredient.ResetBagContents();
+        _grabIngredient.CountIngredientsInBag();
+    
+       
     }
 
     public async Task AtTheVeryEndOfRound()

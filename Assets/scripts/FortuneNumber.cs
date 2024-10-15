@@ -10,7 +10,6 @@ public class FortuneNumber : NetworkBehaviour
     public int fortuneNum;
     fortuneTeller _fortuneTeller;
     WinnerManager _winnerManager;
-   
 
   
 
