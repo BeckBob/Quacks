@@ -23,7 +23,7 @@ public class bottleUpPotionTrigger : MonoBehaviour
         { 
             Debug.Log("bottled up");
             chipPoints.EndRoundSafely();
-            gameObject.SetActive(false);
+            
             potionBottle.material.SetFloat("_Fill", 0.081f);
         }
         if (other.gameObject.CompareTag("potionBottle") && !quality.IsPotExploded() && !quality.nextIngredientTime)

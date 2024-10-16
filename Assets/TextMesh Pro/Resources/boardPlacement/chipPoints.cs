@@ -91,6 +91,8 @@ public class ChipPoints : MonoBehaviour
     [SerializeField] GameObject Ruby5;
     [SerializeField] GameObject Ruby6;
 
+
+
     public Material Round1Sky;
     public Material Round2Sky;
     public Material Round3Sky;
@@ -776,6 +778,11 @@ public class ChipPoints : MonoBehaviour
             cauldronScoreBack.text = Score.ToString();
             CountIngredientsInPot();
             ChangePotionHeight();
+
+            if (ingredients.Count == 5)
+            {
+                _fortuneManager.firstFiveIngredientsHappened = true;
+            }
             
             
         }
@@ -874,7 +881,7 @@ public class ChipPoints : MonoBehaviour
 
     public async void EndRoundSafely()
     {
-        
+        Debug.Log(winnerManager.purpleExploded.Value);
         //afterRoundfFortuneEffects
         AfterRoundChipEffects();
         await _fortuneManager.PostRoundFortuneEffects();

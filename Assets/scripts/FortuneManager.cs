@@ -33,7 +33,7 @@ public class FortuneManager : MonoBehaviour
     [SerializeField] GameObject DiceFloor;
 
     private bool firstCherryBombHappened = false;
-    private bool firstFiveIngredientsHappened = false;
+    public bool firstFiveIngredientsHappened = false;
     public bool fortuneShopDone = false;
     // Start is called before the first frame update
 
@@ -344,8 +344,8 @@ public class FortuneManager : MonoBehaviour
         {
             if (ingredient.Contains("cherryBomb") && firstCherryBombHappened == false)
             {
-                await _chipPoints.MessageAboveCauldronMultipleChoice(2, "Your first cherry bomb! Do you want to Remove it and put back in you bag?", "Remove", "Leave in pot", "", "", "");
-                if (_chipPoints.choiceOneCauldron)
+                await _grabIngredient.MessageAboveCauldronMultipleChoice(2, "Your first cherry bomb! Do you want to Remove it and put back in you bag?", "Remove", "Leave in pot", "", "", "");
+                if (_grabIngredient.choiceOneCauldron)
                 {
                     if (ingredient.Contains("One"))
                     {
@@ -373,7 +373,7 @@ public class FortuneManager : MonoBehaviour
                     _quality.SetCherryBombText();
                     _chipPoints.ResetStuffInBook();
                 }
-                _chipPoints.ResetChoices();
+                _grabIngredient.ResetCauldronChoices();
                 firstCherryBombHappened = true;
             }
             
@@ -390,10 +390,11 @@ public class FortuneManager : MonoBehaviour
         }
         if (_fortuneTeller.fortuneNumber == 22)
         {
-            if (ingredient.Contains("cherryBomb") && firstFiveIngredientsHappened == true)
+            //this broke it too
+            if (firstFiveIngredientsHappened == true)
             {
-                await _chipPoints.MessageAboveCauldronMultipleChoice(2, "You've had your first 5 ingredients, do you want to carry on or restart?", "Carry on", "Restart", "", "", "");
-                if (_chipPoints.choiceTwoCauldron)
+                await _grabIngredient.MessageAboveCauldronMultipleChoice(2, "You've had your first 5 ingredients, do you want to carry on or restart?", "Carry on", "Restart", "", "", "");
+                if (_grabIngredient.choiceTwoCauldron)
                 {
                     _grabIngredient.ResetBagContents();
                     _chipPoints.ResetScore();
@@ -403,7 +404,7 @@ public class FortuneManager : MonoBehaviour
                     _chipPoints.CountIngredientsInPot();
                     _chipPoints.ResetStuffInBook();
                 }
-                _chipPoints.ResetChoices();
+                _grabIngredient.ResetCauldronChoices();
                 firstFiveIngredientsHappened = false;
             }
             //DURING ROUND MULTIPLE CHOICE BUTTONS APPEAR - After you have places the first 5 ingredients in your pot, choose to continue OR begin the round all over again – but you get this choice only once."
@@ -416,7 +417,7 @@ public class FortuneManager : MonoBehaviour
         _winnerManager = FindObjectOfType<WinnerManager>();
         firstCherryBombHappened = false;
         firstFiveIngredientsHappened = false;
-        EnableSpheres();
+        
         if (_fortuneTeller.fortuneNumber == 1)
         {
             
@@ -560,28 +561,29 @@ public class FortuneManager : MonoBehaviour
         }
         if (_fortuneTeller.fortuneNumber == 14)
         {
+            Debug.Log(_winnerManager.purpleExploded.Value);
             if (_playerData.Colour.Value == "Purple" && !_winnerManager.purpleExploded.Value)
            {
                 await DrawIngredientsAndPutOneInPot();
-                _grabIngredient.ResetChoices();
+                _grabIngredient.ResetCauldronChoices();
                
             }
             if (_playerData.Colour.Value == "Red" && !_winnerManager.redExploded.Value)
             {
                 await DrawIngredientsAndPutOneInPot();
-                _grabIngredient.ResetChoices();
+                _grabIngredient.ResetCauldronChoices();
               
             }
             if (_playerData.Colour.Value == "Blue" && !_winnerManager.blueExploded.Value)
             {
                 await DrawIngredientsAndPutOneInPot();
-                _grabIngredient.ResetChoices();
+                _grabIngredient.ResetCauldronChoices();
                
             }
             if (_playerData.Colour.Value == "Yellow" && !_winnerManager.yellowExploded.Value)
             {
                 await DrawIngredientsAndPutOneInPot();
-                _grabIngredient.ResetChoices();
+                _grabIngredient.ResetCauldronChoices();
               
             }
             //AFTER ROUND you stopped without an explosion, draw up to 5 chips from your bag. You may place 1 of them in your pot.
@@ -764,16 +766,32 @@ public class FortuneManager : MonoBehaviour
 
     private async Task DrawIngredientsAndPutOneInPot()
     {
-        Debug.Log("fortune 14 after round effects that i think break the game");
-        _grabIngredient.fortuneDrawAmount = 5;
+        if (!_grabIngredient.fortuneDrawTime)
+        {
+            Debug.LogWarning("Attempted to draw ingredients but fortuneDrawTime is false.");
+            return; // Prevent re-entry if it's not the correct time to draw.
+        }
 
-        _grabIngredient.fortuneDrawTime = true;
-        await _grabIngredient.CheckDrawnRightAmount();
-        await _grabIngredient.SendDrawnIngredientsInfoToAddToPot();
-        _grabIngredient.ResetBagContents();
-        _grabIngredient.CountIngredientsInBag();
-    
-       
+        Debug.Log("fortune 14 after round effects - drawing ingredients");
+        _grabIngredient.fortuneDrawAmount = 5;  // Set the number of ingredients to draw
+        _grabIngredient.fortuneDrawTime = true; // This should be set before drawing starts
+
+        try
+        {
+            // Check that we have drawn the right amount, then send the ingredients to the pot
+            await _grabIngredient.CheckDrawnRightAmount();
+            await _grabIngredient.SendDrawnIngredientsInfoToAddToPot();
+
+            // Once the ingredients are added, immediately reset the state to avoid duplicates
+            _grabIngredient.ResetBagContents();
+            _grabIngredient.CountIngredientsInBag();
+            _grabIngredient.ResetChoices();
+        }
+        finally
+        {
+            // Whether the draw was successful or not, fortune draw time is over
+            _grabIngredient.fortuneDrawTime = false;
+        }
     }
 
     public async Task AtTheVeryEndOfRound()

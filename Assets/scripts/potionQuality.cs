@@ -172,6 +172,7 @@ public class PotionQuality : MonoBehaviour
             else
             {
                 StartCoroutine(FadeToColor(potionOne, Color.red, Color.yellow, Color.red));
+                FunctionTimer.Create(() => StartCoroutine(ReturnColor()), 5f);
                 _bubble.Play();
                 SetSmokeColor("red");
                 HapticFeedbackExplosion(1, 3);
@@ -193,6 +194,7 @@ public class PotionQuality : MonoBehaviour
             else
             {
                 StartCoroutine(FadeToColor(potionOne, Color.red, Color.yellow, Color.red));
+                FunctionTimer.Create(() => StartCoroutine(ReturnColor()), 5f);
                 _bubble.Play();
                 SetSmokeColor("red");
                 HapticFeedbackExplosion(1, 3);

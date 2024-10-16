@@ -71,6 +71,11 @@ public class GameManager : MonoBehaviour
 
     [SerializeField] private TextMeshProUGUI _bigText;
 
+    [SerializeField] private GameObject purpleBottleUp;
+    [SerializeField] private GameObject blueBottleUp;
+    [SerializeField] private GameObject redBottleUp;
+    [SerializeField] private GameObject yellowBottleUp;
+
     public Light sceneLight;
     public Color newColor;
     public Color afternoonColor;
@@ -266,7 +271,7 @@ public class GameManager : MonoBehaviour
         if (_playerData.Colour.Value == "Purple")
         {
             _purpleSphere.SetActive(true);
-
+            purpleBottleUp.SetActive(true);
             _purpleIngredientSphere.SetActive(true);
             _purplePresentScore.SetActive(true);
             _purpleFutureScore.SetActive(true);
@@ -274,13 +279,14 @@ public class GameManager : MonoBehaviour
         if (_playerData.Colour.Value == "Red")
         {
             _redSphere.SetActive(true);
-
+            redBottleUp.SetActive(true);
             _redIngredientSphere.SetActive(true);
             _redPresentScore.SetActive(true);
             _redFutureScore.SetActive(true);
         }
         if (_playerData.Colour.Value == "Yellow") { 
             _yellowSphere.SetActive(true);
+            yellowBottleUp.SetActive(true);
         _yellowIngredientSphere.SetActive(true);
         _yellowPresentScore.SetActive(true);
         _yellowFutureScore.SetActive(true);
@@ -288,7 +294,7 @@ public class GameManager : MonoBehaviour
         if (_playerData.Colour.Value == "Blue")
         {
             _blueSphere.SetActive(true);
-           
+                blueBottleUp.SetActive(true);
             _blueIngredientSphere.SetActive(true);
             _bluePresentScore.SetActive(true);
             _blueFutureScore.SetActive(true);
