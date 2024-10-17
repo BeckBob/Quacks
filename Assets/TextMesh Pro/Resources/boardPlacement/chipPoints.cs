@@ -83,6 +83,7 @@ public class ChipPoints : MonoBehaviour
     [SerializeField] TextMeshProUGUI rubyNumber;
     [SerializeField] GameObject bagSphere;
 
+    private bool isCheckingChoice = false;
 
     [SerializeField] GameObject Ruby1;
     [SerializeField] GameObject Ruby2;
@@ -188,7 +189,7 @@ public class ChipPoints : MonoBehaviour
                 _playerData.Coins.Value = Coins;
                 _playerData.VictoryPoints.Value = VictoryPoints;
                 _playerData.Score.Value = 0;
-                await CheckWhichChoice();
+                await CheckWhichChoice(aboveCauldronText.text);
                 ResetChoices();
             }
             if (ingredientsList[ingredientsList.Count - 1] == "crowSkullTwo" || ingredientsList[ingredientsList.Count - 2] == "crowSkullTwo")
@@ -200,7 +201,7 @@ public class ChipPoints : MonoBehaviour
                 _playerData.Coins.Value = Coins;
                 _playerData.VictoryPoints.Value = VictoryPoints;
                 Score = 0;
-                await CheckWhichChoice();
+                await CheckWhichChoice(aboveCauldronText.text);
                 ResetChoices();
             }
             if (ingredientsList[ingredientsList.Count - 1] == "crowSkullFour" || ingredientsList[ingredientsList.Count - 2] == "crowSkullFour" || ingredientsList[ingredientsList.Count - 3] == "crowSkullFour")
@@ -212,7 +213,7 @@ public class ChipPoints : MonoBehaviour
                 _playerData.Coins.Value = Coins;
                 _playerData.VictoryPoints.Value = VictoryPoints;
                 _playerData.Score.Value = 0;
-                await CheckWhichChoice();
+                await CheckWhichChoice(aboveCauldronText.text);
                 ResetChoices();
             }
             else
@@ -287,7 +288,7 @@ public class ChipPoints : MonoBehaviour
                     aboveCauldronText.text = "Small cherrybomb was right before mushroom! Add 1 to score!";
                     //sound effect
                     Score += 1;
-                    await CheckWhichChoice();
+                    await CheckWhichChoice(aboveCauldronText.text);
                     buttonsToAddLeftover.SetActive(false);
                 }
                 else if (ingredientsList[ingredientsList.Count - 1].Contains("Two"))
@@ -297,7 +298,7 @@ public class ChipPoints : MonoBehaviour
                     aboveCauldronText.text = "Medium cherrybomb was right before mushroom! Add 2 to score!";
                     //sound effect
                     Score += 2;
-                    await CheckWhichChoice();
+                    await CheckWhichChoice(aboveCauldronText.text);
                     buttonsToAddLeftover.SetActive(false);
                 }
                 else if (ingredientsList[ingredientsList.Count - 1].Contains("Three"))
@@ -307,7 +308,7 @@ public class ChipPoints : MonoBehaviour
                     aboveCauldronText.text = "Large cherrybomb was right before mushroom! Add 3 to score!";
                     //sound effect
                     Score += 3;
-                    await CheckWhichChoice();
+                    await CheckWhichChoice(aboveCauldronText.text);
                     buttonsToAddLeftover.SetActive(false);
                 }
                 ResetChoices();
@@ -325,7 +326,7 @@ public class ChipPoints : MonoBehaviour
                 aboveCauldronText.text = "mushroom in potion adds one to score when small cherrybomb is added!";
                 //sound effect
                 Score += 1;
-                await CheckWhichChoice();
+                await CheckWhichChoice(aboveCauldronText.text);
                 buttonsToAddLeftover.SetActive(false);
                 ResetChoices();
             }
@@ -344,7 +345,7 @@ public class ChipPoints : MonoBehaviour
                 aboveCauldronText.text = "pumpkin in potion adds 1 to score when adding mushroom!";
                 //sound effect
                 Score += 1;
-                await CheckWhichChoice();
+                await CheckWhichChoice(aboveCauldronText.text);
                 buttonsToAddLeftover.SetActive(false);
                 ResetChoices();
                 
@@ -356,7 +357,7 @@ public class ChipPoints : MonoBehaviour
                 aboveCauldronText.text = "3 or more pumpkins in potion adds 2 to score when adding mushroom!";
                 //sound effect
                 Score += 2;
-                await CheckWhichChoice();
+                await CheckWhichChoice(aboveCauldronText.text);
                 buttonsToAddLeftover.SetActive(false);
                 ResetChoices();
                 
@@ -370,7 +371,7 @@ public class ChipPoints : MonoBehaviour
                 buttonsToAddLeftover.SetActive(true);
                 button5.SetActive(true);
                 aboveCauldronText.text = "Put mushroom to the side and decide whether to add to pot at the end or keep to the side for a future round!";
-                await CheckWhichChoice();
+                await CheckWhichChoice(aboveCauldronText.text);
                 //sound effect
                 buttonsToAddLeftover.SetActive(false);
                 ResetChoices();
@@ -391,7 +392,7 @@ public class ChipPoints : MonoBehaviour
                     button5.SetActive(true);
                     aboveCauldronText.text = "Mandrake immediatley before doubles this ingredient!";
                     //sound effect
-                    await CheckWhichChoice();
+                    await CheckWhichChoice(aboveCauldronText.text);
                     buttonsToAddLeftover.SetActive(false);
                 }
                 else if (other.gameObject.tag.Contains("Two"))
@@ -401,7 +402,7 @@ public class ChipPoints : MonoBehaviour
                     button5.SetActive(true);
                     aboveCauldronText.text = "Mandrake immediatley before doubles this ingredient!";
                     //sound effect
-                    await CheckWhichChoice();
+                    await CheckWhichChoice(aboveCauldronText.text);
                     buttonsToAddLeftover.SetActive(false);
                 }
                 else if (other.gameObject.tag.Contains("Three"))
@@ -411,7 +412,7 @@ public class ChipPoints : MonoBehaviour
                     button5.SetActive(true);
                     aboveCauldronText.text = "Mandrake immediatley before doubles this ingredient!";
                     //some sound effect
-                    await CheckWhichChoice();
+                    await CheckWhichChoice(aboveCauldronText.text);
                     buttonsToAddLeftover.SetActive(false);
                 }
                 else if (other.gameObject.tag.Contains("Four"))
@@ -421,7 +422,7 @@ public class ChipPoints : MonoBehaviour
                     button5.SetActive(true);
                     aboveCauldronText.text = "Mandrake immediatley before doubles this ingredient!";
                     //some sound effect
-                    await CheckWhichChoice();
+                    await CheckWhichChoice(aboveCauldronText.text);
                     buttonsToAddLeftover.SetActive(false);
                 }
                 ResetChoices();
@@ -439,7 +440,7 @@ public class ChipPoints : MonoBehaviour
                     button5.SetActive(true);
                     aboveCauldronText.text = "Mandrake immediatley after cherrybomb! Removing cherrybomb from potion and putting back in your bag";
                     //having some sort of animation here to visulaise it might help.
-                    await CheckWhichChoice();
+                    await CheckWhichChoice(aboveCauldronText.text);
                     buttonsToAddLeftover.SetActive(false);
                 }
                 if (ingredientsList[ingredientsList.Count - 1].Contains("Two"))
@@ -451,7 +452,7 @@ public class ChipPoints : MonoBehaviour
                     button5.SetActive(true);
                     aboveCauldronText.text = "Mandrake immediatley after cherrybomb! Removing cherrybomb from potion and putting back in your bag";
                     //having some sort of animation here to visulaise it might help.
-                    await CheckWhichChoice();
+                    await CheckWhichChoice(aboveCauldronText.text);
                     buttonsToAddLeftover.SetActive(false);
                 }
                 if (ingredientsList[ingredientsList.Count - 1].Contains("Three"))
@@ -463,7 +464,7 @@ public class ChipPoints : MonoBehaviour
                     button5.SetActive(true);
                     aboveCauldronText.text = "Mandrake immediatley after cherrybomb! Removing cherrybomb from potion and putting back in your bag";
                     //having some sort of animation here to visulaise it might help.
-                    await CheckWhichChoice();
+                    await CheckWhichChoice(aboveCauldronText.text);
                     buttonsToAddLeftover.SetActive(false);
                 }
                 ResetChoices();
@@ -482,7 +483,7 @@ public class ChipPoints : MonoBehaviour
                     button5.SetActive(true);
                     aboveCauldronText.text = "One mandrake in potion! Limit of cherry bombs increased to 8!";
                     //sound effect
-                    await CheckWhichChoice();
+                    await CheckWhichChoice(aboveCauldronText.text);
 
                     buttonsToAddLeftover.SetActive(false); quality.AddToCherryBombLimit();
                     quality.SetCherryBombText();
@@ -493,7 +494,7 @@ public class ChipPoints : MonoBehaviour
                     button5.SetActive(true);
                     aboveCauldronText.text = "One mandrake in potion! Limit of cherry bombs increased to 9!";
                     //sound effect
-                    await CheckWhichChoice();
+                    await CheckWhichChoice(aboveCauldronText.text);
                     buttonsToAddLeftover.SetActive(false);
                     quality.AddToCherryBombLimit();
                     quality.SetCherryBombText();
@@ -513,7 +514,7 @@ public class ChipPoints : MonoBehaviour
                     button5.SetActive(true);
                     aboveCauldronText.text = "One mandrake in potion! Add 1 extra point to score!";
                     //sound effect
-                    await CheckWhichChoice();
+                    await CheckWhichChoice(aboveCauldronText.text);
                     buttonsToAddLeftover.SetActive(false);  Score += 1; }
                 if (mandrakes == 2)
                 {
@@ -521,7 +522,7 @@ public class ChipPoints : MonoBehaviour
                     button5.SetActive(true);
                     aboveCauldronText.text = "Two mandrakes in potion! Add 2 extra points to score!";
                     //sound effect
-                    await CheckWhichChoice();
+                    await CheckWhichChoice(aboveCauldronText.text);
                     buttonsToAddLeftover.SetActive(false); Score += 2;
                 }
                 
@@ -531,7 +532,7 @@ public class ChipPoints : MonoBehaviour
                     button5.SetActive(true);
                     aboveCauldronText.text = "Three or more mandrakes in potion! Add 3 extra points to score!";
                     //sound effect
-                    await CheckWhichChoice();
+                    await CheckWhichChoice(aboveCauldronText.text);
                     buttonsToAddLeftover.SetActive(false); Score += 3;
                 }
 
@@ -586,7 +587,7 @@ public class ChipPoints : MonoBehaviour
                     button5.SetActive(true);
                     aboveCauldronText.text = "Crow Skull on score with ruby! Immediatley recieve one ruby!";
                     //sound effect
-                    await CheckWhichChoice();
+                    await CheckWhichChoice(aboveCauldronText.text);
                     buttonsToAddLeftover.SetActive(false); 
                     _playerData.Rubies.Value++;
                     ChangeRubyUI();
@@ -604,7 +605,7 @@ public class ChipPoints : MonoBehaviour
                         button5.SetActive(true);
                         aboveCauldronText.text = "Small Crow Skull on score with ruby! Immediatley recieve 1 Victory Point!";
                         //sound effect
-                        await CheckWhichChoice();
+                        await CheckWhichChoice(aboveCauldronText.text);
                         buttonsToAddLeftover.SetActive(false);
                         _playerData.VictoryPoints.Value++;
                     }
@@ -617,7 +618,7 @@ public class ChipPoints : MonoBehaviour
                         button5.SetActive(true);
                         aboveCauldronText.text = "Medium Crow Skull on score with ruby! Immediatley recieve 2 Victory Points!";
                         //sound effect
-                        await CheckWhichChoice();
+                        await CheckWhichChoice(aboveCauldronText.text);
                         buttonsToAddLeftover.SetActive(false);
                         _playerData.VictoryPoints.Value += 2;
                     }
@@ -627,7 +628,7 @@ public class ChipPoints : MonoBehaviour
                         button5.SetActive(true);
                         aboveCauldronText.text = "Medium Crow Skull on score with ruby! Immediatley recieve 4 Victory Point!";
                         //sound effect
-                        await CheckWhichChoice();
+                        await CheckWhichChoice(aboveCauldronText.text);
                         buttonsToAddLeftover.SetActive(false);
                         _playerData.VictoryPoints.Value += 4;
                     }
@@ -649,7 +650,7 @@ public class ChipPoints : MonoBehaviour
                     choiceOne.text = getNameOfIngredientFromNumber(choiceOneNumber);
                     choiceTwo.text = "Skip";
                     aboveCauldronText.text = $"Small crow skull! Pick one random ingredient from your bag to add to your pot!";
-                    await CheckWhichChoice();
+                    await CheckWhichChoice(aboveCauldronText.text);
 
                     if (choiceOneCauldron)
                     {
@@ -671,7 +672,7 @@ public class ChipPoints : MonoBehaviour
                     choiceTwo.text = getNameOfIngredientFromNumber(choiceTwoNumber);
                     choiceThree.text = "Skip";
                     aboveCauldronText.text = $"Medium crow skull! Pick one random ingredient from your bag to add to your pot!";
-                    await CheckWhichChoice();
+                    await CheckWhichChoice(aboveCauldronText.text);
                     if (choiceOneCauldron)
                     {
                         leftOverIngredientLocation = leftOverIngredient.transform.position;
@@ -703,7 +704,7 @@ public class ChipPoints : MonoBehaviour
                     choiceThree.text = getNameOfIngredientFromNumber(choiceFourNumber);
                     choiceFive.text = "Skip";
                     aboveCauldronText.text = $"Large crow skull! Pick one random ingredient from your bag to add to your pot!";
-                    await CheckWhichChoice();
+                    await CheckWhichChoice(aboveCauldronText.text);
                     if (choiceOneCauldron)
                     {
                         leftOverIngredientLocation = leftOverIngredient.transform.position;
@@ -745,7 +746,7 @@ public class ChipPoints : MonoBehaviour
                         button5.SetActive(true);
                         aboveCauldronText.text = "ghosts breath adds 1 point to extra points."; 
                         extraVictoryPoints++;
-                        await CheckWhichChoice();
+                        await CheckWhichChoice(aboveCauldronText.text);
                         //buttonsToAddLeftover.SetActive(false);
                         ResetChoices();
                     }
@@ -754,7 +755,7 @@ public class ChipPoints : MonoBehaviour
                         buttonsToAddLeftover.SetActive(true);
                         button5.SetActive(true);
                         aboveCauldronText.text = "ghosts breath adds 2 points to extra points.";
-                        await CheckWhichChoice();
+                        await CheckWhichChoice(aboveCauldronText.text);
                         //buttonsToAddLeftover.SetActive(false);
                         ResetChoices();
                   
@@ -766,7 +767,7 @@ public class ChipPoints : MonoBehaviour
                         aboveCauldronText.text = "ghosts breath adds 3 points to extra points.";
                        
                         extraVictoryPoints += 3;
-                        await CheckWhichChoice();
+                        await CheckWhichChoice(aboveCauldronText.text);
                         //buttonsToAddLeftover.SetActive(false);
                         ResetChoices();
                     }
@@ -841,7 +842,7 @@ public class ChipPoints : MonoBehaviour
         buttonsToAddLeftover.SetActive(true);
         button5.SetActive(true);
         aboveCauldronText.text = $"added {VictoryPoints} Victory Points";
-        await CheckWhichChoice();
+        await CheckWhichChoice(aboveCauldronText.text);
        
         ResetChoices();
         winnerManager.ReadyUp();
@@ -862,7 +863,7 @@ public class ChipPoints : MonoBehaviour
         buttonsToAddLeftover.SetActive(true);
         button5.SetActive(true);
         aboveCauldronText.text = $"added {Coins} Coins";
-        await CheckWhichChoice();
+        await CheckWhichChoice(aboveCauldronText.text);
         buttonsToAddLeftover.SetActive(false);
         ResetChoices();
 
@@ -893,7 +894,7 @@ public class ChipPoints : MonoBehaviour
         aboveCauldronText.text = "Round Over!";
 
         //buttonsToAddLeftover.SetActive(false);
-        await CheckWhichChoice();
+        await CheckWhichChoice(aboveCauldronText.text);
           
             
         ResetChoices();
@@ -924,7 +925,7 @@ public class ChipPoints : MonoBehaviour
                 choiceTwo.text = "don't add";
                
                 
-                await CheckWhichChoice();
+                await CheckWhichChoice(aboveCauldronText.text);
                 if (choiceOneCauldron)
                 {
                     ingredientsPutToSide.RemoveAt(0);
@@ -950,7 +951,7 @@ public class ChipPoints : MonoBehaviour
                 choiceTwo.text = "don't add";
                 
 
-                await CheckWhichChoice();
+                await CheckWhichChoice(aboveCauldronText.text);
                 if (choiceOneCauldron)
                 {
                     ingredientsPutToSide.RemoveAt(0);
@@ -975,7 +976,7 @@ public class ChipPoints : MonoBehaviour
                 choiceOne.text = "Add to pot";
                 choiceTwo.text = "don't add";
                
-                await CheckWhichChoice();
+                await CheckWhichChoice(aboveCauldronText.text);
                 if (choiceOneCauldron)
                 {
                     ingredientsPutToSide.RemoveAt(0);
@@ -1024,7 +1025,7 @@ public class ChipPoints : MonoBehaviour
             buttonsToAddLeftover.SetActive(true);
             button5.SetActive(true);
             aboveCauldronText.text = "No moths in your potion";
-            await CheckWhichChoice();
+            await CheckWhichChoice(aboveCauldronText.text);
             Debug.Log("no moths in cauldron");
 
         }
@@ -1057,7 +1058,7 @@ public class ChipPoints : MonoBehaviour
                     button2.SetActive(true);
                     choiceOne.text = "buy droplet";
                     choiceTwo.text = "skip";
-                    await CheckWhichChoice();
+                    await CheckWhichChoice(aboveCauldronText.text);
                     if (choiceOneCauldron)
                     {
                         _playerData.Rubies.Value--;
@@ -1080,7 +1081,7 @@ public class ChipPoints : MonoBehaviour
                     button2.SetActive(true);
                     choiceOne.text = "buy droplet";
                     choiceTwo.text = "skip";
-                    await CheckWhichChoice();
+                    await CheckWhichChoice(aboveCauldronText.text);
                     if (choiceOneCauldron)
                     {
                         if (_playerData.Rubies.Value >= 0)
@@ -1152,7 +1153,7 @@ public class ChipPoints : MonoBehaviour
                     button2.SetActive(true);
                     choiceOne.text = "add to pot";
                     choiceTwo.text = "skip";
-                    await CheckWhichChoice();
+                    await CheckWhichChoice(aboveCauldronText.text);
                     if (choiceOneCauldron)
                     {
                         Score += totalSpiders;
@@ -1173,7 +1174,7 @@ public class ChipPoints : MonoBehaviour
                     //some sound effect for rubies
                     _playerData.Rubies.Value++;
                     
-                    await CheckWhichChoice();
+                    await CheckWhichChoice(aboveCauldronText.text);
                     ChangeRubyUI();
 
                 }
@@ -1185,7 +1186,7 @@ public class ChipPoints : MonoBehaviour
                     //some sound effect for rubies
                     _playerData.Rubies.Value += 2;
                    
-                    await CheckWhichChoice();
+                    await CheckWhichChoice(aboveCauldronText.text);
                     ChangeRubyUI();
                 }
 
@@ -1203,7 +1204,7 @@ public class ChipPoints : MonoBehaviour
                         button5.SetActive(true);
                         //some sound effect for Pumpkin
                         grabIngredient.AddToBagPermanantly(14);
-                        await CheckWhichChoice();
+                        await CheckWhichChoice(aboveCauldronText.text);
                     }
                     if (ingredientsList[ingredientsList.Count - 2] == "spiderTwo")
                     {
@@ -1214,7 +1215,7 @@ public class ChipPoints : MonoBehaviour
                         choiceOne.text = "Crow skull";
                         choiceTwo.text = "Mushroom";
 
-                        await CheckWhichChoice();
+                        await CheckWhichChoice(aboveCauldronText.text);
                         if (choiceOneCauldron)
                         {
                             //sound effect of crow
@@ -1236,7 +1237,7 @@ public class ChipPoints : MonoBehaviour
                         choiceOne.text = "Mandrake";
                         choiceTwo.text = "GhostsBreath";
 
-                        await CheckWhichChoice();
+                        await CheckWhichChoice(aboveCauldronText.text);
                         if (choiceOneCauldron)
                         {
                             //sound effect of screaming? like nice screaming?
@@ -1261,7 +1262,7 @@ public class ChipPoints : MonoBehaviour
                         button5.SetActive(true);
                         //some sound effect for Pumpkin
                         grabIngredient.AddToBagPermanantly(14);
-                        await CheckWhichChoice();
+                        await CheckWhichChoice(aboveCauldronText.text);
 
 
                     }
@@ -1274,7 +1275,7 @@ public class ChipPoints : MonoBehaviour
                         choiceOne.text = "Crow skull";
                         choiceTwo.text = "Mushroom";
 
-                        await CheckWhichChoice();
+                        await CheckWhichChoice(aboveCauldronText.text);
                         if (choiceOneCauldron)
                         {
                             //sound effect of crow
@@ -1296,7 +1297,7 @@ public class ChipPoints : MonoBehaviour
                         choiceOne.text = "Mandrake";
                         choiceTwo.text = "GhostsBreath";
 
-                        await CheckWhichChoice();
+                        await CheckWhichChoice(aboveCauldronText.text);
                         if (choiceOneCauldron)
                         {
                             //sound effect of screaming? like nice screaming?
@@ -1320,7 +1321,7 @@ public class ChipPoints : MonoBehaviour
             buttonsToAddLeftover.SetActive(true);
             aboveCauldronText.text = "You had no spiders in your pot";
             button5.SetActive(true);
-            await CheckWhichChoice();
+            await CheckWhichChoice(aboveCauldronText.text);
             Debug.Log("no spiders");
         }
         Debug.Log("checkSpiders");
@@ -1331,30 +1332,25 @@ public class ChipPoints : MonoBehaviour
 
 
 
-    public async Task CheckWhichChoice()
+    public async Task CheckWhichChoice(string message)
     {
-        while (!ChoiceChosem())
+        if (isCheckingChoice) return; // Prevent multiple instances from running
+
+        isCheckingChoice = true;
+        while (!IsChoiceMade())
         {
-            Debug.Log("no choice chosen");
-          
+            Debug.Log("no choice chosen: " + message + " - " + gameObject.name);
             await Task.Yield();
         }
         Debug.Log("choice MADE");
+        isCheckingChoice = false;  // Reset the flag when done
 
     }
 
-    public bool ChoiceChosem()
+    public bool IsChoiceMade()
     {
-        
-            if (!choiceOneCauldron && !choiceTwoCauldron && !choiceThreeCauldron && !choiceFourCauldron && !choiceFiveCauldron && !choiceSixCauldron)
-            {
-               return false;
-            }
-            else
-            {
-                return true; 
-            }
-      
+       
+        return choiceOneCauldron || choiceTwoCauldron || choiceThreeCauldron || choiceFourCauldron || choiceFiveCauldron || choiceSixCauldron;
     }
 
     public void ResetChoices()
@@ -1386,7 +1382,7 @@ public class ChipPoints : MonoBehaviour
                     aboveCauldronText.text = "You had one GhostsBreath in your potion and get one extra victory point";
                     button5.SetActive(true);
                     VictoryPoints++;
-                    await CheckWhichChoice(); 
+                    await CheckWhichChoice(aboveCauldronText.text); 
                 }
                 if (ghosts == 2)
                 {
@@ -1396,7 +1392,7 @@ public class ChipPoints : MonoBehaviour
                     VictoryPoints++;
                     _playerData.Rubies.Value++;
                     ChangeRubyUI();
-                    await CheckWhichChoice();
+                    await CheckWhichChoice(aboveCauldronText.text);
                 }
                 if (ghosts >= 3)
                 {
@@ -1405,7 +1401,7 @@ public class ChipPoints : MonoBehaviour
                     button5.SetActive(true);
                     VictoryPoints += 2;
                     InitialScore++;
-                    await CheckWhichChoice();
+                    await CheckWhichChoice(aboveCauldronText.text);
                 }
                 //For 1, 2 or 3 purple chips, you receive the indicated bonus.  1 = 1 victory point 2 = victory point and ruby 3 = 2 victory points and teardrop forward one space.COSTS 9. - END OF ROUND
             }
@@ -1419,7 +1415,7 @@ public class ChipPoints : MonoBehaviour
                     aboveCauldronText.text = "You have one ghostsbreath in your potion, you may permanantly trade the ghostsbreath in your potion for these things. One for a HawkMoth, Victory point and a Ruby.";
                     choiceOne.text = "trade one";
                     choiceTwo.text = "skip";
-                    await CheckWhichChoice();
+                    await CheckWhichChoice(aboveCauldronText.text);
                     if (choiceOneCauldron)
                     {
                         _playerData.VictoryPoints.Value += 1;
@@ -1435,7 +1431,7 @@ public class ChipPoints : MonoBehaviour
                     choiceTwo.text = "trade two";
                     choiceThree.text = "skip";
 
-                    await CheckWhichChoice();
+                    await CheckWhichChoice(aboveCauldronText.text);
                     if (choiceOneCauldron)
                     {
                         _playerData.VictoryPoints.Value += 1;
@@ -1463,7 +1459,7 @@ public class ChipPoints : MonoBehaviour
                     choiceThree.text = "trade three";
                     choiceFour.text = "skip";
 
-                    await CheckWhichChoice();
+                    await CheckWhichChoice(aboveCauldronText.text);
                     if (choiceOneCauldron)
                     {
                         //add ui and soundeffects to show these things added
@@ -1517,7 +1513,7 @@ public class ChipPoints : MonoBehaviour
                         button1.SetActive(true);
                       
                         choiceOne.text = smallIngredients[0].Substring(0, smallIngredients[0].Length - 3);
-                        await CheckWhichChoice();
+                        await CheckWhichChoice(aboveCauldronText.text);
                         if (choiceOneCauldron)
                         {
                             if (smallIngredients[0].Contains("mandrake"))
@@ -1552,7 +1548,7 @@ public class ChipPoints : MonoBehaviour
                      
                         choiceOne.text = smallIngredients[0].Substring(0, smallIngredients[0].Length - 3);
                         choiceTwo.text = smallIngredients[1].Substring(0, smallIngredients[1].Length - 3);
-                        await CheckWhichChoice();
+                        await CheckWhichChoice(aboveCauldronText.text);
                         if (choiceOneCauldron)
                         {
                             if (smallIngredients[0].Contains("mandrake"))
@@ -1612,7 +1608,7 @@ public class ChipPoints : MonoBehaviour
                         choiceOne.text = smallIngredients[0].Substring(0, smallIngredients[0].Length - 3);
                         choiceTwo.text = smallIngredients[1].Substring(0, smallIngredients[1].Length - 3);
                         choiceThree.text = smallIngredients[2].Substring(0, smallIngredients[2].Length - 3);
-                        await CheckWhichChoice();
+                        await CheckWhichChoice(aboveCauldronText.text);
                         if (choiceOneCauldron)
                         {
                             if (smallIngredients[0].Contains("mandrake"))
@@ -1696,7 +1692,7 @@ public class ChipPoints : MonoBehaviour
                         choiceTwo.text = smallIngredients[1].Substring(0, smallIngredients[1].Length - 3);
                         choiceThree.text = smallIngredients[2].Substring(0, smallIngredients[2].Length - 3);
                         choiceFour.text = smallIngredients[3].Substring(0, smallIngredients[3].Length - 3);
-                        await CheckWhichChoice();
+                        await CheckWhichChoice(aboveCauldronText.text);
                         if (choiceOneCauldron)
                         {
                             if (smallIngredients[0].Contains("mandrake"))
@@ -1800,7 +1796,7 @@ public class ChipPoints : MonoBehaviour
                         button1.SetActive(true);
 
                         choiceOne.text = mediumIngredients[0].Substring(0, mediumIngredients[0].Length - 3);
-                        await CheckWhichChoice();
+                        await CheckWhichChoice(aboveCauldronText.text);
                         if (choiceOneCauldron)
                         {
                             if (mediumIngredients[0].Contains("mandrake"))
@@ -1834,7 +1830,7 @@ public class ChipPoints : MonoBehaviour
 
                         choiceOne.text = mediumIngredients[0].Substring(0, mediumIngredients[0].Length - 3);
                         choiceTwo.text = mediumIngredients[1].Substring(0, mediumIngredients[1].Length - 3);
-                        await CheckWhichChoice();
+                        await CheckWhichChoice(aboveCauldronText.text);
                         if (choiceOneCauldron)
                         {
                             if (mediumIngredients[0].Contains("mandrake"))
@@ -1893,7 +1889,7 @@ public class ChipPoints : MonoBehaviour
                         choiceOne.text = mediumIngredients[0].Substring(0, mediumIngredients[0].Length - 3);
                         choiceTwo.text = mediumIngredients[1].Substring(0, mediumIngredients[1].Length - 3);
                         choiceThree.text = mediumIngredients[2].Substring(0, mediumIngredients[2].Length - 3);
-                        await CheckWhichChoice();
+                        await CheckWhichChoice(aboveCauldronText.text);
                         if (choiceOneCauldron)
                         {
                             if (mediumIngredients[0].Contains("mandrake"))
@@ -1977,7 +1973,7 @@ public class ChipPoints : MonoBehaviour
                         choiceTwo.text = mediumIngredients[1].Substring(0, mediumIngredients[1].Length - 3);
                         choiceThree.text = mediumIngredients[2].Substring(0, mediumIngredients[2].Length - 3);
                         choiceFour.text = mediumIngredients[3].Substring(0, mediumIngredients[3].Length - 3);
-                        await CheckWhichChoice();
+                        await CheckWhichChoice(aboveCauldronText.text);
                         if (choiceOneCauldron)
                         {
                             if (mediumIngredients[0].Contains("mandrake"))
@@ -2081,7 +2077,7 @@ public class ChipPoints : MonoBehaviour
                         button1.SetActive(true);
 
                         choiceOne.text = smallIngredients[0].Substring(0, smallIngredients[0].Length - 3);
-                        await CheckWhichChoice();
+                        await CheckWhichChoice(aboveCauldronText.text);
                         if (choiceOneCauldron)
                         {
                             if (smallIngredients[0].Contains("mandrake"))
@@ -2116,7 +2112,7 @@ public class ChipPoints : MonoBehaviour
 
                         choiceOne.text = smallIngredients[0].Substring(0, smallIngredients[0].Length - 3);
                         choiceTwo.text = smallIngredients[1].Substring(0, smallIngredients[1].Length - 3);
-                        await CheckWhichChoice();
+                        await CheckWhichChoice(aboveCauldronText.text);
                         if (choiceOneCauldron)
                         {
                             if (smallIngredients[0].Contains("mandrake"))
@@ -2175,7 +2171,7 @@ public class ChipPoints : MonoBehaviour
                         choiceOne.text = smallIngredients[0].Substring(0, smallIngredients[0].Length - 3);
                         choiceTwo.text = smallIngredients[1].Substring(0, smallIngredients[1].Length - 3);
                         choiceThree.text = smallIngredients[2].Substring(0, smallIngredients[2].Length - 3);
-                        await CheckWhichChoice();
+                        await CheckWhichChoice(aboveCauldronText.text);
                         if (choiceOneCauldron)
                         {
                             if (smallIngredients[0].Contains("mandrake"))
@@ -2260,7 +2256,7 @@ public class ChipPoints : MonoBehaviour
                         choiceTwo.text = smallIngredients[1].Substring(0, smallIngredients[1].Length - 3);
                         choiceThree.text = smallIngredients[2].Substring(0, smallIngredients[2].Length - 3);
                         choiceFour.text = smallIngredients[3].Substring(0, smallIngredients[3].Length - 3);
-                        await CheckWhichChoice();
+                        await CheckWhichChoice(aboveCauldronText.text);
                         if (choiceOneCauldron)
                         {
                             if (smallIngredients[0].Contains("mandrake"))
@@ -2364,7 +2360,7 @@ public class ChipPoints : MonoBehaviour
                 button5.SetActive(true);
                 aboveCauldronText.text = $"ghosts breath in potion adds {extraPoints} extra points";
                 Score += extraPoints;
-                await CheckWhichChoice();
+                await CheckWhichChoice(aboveCauldronText.text);
 
 
             }
@@ -2374,7 +2370,7 @@ public class ChipPoints : MonoBehaviour
             buttonsToAddLeftover.SetActive(true);
             aboveCauldronText.text = "You had no ghosts breath in your pot";
             button5.SetActive(true);
-            await CheckWhichChoice();
+            await CheckWhichChoice(aboveCauldronText.text);
             Debug.Log("no ghosts breath");
            
         }
@@ -2394,7 +2390,7 @@ public class ChipPoints : MonoBehaviour
             button5.SetActive(true);
             aboveCauldronText.text = "You get one ruby this round!";
             _playerData.Rubies.Value += 1;
-            await CheckWhichChoice();
+            await CheckWhichChoice(aboveCauldronText.text);
             ResetChoices();
             Debug.Log("added rubies");
             ChangeRubyUI();
@@ -2404,7 +2400,7 @@ public class ChipPoints : MonoBehaviour
             buttonsToAddLeftover.SetActive(true);
             button5.SetActive(true);
             aboveCauldronText.text = "You don't get a ruby this round";
-            await CheckWhichChoice();
+            await CheckWhichChoice(aboveCauldronText.text);
             ResetChoices();
             Debug.Log("no rubies to add");
         }
@@ -2412,7 +2408,7 @@ public class ChipPoints : MonoBehaviour
         aboveCauldronText.text = $"You get {VictoryPoints} Victory Points this round!";
         button5.SetActive(true);
         _playerData.VictoryPoints.Value += VictoryPoints;
-        await CheckWhichChoice();
+        await CheckWhichChoice(aboveCauldronText.text);
         ResetChoices();
         Debug.Log("Added victory points");
 
@@ -2421,7 +2417,7 @@ public class ChipPoints : MonoBehaviour
         button5.SetActive(true);
         aboveCauldronText.text = $"You get {Coins} Coins this round!";
         _playerData.Coins.Value += Coins;
-        await CheckWhichChoice();
+        await CheckWhichChoice(aboveCauldronText.text);
         ResetChoices();
         Debug.Log("Added coins");
         await _fortuneManager.AtTheVeryEndOfRound();
@@ -2513,7 +2509,7 @@ public class ChipPoints : MonoBehaviour
                 aboveCauldronText.text = $"You have {rubiesToSpend} rubies, do you want to buy a droplet or refill your purifier potion?";
                 choiceTwo.text = "Buy refill of purifier potion";
 
-                await CheckWhichChoice();
+                await CheckWhichChoice(aboveCauldronText.text);
                 if (choiceOneCauldron)
                 {
                     BuyDrop();
@@ -2535,7 +2531,7 @@ public class ChipPoints : MonoBehaviour
                 aboveCauldronText.text = $"You have {rubiesToSpend} rubies, do you want to buy a droplet?";
                 choiceTwo.text = "Skip";
 
-                await CheckWhichChoice();
+                await CheckWhichChoice(aboveCauldronText.text);
                 if (choiceOneCauldron)
                 {
                     BuyDrop();
@@ -2553,9 +2549,8 @@ public class ChipPoints : MonoBehaviour
             buttonsToAddLeftover.SetActive(true);
             button5.SetActive(true);
             _animatorScript.StartTalking(4);
-            aboveCauldronText.text = $"You don't have enough rubies to spend!";
-            choiceTwo.text = "Okay";
-            await CheckWhichChoice();
+            await MessageAboveCauldron("You don't have enough rubies to spend!");
+            
             ResetChoices();
         }
         Debug.Log("end spend rubies ui");
@@ -2585,7 +2580,7 @@ public class ChipPoints : MonoBehaviour
         aboveCauldronText.text = $"You have {ratTails} rat tails to add to your pot this round";
         Score += ratTails;
         
-        await CheckWhichChoice();
+        await CheckWhichChoice(aboveCauldronText.text);
         aboveCauldronText.text = "";
         quality.ResetPotionColour();
         quality.ResetCherryBombLimit();
@@ -2752,14 +2747,32 @@ public class ChipPoints : MonoBehaviour
     {
         grabIngredient = FindObjectOfType<GrabIngredient>();
         if (lastIngredient == "cherryBombOne")
-        { grabIngredient.AddToBagThisRound(0); }
+        { grabIngredient.AddToBagThisRound(0);
+            quality.RemoveFromCherryBombs();
+            quality.SetCherryBombText();
+            Score -= 1;
+        }
         if (lastIngredient == "cherryBombTwo")
-        { grabIngredient.AddToBagThisRound(2); }
+        { grabIngredient.AddToBagThisRound(2);
+            quality.RemoveFromCherryBombs();
+            quality.RemoveFromCherryBombs();
+            quality.SetCherryBombText();
+            Score -= 2;
+        }
         if (lastIngredient == "cherryBombThree")
-        { grabIngredient.AddToBagThisRound(1); }
+        { grabIngredient.AddToBagThisRound(1);
+            quality.RemoveFromCherryBombs();
+            quality.RemoveFromCherryBombs();
+            quality.RemoveFromCherryBombs();
+            quality.SetCherryBombText();
+            Score -= 3;
+        }
         int ingredientsCount = ingredientsList.Count - 1;
 
         ingredientsList.RemoveAt(ingredientsCount);
+
+        cauldronScoreFront.text = Score.ToString();
+        cauldronScoreBack.text = Score.ToString();
     }
 
     public async Task MessageAboveCauldron(string message)
@@ -2769,7 +2782,7 @@ public class ChipPoints : MonoBehaviour
         button5.SetActive(true);
         aboveCauldronText.text = message;
 
-        await CheckWhichChoice();
+        await CheckWhichChoice(message);
         ResetChoices();
         aboveCauldronText.text = "";
         
@@ -2909,7 +2922,7 @@ public class ChipPoints : MonoBehaviour
         }
 
 
-        await CheckWhichChoice();
+        await CheckWhichChoice(aboveCauldronText.text);
         aboveCauldronText.text = "";
         
     }

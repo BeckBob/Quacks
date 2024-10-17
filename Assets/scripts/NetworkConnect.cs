@@ -253,6 +253,9 @@ public class NetworkConnect : MonoBehaviour
     public void ReplayGame()
     {
         playerData = FindObjectOfType<PlayerData>();
+        grabIngredient = FindObjectOfType<GrabIngredient>();
+        chipPoints = FindObjectOfType<ChipPoints>();
+        gameManager = FindObjectOfType<GameManager>();
 
         player.transform.position = playerStartPos;
         _bigBook.SetActive(true);
@@ -261,14 +264,14 @@ public class NetworkConnect : MonoBehaviour
         blueConfetti.SetActive(false);
         purpleConfetti.SetActive(false);
         animatorScript.ResetGame();
-        GameManager.Instance.UpdateGameState(GameState.Lobby);
+       
 
         playerData.ResetGame();
         grabIngredient.ResetGame();
-        gameManager.ResetGame();
+        
         chipPoints.ResetGame();
         gameManager.ResetGame();
-
+        GameManager.Instance.UpdateGameState(GameState.Lobby);
     }
 
     private void GetUserName()

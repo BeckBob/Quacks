@@ -25,12 +25,13 @@ public class bottleUpPotionTrigger : MonoBehaviour
             chipPoints.EndRoundSafely();
             
             potionBottle.material.SetFloat("_Fill", 0.081f);
+            gameObject.SetActive(false);
         }
-        if (other.gameObject.CompareTag("potionBottle") && !quality.IsPotExploded() && !quality.nextIngredientTime)
+        else if (other.gameObject.CompareTag("potionBottle") && !quality.IsPotExploded() && !quality.nextIngredientTime)
         {
             await chipPoints.MessageAboveCauldron("You MUST put ingredient you pulled from bag into pot before you can bottle it!");
         }
-        if (other.gameObject.CompareTag("purifier") && chipPoints.lastIngredient.Contains("cherryBomb") && playerData.PurifierFull.Value == true)
+        else if (other.gameObject.CompareTag("purifier") && chipPoints.lastIngredient.Contains("cherryBomb") && playerData.PurifierFull.Value == true)
         {
             Debug.Log("purified");
             playerData.PurifierFull.Value = false;
@@ -39,17 +40,17 @@ public class bottleUpPotionTrigger : MonoBehaviour
             await chipPoints.MessageAboveCauldron("You removed the last cherrybomb in the pot");
 
         }
-        if (other.gameObject.CompareTag("purifier") && !chipPoints.lastIngredient.Contains("cherryBomb") && playerData.PurifierFull.Value == true)
+        else if (other.gameObject.CompareTag("purifier") && !chipPoints.lastIngredient.Contains("cherryBomb") && playerData.PurifierFull.Value == true)
         {
 
             await chipPoints.MessageAboveCauldron("SILLY CHILD! The last ingredient in the pot wasn't a cherrybomb");
         }
-        if (other.gameObject.CompareTag("purifier") && chipPoints.lastIngredient.Contains("cherryBomb") && playerData.PurifierFull.Value == false)
+        else if (other.gameObject.CompareTag("purifier") && chipPoints.lastIngredient.Contains("cherryBomb") && playerData.PurifierFull.Value == false)
         {
 
             await chipPoints.MessageAboveCauldron("FOOL! Purifier bottle is empty!");
         }
-        if (other.gameObject.CompareTag("purifier") && !chipPoints.lastIngredient.Contains("cherryBomb") && playerData.PurifierFull.Value == false)
+        else if (other.gameObject.CompareTag("purifier") && !chipPoints.lastIngredient.Contains("cherryBomb") && playerData.PurifierFull.Value == false)
         {
 
             await chipPoints.MessageAboveCauldron("The last ingredient in the pot wasn't a cherrybomb AND the purifier bottle is empty, YOU IDIOT.");

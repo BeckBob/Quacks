@@ -110,122 +110,7 @@ public class GrabIngredient : MonoBehaviour
     public int pumpkin = 0;
     public int spider = 0;
 
-    public async Task CheckWhichChoice()
-    {
-        while (!ChoiceChosem())
-        {
-            Debug.Log("no choice chosen");
-
-            await Task.Yield();
-        }
-        Debug.Log("choice MADE");
-
-    }
-
-    public bool ChoiceChosem()
-    {
-
-        if (!choiceOneCauldron && !choiceTwoCauldron && !choiceThreeCauldron && !choiceFourCauldron && !choiceFiveCauldron && !choiceSixCauldron)
-        {
-            return false;
-        }
-        else
-        {
-            return true;
-        }
-
-    }
-
-      public async Task MessageAboveCauldronMultipleChoice(int num, string message, string choice1, string choice2, string choice3, string choice4, string choice5)
-    {
-        
-        aboveCauldronSphere.SetActive(true);
-        if (num == 0)
-        {
-            aboveCauldronText.text = message;
-            button5.SetActive(true);
-        }
-        if (num == 1)
-        {
-            aboveCauldronText.text = message;
-            button1.SetActive(true);
-            button2.SetActive(true);
-            choiceOne.text = choice1;
-            choiceTwo.text = "Skip";
-        }
-        if (num == 2)
-        {
-            aboveCauldronText.text = message;
-            button1.SetActive(true);
-            button2.SetActive(true);
-            button3.SetActive(true);
-
-            choiceOne.text = choice1;
-            choiceTwo.text = choice2;
-            choiceThree.text = "Skip";
-        }
-        if (num == 3)
-        {
-            aboveCauldronText.text = message;
-            button1.SetActive(true);
-            button2.SetActive(true);
-            button3.SetActive(true);
-            button4.SetActive(true);
-            choiceOne.text = choice1;
-            choiceTwo.text = choice2;
-            choiceThree.text = choice3;
-            choiceFour.text = "Skip";
-        }
-        if (num == 4)
-        {
-            aboveCauldronText.text = message;
-
-            button1.SetActive(true);
-            button2.SetActive(true);
-            button3.SetActive(true);
-            button4.SetActive(true);
-            button5.SetActive(true);
-            choiceOne.text = choice1;
-            choiceTwo.text = choice2;
-            choiceThree.text = choice3;
-            choiceFour.text = choice4;
-            choiceFive.text = "Skip";
-        }
-        if (num == 5)
-        {
-            aboveCauldronText.text = message;
-
-            button1.SetActive(true);
-            button2.SetActive(true);
-            button3.SetActive(true);
-            button4.SetActive(true);
-            button6.SetActive(true);
-            button7.SetActive(true);
-            choiceOne.text = choice1;
-            choiceTwo.text = choice2;
-            choiceThree.text = choice3;
-            choiceFour.text = choice4;
-            choiceSix.text = choice5;
-            choiceSeven.text = "Skip";
-            
-        }
-
-
-        await CheckWhichChoice();
-        aboveCauldronText.text = "";
-        
-    }
-
-    public void ResetCauldronChoices()
-    {
-        choiceTwoCauldron = false;
-        choiceOneCauldron = false;
-        choiceFourCauldron = false;
-        choiceThreeCauldron = false;
-        choiceFiveCauldron = false;
-        choiceSixCauldron = false;
-    }
-
+    
 
     public void RemoveItemFromBag(int ingredientNumber)
     {
@@ -456,18 +341,18 @@ public class GrabIngredient : MonoBehaviour
         int num = ingredientsToUpgrade.Count;
         if (num == 0)
         {
-            await MessageAboveCauldronMultipleChoice(num, "OH NO! Can't upgrade any of the ingredients you drew!", "", "", "", "", "");
-            ResetCauldronChoices();
+            await _chipPoints.MessageAboveCauldronMultipleChoice(num, "OH NO! Can't upgrade any of the ingredients you drew!", "", "", "", "", "");
+            _chipPoints.ResetChoices();
         }
         if (num == 1)
         {
             int ingredientNumber = ingredientsToUpgrade[0];
             string ingredientName = GetNameOFIngredient(ingredientNumber);
-            await MessageAboveCauldronMultipleChoice(num, $"Oh dear... you can only upgrade {ingredientName}...", "UPGRADE", "", "", "", "");
+            await _chipPoints.MessageAboveCauldronMultipleChoice(num, $"Oh dear... you can only upgrade {ingredientName}...", "UPGRADE", "", "", "", "");
             GetNumberOfUpgrade(ingredientNumber);
             RemoveItemFromBagPermanantly(ingredientNumber);
             AddToBagPermanantly(GetNumberOfUpgrade(ingredientNumber));
-            ResetCauldronChoices();
+            _chipPoints.ResetChoices();
         }
         if (num == 2)
         {
@@ -475,7 +360,7 @@ public class GrabIngredient : MonoBehaviour
             string ingredientName = GetNameOFIngredient(ingredientNumber);
             int ingredientTwo = ingredientsToUpgrade[1];
             string ingredientNameTwo = GetNameOFIngredient(ingredientTwo);
-            await MessageAboveCauldronMultipleChoice(num, "Which of these ingredients do you want to upgrade?", ingredientName, ingredientNameTwo, "", "", "");
+            await _chipPoints.MessageAboveCauldronMultipleChoice(num, "Which of these ingredients do you want to upgrade?", ingredientName, ingredientNameTwo, "", "", "");
             if (choiceOneCauldron)
             {
                 RemoveItemFromBagPermanantly(ingredientNumber);
@@ -486,7 +371,7 @@ public class GrabIngredient : MonoBehaviour
                 RemoveItemFromBagPermanantly(ingredientTwo);
                 AddToBagPermanantly(GetNumberOfUpgrade(ingredientTwo));
             }
-            ResetCauldronChoices();
+            _chipPoints.ResetChoices();
 
         }
         if (num == 3)
@@ -497,7 +382,7 @@ public class GrabIngredient : MonoBehaviour
             string ingredientNameTwo = GetNameOFIngredient(ingredientTwo);
             int ingredientThree = ingredientsToUpgrade[2];
             string ingredientNameThree = GetNameOFIngredient(ingredientThree);
-            await MessageAboveCauldronMultipleChoice(num, "Which of these ingredients do you want to upgrade?", ingredientName, ingredientNameTwo, ingredientNameThree, "", "");
+            await _chipPoints.MessageAboveCauldronMultipleChoice(num, "Which of these ingredients do you want to upgrade?", ingredientName, ingredientNameTwo, ingredientNameThree, "", "");
             if (choiceOneCauldron)
             {
                 RemoveItemFromBagPermanantly(ingredientNumber);
@@ -513,7 +398,7 @@ public class GrabIngredient : MonoBehaviour
                 RemoveItemFromBagPermanantly(ingredientThree);
                 AddToBagPermanantly(GetNumberOfUpgrade(ingredientThree));
             }
-            ResetCauldronChoices();
+            _chipPoints.ResetChoices();
 
         }
         if (num == 4)
@@ -526,7 +411,7 @@ public class GrabIngredient : MonoBehaviour
             string ingredientNameThree = GetNameOFIngredient(ingredientThree);
             int ingredientFour = ingredientsToUpgrade[3];
             string ingredientNameFour = GetNameOFIngredient(ingredientFour);
-            await MessageAboveCauldronMultipleChoice(num, "OH WOW! you get to choose between 4! Which of these ingredients do you want to upgrade?", ingredientName, ingredientNameTwo, ingredientNameThree, ingredientNameFour, "");
+            await _chipPoints.MessageAboveCauldronMultipleChoice(num, "OH WOW! you get to choose between 4! Which of these ingredients do you want to upgrade?", ingredientName, ingredientNameTwo, ingredientNameThree, ingredientNameFour, "");
             if (choiceOneCauldron)
             {
                 RemoveItemFromBagPermanantly(ingredientNumber);
@@ -547,7 +432,7 @@ public class GrabIngredient : MonoBehaviour
                 RemoveItemFromBagPermanantly(ingredientFour);
                 AddToBagPermanantly(GetNumberOfUpgrade(ingredientFour));
             }
-            ResetCauldronChoices();
+            _chipPoints.ResetChoices();
 
         }
         
@@ -561,17 +446,18 @@ public class GrabIngredient : MonoBehaviour
         int num = ingredientToAddOneToPot.Count;
         if (num == 0)
         {
-            await MessageAboveCauldronMultipleChoice(num, "OH NO! You had no ingredients left to draw!", "", "", "", "", "");
-            ResetCauldronChoices();
+            await _chipPoints.MessageAboveCauldronMultipleChoice(num, "OH NO! You had no ingredients left to draw!", "", "", "", "", "");
+            _chipPoints.ResetChoices();
         }
         if (num == 1)
         {
             int ingredientNumber = ingredientToAddOneToPot[0];
             string ingredientName = GetNameOFIngredient(ingredientNumber);
-            await MessageAboveCauldronMultipleChoice(num, $"Oh dear... you could only draw one ingredient, {ingredientName}, do you want to put it in your pot?", "put in pot", "", "", "", "");
+            await _chipPoints.MessageAboveCauldronMultipleChoice(num, $"Oh dear... you could only draw one ingredient, {ingredientName}, do you want to put it in your pot?", "put in pot", "", "", "", "");
             if (choiceOneCauldron)
             {
                 _chipPoints.InstantiateOverPot(ingredientNumber);
+                _chipPoints.ResetChoices();
             }
             
             
@@ -582,7 +468,7 @@ public class GrabIngredient : MonoBehaviour
             string ingredientName = GetNameOFIngredient(ingredientNumber);
             int ingredientTwo = ingredientToAddOneToPot[1];
             string ingredientNameTwo = GetNameOFIngredient(ingredientTwo);
-            await MessageAboveCauldronMultipleChoice(num, "Which ingredient do you want to add to the pot?", ingredientName, ingredientNameTwo, "", "", "");
+            await _chipPoints.MessageAboveCauldronMultipleChoice(num, "Which ingredient do you want to add to the pot?", ingredientName, ingredientNameTwo, "", "", "");
             if (choiceOneCauldron)
             {
                 _chipPoints.InstantiateOverPot(ingredientNumber);
@@ -591,6 +477,7 @@ public class GrabIngredient : MonoBehaviour
             {
                 _chipPoints.InstantiateOverPot(ingredientTwo);
             }
+            _chipPoints.ResetChoices();
 
         }
         if (num == 3)
@@ -601,7 +488,7 @@ public class GrabIngredient : MonoBehaviour
             string ingredientNameTwo = GetNameOFIngredient(ingredientTwo);
             int ingredientThree = ingredientToAddOneToPot[2];
             string ingredientNameThree = GetNameOFIngredient(ingredientThree);
-            await MessageAboveCauldronMultipleChoice(num, "Which ingredient do you want to add to the pot?", ingredientName, ingredientNameTwo, ingredientNameThree, "", "");
+            await _chipPoints.MessageAboveCauldronMultipleChoice(num, "Which ingredient do you want to add to the pot?", ingredientName, ingredientNameTwo, ingredientNameThree, "", "");
             if (choiceOneCauldron)
             {
                 _chipPoints.InstantiateOverPot(ingredientNumber);
@@ -614,7 +501,7 @@ public class GrabIngredient : MonoBehaviour
             {
                 _chipPoints.InstantiateOverPot(ingredientThree);
             }
-
+            _chipPoints.ResetChoices();
         }
         if (num == 4)
         {
@@ -626,7 +513,7 @@ public class GrabIngredient : MonoBehaviour
             string ingredientNameThree = GetNameOFIngredient(ingredientThree);
             int ingredientFour = ingredientToAddOneToPot[3];
             string ingredientNameFour = GetNameOFIngredient(ingredientFour);
-            await MessageAboveCauldronMultipleChoice(num, "Whick ingredient do you want to put in the pot?", ingredientName, ingredientNameTwo, ingredientNameThree, ingredientNameFour, "");
+            await _chipPoints.MessageAboveCauldronMultipleChoice(num, "Whick ingredient do you want to put in the pot?", ingredientName, ingredientNameTwo, ingredientNameThree, ingredientNameFour, "");
             if (choiceOneCauldron)
             {
                 _chipPoints.InstantiateOverPot(ingredientNumber);
@@ -643,6 +530,7 @@ public class GrabIngredient : MonoBehaviour
             {
                 _chipPoints.InstantiateOverPot(ingredientFour);
             }
+            _chipPoints.ResetChoices();
 
         }
         if (num == 4)
@@ -657,7 +545,7 @@ public class GrabIngredient : MonoBehaviour
             string ingredientNameFour = GetNameOFIngredient(ingredientFour);
             int ingredientFive = ingredientToAddOneToPot[4];
             string ingredientNameFive = GetNameOFIngredient(ingredientFive);
-            await MessageAboveCauldronMultipleChoice(num, "Whick ingredient do you want to put in the pot?", ingredientName, ingredientNameTwo, ingredientNameThree, ingredientNameFour, ingredientNameFive);
+            await _chipPoints.MessageAboveCauldronMultipleChoice(num, "Whick ingredient do you want to put in the pot?", ingredientName, ingredientNameTwo, ingredientNameThree, ingredientNameFour, ingredientNameFive);
             if (choiceOneCauldron)
             {
                 _chipPoints.InstantiateOverPot(ingredientNumber);
@@ -678,9 +566,9 @@ public class GrabIngredient : MonoBehaviour
             {
                 _chipPoints.InstantiateOverPot(ingredientFive);
             }
-
+            _chipPoints.ResetChoices();
         }
-        ResetCauldronChoices();
+   
 
 
     }

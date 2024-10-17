@@ -58,7 +58,8 @@ public class PotionQuality : MonoBehaviour
 
     private void Start()
     {
-        
+        _grabIngredient = FindObjectOfType<GrabIngredient>();
+
         originalTopColor = potionOne.material.GetColor("_topColor");
         originalVoronoiColor = potionOne.material.GetColor("_voronoiColor");
         originalFoamColor = potionOne.material.GetColor("_foamColour");
@@ -234,7 +235,7 @@ public class PotionQuality : MonoBehaviour
             SetSmokeColor("purple");
         }
        
-        _grabIngredient = FindObjectOfType<GrabIngredient>();
+       
         _grabIngredient.updateCherryBombs();
         nextIngredientTime = true;
         SetCherryBombText();

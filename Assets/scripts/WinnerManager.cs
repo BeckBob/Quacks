@@ -577,26 +577,26 @@ public class WinnerManager : NetworkBehaviour
         
     }
 
-    public void ShowWinnerUI()
+    public async void ShowWinnerUI()
     {
         if (winners.Count == 1)
         {
-            DecideWhichCauldronUI($"{winners[0]} IS THE WINNER!");
+           await DecideWhichCauldronUI($"{winners[0]} IS THE WINNER!");
 
         }
         if (winners.Count == 2)
         {
-            DecideWhichCauldronUI($"IT'S A DRAW! {winners[0]} AND {winners[1]} ARE THE WINNERS!");
+            await DecideWhichCauldronUI($"IT'S A DRAW! {winners[0]} AND {winners[1]} ARE THE WINNERS!");
 
         }
         if (winners.Count == 3)
         {
-            DecideWhichCauldronUI($"IT'S A DRAW! {winners[0]} AND {winners[1]} AND {winners[2]} ARE THE WINNERS!");
+            await DecideWhichCauldronUI($"IT'S A DRAW! {winners[0]} AND {winners[1]} AND {winners[2]} ARE THE WINNERS!");
 
         }
         if (winners.Count == 4)
         {
-            DecideWhichCauldronUI($"How did you all get the same points? what a pointless game");
+            await DecideWhichCauldronUI($"How did you all get the same points? what a pointless game");
         }
         endRoundCanvas();
        
@@ -974,37 +974,37 @@ public class WinnerManager : NetworkBehaviour
         _chipPoints = FindAnyObjectByType<ChipPoints>();
         if (_chipPoints.hawkMothRule == 1 && MothNumbersBeaten == 2)
         {
-            DecideWhichCauldronUI("You have more moths in your pot than both your neighbours, you get a droplet and a ruby");
+            await DecideWhichCauldronUI("You have more moths in your pot than both your neighbours, you get a droplet and a ruby");
           
             _playerData.Rubies.Value++;
             _chipPoints.AddDroplet();
-            await _chipPoints.CheckWhichChoice();
+            
         }
         if (_chipPoints.hawkMothRule == 1 && MothNumbersBeaten == 1)
         {
-            DecideWhichCauldronUI("You have more moths in your pot than ONE of your neighbours, you get a droplet");
+            await DecideWhichCauldronUI("You have more moths in your pot than ONE of your neighbours, you get a droplet");
           
             _chipPoints.AddDroplet();
        
-            await _chipPoints.CheckWhichChoice();
+           
             // UI saying they have more moths than one of their neighbours and get a droplet
         }
 
         if (_chipPoints.hawkMothRule == 2 && MothNumbersBeaten == 1)
         {
-            DecideWhichCauldronUI("You have more moths in your pot than your neighbours, you get a droplet and a ruby");
+            await DecideWhichCauldronUI("You have more moths in your pot than your neighbours, you get a droplet and a ruby");
            
             _playerData.Rubies.Value++;
             _chipPoints.AddDroplet();
-            await _chipPoints.CheckWhichChoice();
+            
             // UI saying they have more moths than their neighbours and get a ruby and a droplet
         }
         if (_chipPoints.hawkMothRule == 2 && TwoPlayerDraw)
         {
-            DecideWhichCauldronUI("You have same amount of moths in your pot as your neighbour, you get one droplet");
+            await DecideWhichCauldronUI("You have same amount of moths in your pot as your neighbour, you get one droplet");
           
             _chipPoints.AddDroplet();
-            await _chipPoints.CheckWhichChoice();
+           
             // UI saying they have more moths than their neighbours and get a ruby and a droplet
         }
         //reset all values
@@ -1021,7 +1021,7 @@ public class WinnerManager : NetworkBehaviour
         YellowMoths.Value = 0;
     }
 
-    public void DecideWhichCauldronUI(string textAboveCauldron)
+    public async Task DecideWhichCauldronUI(string textAboveCauldron)
     {
         if(_playerData.Colour.Value == "Purple")
         {
@@ -1047,6 +1047,7 @@ public class WinnerManager : NetworkBehaviour
             aboveCauldronUIRed.SetActive(true);
             aboveCauldronTextRed.text = textAboveCauldron;
         }
+        await _chipPoints.CheckWhichChoice(textAboveCauldron);
     }
 
 

@@ -344,8 +344,8 @@ public class FortuneManager : MonoBehaviour
         {
             if (ingredient.Contains("cherryBomb") && firstCherryBombHappened == false)
             {
-                await _grabIngredient.MessageAboveCauldronMultipleChoice(2, "Your first cherry bomb! Do you want to Remove it and put back in you bag?", "Remove", "Leave in pot", "", "", "");
-                if (_grabIngredient.choiceOneCauldron)
+                await _chipPoints.MessageAboveCauldronMultipleChoice(2, "Your first cherry bomb! Do you want to Remove it and put back in you bag?", "Remove", "Leave in pot", "", "", "");
+                if (_chipPoints.choiceOneCauldron)
                 {
                     if (ingredient.Contains("One"))
                     {
@@ -373,7 +373,7 @@ public class FortuneManager : MonoBehaviour
                     _quality.SetCherryBombText();
                     _chipPoints.ResetStuffInBook();
                 }
-                _grabIngredient.ResetCauldronChoices();
+                _chipPoints.ResetChoices();
                 firstCherryBombHappened = true;
             }
             
@@ -393,8 +393,8 @@ public class FortuneManager : MonoBehaviour
             //this broke it too
             if (firstFiveIngredientsHappened == true)
             {
-                await _grabIngredient.MessageAboveCauldronMultipleChoice(2, "You've had your first 5 ingredients, do you want to carry on or restart?", "Carry on", "Restart", "", "", "");
-                if (_grabIngredient.choiceTwoCauldron)
+                await _chipPoints.MessageAboveCauldronMultipleChoice(2, "You've had your first 5 ingredients, do you want to carry on or restart?", "Carry on", "Restart", "", "", "");
+                if (_chipPoints.choiceTwoCauldron)
                 {
                     _grabIngredient.ResetBagContents();
                     _chipPoints.ResetScore();
@@ -404,7 +404,7 @@ public class FortuneManager : MonoBehaviour
                     _chipPoints.CountIngredientsInPot();
                     _chipPoints.ResetStuffInBook();
                 }
-                _grabIngredient.ResetCauldronChoices();
+                _chipPoints.ResetChoices();
                 firstFiveIngredientsHappened = false;
             }
             //DURING ROUND MULTIPLE CHOICE BUTTONS APPEAR - After you have places the first 5 ingredients in your pot, choose to continue OR begin the round all over again – but you get this choice only once."
@@ -417,7 +417,7 @@ public class FortuneManager : MonoBehaviour
         _winnerManager = FindObjectOfType<WinnerManager>();
         firstCherryBombHappened = false;
         firstFiveIngredientsHappened = false;
-        
+        EnableSpheres();
         if (_fortuneTeller.fortuneNumber == 1)
         {
             
@@ -565,25 +565,25 @@ public class FortuneManager : MonoBehaviour
             if (_playerData.Colour.Value == "Purple" && !_winnerManager.purpleExploded.Value)
            {
                 await DrawIngredientsAndPutOneInPot();
-                _grabIngredient.ResetCauldronChoices();
-               
+                _chipPoints.ResetChoices();
+
             }
             if (_playerData.Colour.Value == "Red" && !_winnerManager.redExploded.Value)
             {
                 await DrawIngredientsAndPutOneInPot();
-                _grabIngredient.ResetCauldronChoices();
-              
+                _chipPoints.ResetChoices();
+
             }
             if (_playerData.Colour.Value == "Blue" && !_winnerManager.blueExploded.Value)
             {
                 await DrawIngredientsAndPutOneInPot();
-                _grabIngredient.ResetCauldronChoices();
-               
+                _chipPoints.ResetChoices();
+
             }
             if (_playerData.Colour.Value == "Yellow" && !_winnerManager.yellowExploded.Value)
             {
                 await DrawIngredientsAndPutOneInPot();
-                _grabIngredient.ResetCauldronChoices();
+                _chipPoints.ResetChoices();
               
             }
             //AFTER ROUND you stopped without an explosion, draw up to 5 chips from your bag. You may place 1 of them in your pot.
@@ -625,7 +625,7 @@ public class FortuneManager : MonoBehaviour
         {
             _winnerManager.yellowExploded.Value = false;
         }
-      
+  
     }
 
 
@@ -700,6 +700,7 @@ public class FortuneManager : MonoBehaviour
                 ActivateDiceForWinner(winnerColor);
             }
         }
+
     }
 
     private string DetermineWinnerColor()
