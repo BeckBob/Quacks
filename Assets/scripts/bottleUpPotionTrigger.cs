@@ -9,6 +9,10 @@ public class bottleUpPotionTrigger : MonoBehaviour
     [SerializeField] private AudioSource bigPlop;
     [SerializeField] private AudioSource smallPlop;
     [SerializeField] private AudioSource mediumPlop;
+
+    [SerializeField] private GameObject insidePurifier;
+   
+
     public ChipPoints chipPoints;
     PlayerData playerData;
     PotionQuality quality;
@@ -36,7 +40,10 @@ public class bottleUpPotionTrigger : MonoBehaviour
             Debug.Log("purified");
             playerData.PurifierFull.Value = false;
             chipPoints.RemoveLastIngredient();
-            purifier.material.SetFloat("_Fill", 0);
+            purifier.material.SetFloat("_Fill", 0.000f);
+         
+                insidePurifier.SetActive(false);
+       
             await chipPoints.MessageAboveCauldron("You removed the last cherrybomb in the pot");
 
         }
@@ -77,6 +84,7 @@ public class bottleUpPotionTrigger : MonoBehaviour
     public void ReserPurifier()
     {
         potionBottle.material.SetFloat("_Fill", 0.081f);
+         insidePurifier.SetActive(true);
     }
 
 

@@ -86,6 +86,8 @@ public class GrabIngredient : MonoBehaviour
 
     [SerializeField] GameObject aboveCauldronSphere;
 
+    public bool fortunedrawpulls = false;
+
 
     public bool choiceOneCauldron = false;
     public bool choiceTwoCauldron = false;
@@ -153,21 +155,20 @@ public class GrabIngredient : MonoBehaviour
         ingredients = new List<GameObject>(Resources.LoadAll<GameObject>("Ingredients"));
         CountIngredientsInBag();
     }
+
     public async Task CheckDrawnRightAmount()
     {
         while (!EverythingDrawn())
         {
-            
             Debug.Log("no choice chosen");
-           
-            await Task.Yield();
+            await Task.Delay(100); // Add a short delay to reduce CPU usage
         }
         Debug.Log("choice MADE");
         fortuneDrawTime = false;
-
+        fortunedrawpulls = false;
     }
 
- 
+
 
     public bool EverythingDrawn()
     {
@@ -204,7 +205,7 @@ public class GrabIngredient : MonoBehaviour
     private async void OnTriggerEnter(Collider other)
     {
        
-        if (fortuneDrawTime && bagContents.Count > 0 && fortuneDrawAmount > fortuneDrawn)
+        if (fortuneDrawTime && bagContents.Count > 0 && fortuneDrawAmount > fortuneDrawn && fortunedrawpulls)
         {
             _potionQuality = FindObjectOfType<PotionQuality>();
             if (other.gameObject.CompareTag("hand"))
@@ -229,10 +230,11 @@ public class GrabIngredient : MonoBehaviour
 
                 
 
-                int leftToDraw = fortuneDrawAmount -= fortuneDrawn;
-                aboveCauldronText.text = $"You have {leftToDraw} ingredients left to draw!";
+                int leftToDraw = fortuneDrawAmount - fortuneDrawn;
+                if (leftToDraw > 0) {
+                aboveCauldronText.text = $"You have {leftToDraw} ingredients left to draw!";}
 
-                FunctionTimer.Create(() => Destroy(drawnOne), 10f);
+                FunctionTimer.Create(() => Destroy(drawnOne), 2f);
 
 
                 fortuneDrawTime = true;
@@ -240,7 +242,7 @@ public class GrabIngredient : MonoBehaviour
 
             }
         }
-        else if (bagContents.Count > 0 && _cherryBombs <= _cherryBombLimit)
+        else if (bagContents.Count > 0 && _cherryBombs <= _cherryBombLimit && !fortunedrawpulls)
         {
             _potionQuality = FindObjectOfType<PotionQuality>();
             

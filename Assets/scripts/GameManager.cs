@@ -386,36 +386,38 @@ public class GameManager : MonoBehaviour
         
     }
 
-    private void SetMusicForRound()
+    public void SetMusicForRound()
     {
         shopMusic.Stop();
+        morningMusic.Stop();
+        noonMusic.Stop();
+        afternoonMusic.Stop();
+        menuMusic.Stop();
+        eveningMusic.Stop();
         if (gameRound == 1 || gameRound == 2)
         {
             menuMusic.Stop();
             morningMusic.Play();
             ChangeColor(newColor);
         }
-        if (gameRound == 3 || gameRound == 4)
+        else if (gameRound == 3 || gameRound == 4)
         {
-            
             noonMusic.Play();
             ChangeColor(afternoonColor);
         }
-        if (gameRound == 5 || gameRound == 6)
+        else if (gameRound == 5 || gameRound == 6)
         {
-            
             afternoonMusic.Play();
             ChangeColor(sunsetColor);
         }
-        if (gameRound == 7 || gameRound == 8)
+        else if (gameRound == 7 || gameRound == 8)
         {
-            
             eveningMusic.Play();
             ChangeColor(eveningColor);
         }
     }
 
-    private void SetMusicForShop()
+    public void SetMusicForShop()
     {
         if (gameRound == 1 || gameRound == 2)
         {
@@ -436,6 +438,27 @@ public class GameManager : MonoBehaviour
         shopMusic.Play();
     }
 
+    public void StopMusic()
+    {
+        if (gameRound == 1 || gameRound == 2)
+        {
+            morningMusic.Stop();
+        }
+        if (gameRound == 3 || gameRound == 4)
+        {
+            noonMusic.Stop();
+        }
+        if (gameRound == 5 || gameRound == 6)
+        {
+            afternoonMusic.Stop();
+        }
+        if (gameRound == 7)
+        {
+            eveningMusic.Stop();
+        }
+    
+    }
+
 
     public void ResetGame()
     {
@@ -446,6 +469,30 @@ public class GameManager : MonoBehaviour
         _yellowPlayerSpace.SetActive(false);
         _redPlayerSpace.SetActive(false);
         _BluePlayerSpace.SetActive(false);
+
+  
+            _purpleSphere.SetActive(false);
+
+            _purpleIngredientSphere.SetActive(false);
+      
+     
+            _redSphere.SetActive(false);
+
+            _redIngredientSphere.SetActive(false);
+   
+       
+            _yellowSphere.SetActive(false);
+            _yellowIngredientSphere.SetActive(false);
+     
+   
+    
+            _blueSphere.SetActive(false);
+
+            _blueIngredientSphere.SetActive(false);
+
+    
+        _fortuneNumber.RefreshFortunes();
+        _fortuneTeller.RefreshFortunes();
         undoBigScreenText();
     }
 

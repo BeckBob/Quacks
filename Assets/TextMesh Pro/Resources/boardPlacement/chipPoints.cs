@@ -56,6 +56,7 @@ public class ChipPoints : MonoBehaviour
     Vector3 leftOverIngredientLocation;
     Vector3 rubyInstantiationLocation;
     [SerializeField] GameObject rubyForBowl;
+    [SerializeField] GameObject droplet;
 
     [SerializeField] GameObject bottleUp;
 
@@ -85,14 +86,20 @@ public class ChipPoints : MonoBehaviour
 
     private bool isCheckingChoice = false;
 
-    [SerializeField] GameObject Ruby1;
-    [SerializeField] GameObject Ruby2;
-    [SerializeField] GameObject Ruby3;
-    [SerializeField] GameObject Ruby4;
-    [SerializeField] GameObject Ruby5;
-    [SerializeField] GameObject Ruby6;
 
 
+    private GameObject rubyOne;
+    private GameObject rubyTwo;
+    private GameObject rubyThree;
+    private GameObject rubyFour;
+    private GameObject rubyFive;
+    private GameObject rubySix;
+    private GameObject rubySeven;
+    private GameObject rubyEight;
+
+    private int RubyobjNum = 0;
+
+    [SerializeField] GameObject ratTailObject;
 
     public Material Round1Sky;
     public Material Round2Sky;
@@ -260,532 +267,547 @@ public class ChipPoints : MonoBehaviour
         ingredientsList.Clear();
     }
     public void ResetScore() { Score = InitialScore;
-        ResetPotionHeight();
+        
     }
 
     public async void OnTriggerEnter(Collider other)
     {
-       
-        Debug.Log(other.gameObject.tag);
-        ingredientsList.Add(other.gameObject.tag);
-        extraPoints = 0; extraRubies = 0;
-        lastIngredient = other.gameObject.tag;
 
-        if (other.gameObject.tag.Contains("ghost")){
-            ghostClip.Play();
-        }
-
-        if (mushroomRule == 1)
+        if (other.tag.Contains("Untagged") || other.tag.Contains("potion") || other.tag.Contains("purifier"))
         {
-            if (other.gameObject.tag.Contains("mushroom") && ingredientsList.Count >= 2 && ingredientsList[ingredientsList.Count - 2].Contains("cherryBomb"))
-            {
+            return;
+        }
+        else
+        {
 
-                if (ingredientsList[ingredientsList.Count - 1].Contains("One"))
+
+
+            Debug.Log(other.gameObject.tag);
+            ingredientsList.Add(other.gameObject.tag);
+            extraPoints = 0; extraRubies = 0;
+            lastIngredient = other.gameObject.tag;
+
+            if (other.gameObject.tag.Contains("ghost"))
+            {
+                ghostClip.Play();
+            }
+
+            if (mushroomRule == 1)
+            {
+                if (other.gameObject.tag.Contains("mushroom") && ingredientsList.Count >= 2 && ingredientsList[ingredientsList.Count - 2].Contains("cherryBomb"))
                 {
-                    
+
+                    if (ingredientsList[ingredientsList.Count - 1].Contains("One"))
+                    {
+
+                        buttonsToAddLeftover.SetActive(true);
+                        button5.SetActive(true);
+                        aboveCauldronText.text = "Small cherrybomb was right before mushroom! Add 1 to score!";
+                        //sound effect
+                        Score += 1;
+                        await CheckWhichChoice(aboveCauldronText.text);
+                        buttonsToAddLeftover.SetActive(false);
+                    }
+                    else if (ingredientsList[ingredientsList.Count - 1].Contains("Two"))
+                    {
+                        buttonsToAddLeftover.SetActive(true);
+                        button5.SetActive(true);
+                        aboveCauldronText.text = "Medium cherrybomb was right before mushroom! Add 2 to score!";
+                        //sound effect
+                        Score += 2;
+                        await CheckWhichChoice(aboveCauldronText.text);
+                        buttonsToAddLeftover.SetActive(false);
+                    }
+                    else if (ingredientsList[ingredientsList.Count - 1].Contains("Three"))
+                    {
+                        buttonsToAddLeftover.SetActive(true);
+                        button5.SetActive(true);
+                        aboveCauldronText.text = "Large cherrybomb was right before mushroom! Add 3 to score!";
+                        //sound effect
+                        Score += 3;
+                        await CheckWhichChoice(aboveCauldronText.text);
+                        buttonsToAddLeftover.SetActive(false);
+                    }
+                    ResetChoices();
+                }
+            }
+
+            if (mushroomRule == 2)
+            {
+                if (other.gameObject.tag.Contains("cherryBombOne") && (ingredientsList.Contains("mushroomOne") || ingredientsList.Contains("mushroomTwo") || ingredientsList.Contains("mushroomFour")))
+                {
+
+
                     buttonsToAddLeftover.SetActive(true);
                     button5.SetActive(true);
-                    aboveCauldronText.text = "Small cherrybomb was right before mushroom! Add 1 to score!";
+                    aboveCauldronText.text = "mushroom in potion adds one to score when small cherrybomb is added!";
                     //sound effect
                     Score += 1;
                     await CheckWhichChoice(aboveCauldronText.text);
                     buttonsToAddLeftover.SetActive(false);
+                    ResetChoices();
                 }
-                else if (ingredientsList[ingredientsList.Count - 1].Contains("Two"))
+
+            }
+
+            if (mushroomRule == 3)
+            {
+                if (other.gameObject.CompareTag("pumpkinOne"))
+                { pumpkins += 1; }
+
+                if (other.gameObject.tag.Contains("mushroom") && pumpkins < 3)
                 {
                     buttonsToAddLeftover.SetActive(true);
                     button5.SetActive(true);
-                    aboveCauldronText.text = "Medium cherrybomb was right before mushroom! Add 2 to score!";
+                    aboveCauldronText.text = "pumpkin in potion adds 1 to score when adding mushroom!";
+                    //sound effect
+                    Score += 1;
+                    await CheckWhichChoice(aboveCauldronText.text);
+                    buttonsToAddLeftover.SetActive(false);
+                    ResetChoices();
+
+                }
+                if (other.gameObject.tag.Contains("mushroom") && pumpkins >= 3)
+                {
+                    buttonsToAddLeftover.SetActive(true);
+                    button5.SetActive(true);
+                    aboveCauldronText.text = "3 or more pumpkins in potion adds 2 to score when adding mushroom!";
                     //sound effect
                     Score += 2;
                     await CheckWhichChoice(aboveCauldronText.text);
                     buttonsToAddLeftover.SetActive(false);
+                    ResetChoices();
+
                 }
-                else if (ingredientsList[ingredientsList.Count - 1].Contains("Three"))
+            }
+
+            if (mushroomRule == 4)
+            {
+                if (other.gameObject.tag.Contains("mushroom"))
                 {
                     buttonsToAddLeftover.SetActive(true);
                     button5.SetActive(true);
-                    aboveCauldronText.text = "Large cherrybomb was right before mushroom! Add 3 to score!";
-                    //sound effect
-                    Score += 3;
+                    aboveCauldronText.text = "Put mushroom to the side and decide whether to add to pot at the end or keep to the side for a future round!";
                     await CheckWhichChoice(aboveCauldronText.text);
+                    //sound effect
                     buttonsToAddLeftover.SetActive(false);
+                    ResetChoices();
+                    ingredientsPutToSide.Add(other.gameObject.tag);
+                    ingredientsPutToSide.RemoveAt(ingredientsPutToSide.Count);
                 }
-                ResetChoices();
             }
-        }
 
-        if (mushroomRule == 2)
-        {
-            if (other.gameObject.tag.Contains("cherryBombOne") && (ingredientsList.Contains("mushroomOne") || ingredientsList.Contains("mushroomTwo") || ingredientsList.Contains("mushroomFour")))
+
+            if (mandrakeRule == 1)
             {
-
-                
-                buttonsToAddLeftover.SetActive(true);
-                button5.SetActive(true);
-                aboveCauldronText.text = "mushroom in potion adds one to score when small cherrybomb is added!";
-                //sound effect
-                Score += 1;
-                await CheckWhichChoice(aboveCauldronText.text);
-                buttonsToAddLeftover.SetActive(false);
-                ResetChoices();
+                if (ingredientsList.Count >= 2 && ingredientsList[ingredientsList.Count - 2].Contains("mandrake"))
+                {
+                    if (other.gameObject.tag.Contains("One"))
+                    {
+                        Score += 1;
+                        buttonsToAddLeftover.SetActive(true);
+                        button5.SetActive(true);
+                        aboveCauldronText.text = "Mandrake immediatley before doubles this ingredient!";
+                        //sound effect
+                        await CheckWhichChoice(aboveCauldronText.text);
+                        buttonsToAddLeftover.SetActive(false);
+                    }
+                    else if (other.gameObject.tag.Contains("Two"))
+                    {
+                        Score += 2;
+                        buttonsToAddLeftover.SetActive(true);
+                        button5.SetActive(true);
+                        aboveCauldronText.text = "Mandrake immediatley before doubles this ingredient!";
+                        //sound effect
+                        await CheckWhichChoice(aboveCauldronText.text);
+                        buttonsToAddLeftover.SetActive(false);
+                    }
+                    else if (other.gameObject.tag.Contains("Three"))
+                    {
+                        Score += 3;
+                        buttonsToAddLeftover.SetActive(true);
+                        button5.SetActive(true);
+                        aboveCauldronText.text = "Mandrake immediatley before doubles this ingredient!";
+                        //some sound effect
+                        await CheckWhichChoice(aboveCauldronText.text);
+                        buttonsToAddLeftover.SetActive(false);
+                    }
+                    else if (other.gameObject.tag.Contains("Four"))
+                    {
+                        Score += 4;
+                        buttonsToAddLeftover.SetActive(true);
+                        button5.SetActive(true);
+                        aboveCauldronText.text = "Mandrake immediatley before doubles this ingredient!";
+                        //some sound effect
+                        await CheckWhichChoice(aboveCauldronText.text);
+                        buttonsToAddLeftover.SetActive(false);
+                    }
+                    ResetChoices();
+                }
             }
-            
-        }
 
-        if (mushroomRule == 3)
-        {
-            if (other.gameObject.CompareTag("pumpkinOne"))
-            { pumpkins += 1; }
+            if (mandrakeRule == 2)
+                if (other.gameObject.tag.Contains("mandrake") && ingredientsList[ingredientsList.Count - 1].Contains("cherryBomb"))
+                {
+                    if (ingredientsList[ingredientsList.Count - 1].Contains("One"))
+                    {
+                        ingredientsList.RemoveAt(ingredientsList.Count - 1);
 
-            if (other.gameObject.tag.Contains("mushroom") && pumpkins < 3)
+                        grabIngredient.AddToBagThisRound(0);
+                        buttonsToAddLeftover.SetActive(true);
+                        button5.SetActive(true);
+                        aboveCauldronText.text = "Mandrake immediatley after cherrybomb! Removing cherrybomb from potion and putting back in your bag";
+                        //having some sort of animation here to visulaise it might help.
+                        await CheckWhichChoice(aboveCauldronText.text);
+                        buttonsToAddLeftover.SetActive(false);
+                    }
+                    if (ingredientsList[ingredientsList.Count - 1].Contains("Two"))
+                    {
+                        ingredientsList.RemoveAt(ingredientsList.Count - 1);
+
+                        grabIngredient.AddToBagThisRound(2);
+                        buttonsToAddLeftover.SetActive(true);
+                        button5.SetActive(true);
+                        aboveCauldronText.text = "Mandrake immediatley after cherrybomb! Removing cherrybomb from potion and putting back in your bag";
+                        //having some sort of animation here to visulaise it might help.
+                        await CheckWhichChoice(aboveCauldronText.text);
+                        buttonsToAddLeftover.SetActive(false);
+                    }
+                    if (ingredientsList[ingredientsList.Count - 1].Contains("Three"))
+                    {
+                        ingredientsList.RemoveAt(ingredientsList.Count - 1);
+
+                        grabIngredient.AddToBagThisRound(1);
+                        buttonsToAddLeftover.SetActive(true);
+                        button5.SetActive(true);
+                        aboveCauldronText.text = "Mandrake immediatley after cherrybomb! Removing cherrybomb from potion and putting back in your bag";
+                        //having some sort of animation here to visulaise it might help.
+                        await CheckWhichChoice(aboveCauldronText.text);
+                        buttonsToAddLeftover.SetActive(false);
+                    }
+                    ResetChoices();
+                    // also need to add back to players bag but haven't created that yet.
+                }
+
+            if (mandrakeRule == 3)
             {
-                buttonsToAddLeftover.SetActive(true);
-                button5.SetActive(true);
-                aboveCauldronText.text = "pumpkin in potion adds 1 to score when adding mushroom!";
-                //sound effect
-                Score += 1;
-                await CheckWhichChoice(aboveCauldronText.text);
-                buttonsToAddLeftover.SetActive(false);
-                ResetChoices();
-                
-            }
-            if (other.gameObject.tag.Contains("mushroom") && pumpkins >= 3)
-            {
-                buttonsToAddLeftover.SetActive(true);
-                button5.SetActive(true);
-                aboveCauldronText.text = "3 or more pumpkins in potion adds 2 to score when adding mushroom!";
-                //sound effect
-                Score += 2;
-                await CheckWhichChoice(aboveCauldronText.text);
-                buttonsToAddLeftover.SetActive(false);
-                ResetChoices();
-                
-            }
-        }
+                if (other.gameObject.tag.Contains("mandrake"))
+                {
 
-        if (mushroomRule == 4)
-        {
-            if (other.gameObject.tag.Contains("mushroom"))
-            {
-                buttonsToAddLeftover.SetActive(true);
-                button5.SetActive(true);
-                aboveCauldronText.text = "Put mushroom to the side and decide whether to add to pot at the end or keep to the side for a future round!";
-                await CheckWhichChoice(aboveCauldronText.text);
-                //sound effect
-                buttonsToAddLeftover.SetActive(false);
-                ResetChoices();
-                ingredientsPutToSide.Add(other.gameObject.tag);
-                ingredientsPutToSide.RemoveAt(ingredientsPutToSide.Count);
-            }
-        }
-       
+                    mandrakes++;
+                    if (mandrakes == 1)
+                    {
+                        buttonsToAddLeftover.SetActive(true);
+                        button5.SetActive(true);
+                        aboveCauldronText.text = "One mandrake in potion! Limit of cherry bombs increased to 8!";
+                        //sound effect
+                        await CheckWhichChoice(aboveCauldronText.text);
 
-        if (mandrakeRule == 1)
-        {
-            if (ingredientsList.Count >= 2 && ingredientsList[ingredientsList.Count - 2].Contains("mandrake"))
+                        buttonsToAddLeftover.SetActive(false); quality.AddToCherryBombLimit();
+                        quality.SetCherryBombText();
+                    }
+                    if (mandrakes == 3)
+                    {
+                        buttonsToAddLeftover.SetActive(true);
+                        button5.SetActive(true);
+                        aboveCauldronText.text = "One mandrake in potion! Limit of cherry bombs increased to 9!";
+                        //sound effect
+                        await CheckWhichChoice(aboveCauldronText.text);
+                        buttonsToAddLeftover.SetActive(false);
+                        quality.AddToCherryBombLimit();
+                        quality.SetCherryBombText();
+                    }
+                    ResetChoices();
+                }
+            }
+
+            if (mandrakeRule == 4)
+            {
+                if (other.gameObject.tag.Contains("mandrake"))
+                {
+                    mandrakes++;
+                    if (mandrakes == 1)
+                    {
+                        buttonsToAddLeftover.SetActive(true);
+                        button5.SetActive(true);
+                        aboveCauldronText.text = "One mandrake in potion! Add 1 extra point to score!";
+                        //sound effect
+                        await CheckWhichChoice(aboveCauldronText.text);
+                        buttonsToAddLeftover.SetActive(false); Score += 1;
+                    }
+                    if (mandrakes == 2)
+                    {
+                        buttonsToAddLeftover.SetActive(true);
+                        button5.SetActive(true);
+                        aboveCauldronText.text = "Two mandrakes in potion! Add 2 extra points to score!";
+                        //sound effect
+                        await CheckWhichChoice(aboveCauldronText.text);
+                        buttonsToAddLeftover.SetActive(false); Score += 2;
+                    }
+
+                    if (mandrakes >= 3)
+                    {
+                        buttonsToAddLeftover.SetActive(true);
+                        button5.SetActive(true);
+                        aboveCauldronText.text = "Three or more mandrakes in potion! Add 3 extra points to score!";
+                        //sound effect
+                        await CheckWhichChoice(aboveCauldronText.text);
+                        buttonsToAddLeftover.SetActive(false); Score += 3;
+                    }
+
+                }
+            }
+
+
+            Chips[] boardPlacement = programInstance.GetBoardPlacement();
+
+
+            if (boardPlacement != null)
             {
                 if (other.gameObject.tag.Contains("One"))
                 {
                     Score += 1;
-                    buttonsToAddLeftover.SetActive(true);
-                    button5.SetActive(true);
-                    aboveCauldronText.text = "Mandrake immediatley before doubles this ingredient!";
-                    //sound effect
-                    await CheckWhichChoice(aboveCauldronText.text);
-                    buttonsToAddLeftover.SetActive(false);
+                    Score += extraPoints;
+
                 }
                 else if (other.gameObject.tag.Contains("Two"))
                 {
                     Score += 2;
-                    buttonsToAddLeftover.SetActive(true);
-                    button5.SetActive(true);
-                    aboveCauldronText.text = "Mandrake immediatley before doubles this ingredient!";
-                    //sound effect
-                    await CheckWhichChoice(aboveCauldronText.text);
-                    buttonsToAddLeftover.SetActive(false);
+                    Score += extraPoints;
+
                 }
                 else if (other.gameObject.tag.Contains("Three"))
                 {
                     Score += 3;
-                    buttonsToAddLeftover.SetActive(true);
-                    button5.SetActive(true);
-                    aboveCauldronText.text = "Mandrake immediatley before doubles this ingredient!";
-                    //some sound effect
-                    await CheckWhichChoice(aboveCauldronText.text);
-                    buttonsToAddLeftover.SetActive(false);
+                    Score += extraPoints;
+
+
                 }
                 else if (other.gameObject.tag.Contains("Four"))
                 {
                     Score += 4;
-                    buttonsToAddLeftover.SetActive(true);
-                    button5.SetActive(true);
-                    aboveCauldronText.text = "Mandrake immediatley before doubles this ingredient!";
-                    //some sound effect
-                    await CheckWhichChoice(aboveCauldronText.text);
-                    buttonsToAddLeftover.SetActive(false);
-                }
-                ResetChoices();
-            }
-        }
+                    Score += extraPoints;
 
-        if (mandrakeRule == 2)
-            if (other.gameObject.tag.Contains("mandrake") && ingredientsList[ingredientsList.Count - 1].Contains("cherryBomb"))
-            {
-                if (ingredientsList[ingredientsList.Count - 1].Contains("One")) {
-                    ingredientsList.RemoveAt(ingredientsList.Count - 1);
 
-                    grabIngredient.AddToBagThisRound(0);
-                    buttonsToAddLeftover.SetActive(true);
-                    button5.SetActive(true);
-                    aboveCauldronText.text = "Mandrake immediatley after cherrybomb! Removing cherrybomb from potion and putting back in your bag";
-                    //having some sort of animation here to visulaise it might help.
-                    await CheckWhichChoice(aboveCauldronText.text);
-                    buttonsToAddLeftover.SetActive(false);
-                }
-                if (ingredientsList[ingredientsList.Count - 1].Contains("Two"))
-                {
-                    ingredientsList.RemoveAt(ingredientsList.Count - 1);
-
-                    grabIngredient.AddToBagThisRound(2);
-                    buttonsToAddLeftover.SetActive(true);
-                    button5.SetActive(true);
-                    aboveCauldronText.text = "Mandrake immediatley after cherrybomb! Removing cherrybomb from potion and putting back in your bag";
-                    //having some sort of animation here to visulaise it might help.
-                    await CheckWhichChoice(aboveCauldronText.text);
-                    buttonsToAddLeftover.SetActive(false);
-                }
-                if (ingredientsList[ingredientsList.Count - 1].Contains("Three"))
-                {
-                    ingredientsList.RemoveAt(ingredientsList.Count - 1);
-
-                    grabIngredient.AddToBagThisRound(1);
-                    buttonsToAddLeftover.SetActive(true);
-                    button5.SetActive(true);
-                    aboveCauldronText.text = "Mandrake immediatley after cherrybomb! Removing cherrybomb from potion and putting back in your bag";
-                    //having some sort of animation here to visulaise it might help.
-                    await CheckWhichChoice(aboveCauldronText.text);
-                    buttonsToAddLeftover.SetActive(false);
-                }
-                ResetChoices();
-                // also need to add back to players bag but haven't created that yet.
-            }
-
-        if (mandrakeRule == 3)
-        {
-            if (other.gameObject.tag.Contains("mandrake"))
-            {
-
-                mandrakes++;
-                if (mandrakes == 1)
-                {
-                    buttonsToAddLeftover.SetActive(true);
-                    button5.SetActive(true);
-                    aboveCauldronText.text = "One mandrake in potion! Limit of cherry bombs increased to 8!";
-                    //sound effect
-                    await CheckWhichChoice(aboveCauldronText.text);
-
-                    buttonsToAddLeftover.SetActive(false); quality.AddToCherryBombLimit();
-                    quality.SetCherryBombText();
-                }
-                if (mandrakes == 3)
-                {
-                    buttonsToAddLeftover.SetActive(true);
-                    button5.SetActive(true);
-                    aboveCauldronText.text = "One mandrake in potion! Limit of cherry bombs increased to 9!";
-                    //sound effect
-                    await CheckWhichChoice(aboveCauldronText.text);
-                    buttonsToAddLeftover.SetActive(false);
-                    quality.AddToCherryBombLimit();
-                    quality.SetCherryBombText();
-                }
-                ResetChoices();
-            }
-        }
-
-        if (mandrakeRule == 4)
-        {
-            if (other.gameObject.tag.Contains("mandrake"))
-            {
-                mandrakes++;
-                if (mandrakes == 1)
-                {
-                    buttonsToAddLeftover.SetActive(true);
-                    button5.SetActive(true);
-                    aboveCauldronText.text = "One mandrake in potion! Add 1 extra point to score!";
-                    //sound effect
-                    await CheckWhichChoice(aboveCauldronText.text);
-                    buttonsToAddLeftover.SetActive(false);  Score += 1; }
-                if (mandrakes == 2)
-                {
-                    buttonsToAddLeftover.SetActive(true);
-                    button5.SetActive(true);
-                    aboveCauldronText.text = "Two mandrakes in potion! Add 2 extra points to score!";
-                    //sound effect
-                    await CheckWhichChoice(aboveCauldronText.text);
-                    buttonsToAddLeftover.SetActive(false); Score += 2;
-                }
-                
-                if (mandrakes >= 3)
-                {
-                    buttonsToAddLeftover.SetActive(true);
-                    button5.SetActive(true);
-                    aboveCauldronText.text = "Three or more mandrakes in potion! Add 3 extra points to score!";
-                    //sound effect
-                    await CheckWhichChoice(aboveCauldronText.text);
-                    buttonsToAddLeftover.SetActive(false); Score += 3;
                 }
 
-            }
-        }
+                Coins = boardPlacement[(Score - 1)].Coins;
+                VictoryPoints = boardPlacement[(Score - 1)].VictoryPoints;
+                RubiesThisRound = boardPlacement[(Score - 1)].Ruby;
+                FutureCoins = boardPlacement[Score].Coins;
+                FutureVictoryPoints = boardPlacement[Score].VictoryPoints;
+                FutureRubiesThisRound = boardPlacement[Score].Ruby;
 
-
-        Chips[] boardPlacement = programInstance.GetBoardPlacement();
-
-
-        if (boardPlacement != null)
-        {
-            if (other.gameObject.tag.Contains("One"))
-            {
-                Score += 1;
-                Score += extraPoints;
-
-            }
-            else if (other.gameObject.tag.Contains("Two"))
-            {
-                Score += 2;
-                Score += extraPoints;
-
-            }
-            else if (other.gameObject.tag.Contains("Three"))
-            {
-                Score += 3;
-                Score += extraPoints;
-
-
-            }
-            else if (other.gameObject.tag.Contains("Four"))
-            {
-                Score += 4;
-                Score += extraPoints;
-
-
-            }
-
-            Coins = boardPlacement[(Score - 1)].Coins;
-            VictoryPoints = boardPlacement[(Score - 1)].VictoryPoints;
-            RubiesThisRound = boardPlacement[(Score - 1)].Ruby;
-            FutureCoins = boardPlacement[Score].Coins;
-            FutureVictoryPoints = boardPlacement[Score].VictoryPoints;
-            FutureRubiesThisRound = boardPlacement[Score].Ruby;
-
-            if (crowSkullRule == 1)
-            {
-                if (other.gameObject.tag.Contains("crowSkull") && RubiesThisRound == true)
+                if (crowSkullRule == 1)
                 {
-                    buttonsToAddLeftover.SetActive(true);
-                    button5.SetActive(true);
-                    aboveCauldronText.text = "Crow Skull on score with ruby! Immediatley recieve one ruby!";
-                    //sound effect
-                    await CheckWhichChoice(aboveCauldronText.text);
-                    buttonsToAddLeftover.SetActive(false); 
-                    _playerData.Rubies.Value++;
-                    ChangeRubyUI();
-                    ResetChoices();
-                }
-            }
-
-            if (crowSkullRule == 2)
-            {
-                if (other.gameObject.tag.Contains("crowSkull") && RubiesThisRound == true)
-                {
-                    if (other.gameObject.tag.Contains("One"))
+                    if (other.gameObject.tag.Contains("crowSkull") && RubiesThisRound == true)
                     {
                         buttonsToAddLeftover.SetActive(true);
                         button5.SetActive(true);
-                        aboveCauldronText.text = "Small Crow Skull on score with ruby! Immediatley recieve 1 Victory Point!";
+                        aboveCauldronText.text = "Crow Skull on score with ruby! Immediatley recieve one ruby!";
                         //sound effect
                         await CheckWhichChoice(aboveCauldronText.text);
                         buttonsToAddLeftover.SetActive(false);
-                        _playerData.VictoryPoints.Value++;
+                        _playerData.Rubies.Value++;
+                        ChangeRubyUI();
+                        ResetChoices();
                     }
-                    
-                    
+                }
 
-                    if (other.gameObject.tag.Contains("Two"))
+                if (crowSkullRule == 2)
+                {
+                    if (other.gameObject.tag.Contains("crowSkull") && RubiesThisRound == true)
                     {
+                        if (other.gameObject.tag.Contains("One"))
+                        {
+                            buttonsToAddLeftover.SetActive(true);
+                            button5.SetActive(true);
+                            aboveCauldronText.text = "Small Crow Skull on score with ruby! Immediatley recieve 1 Victory Point!";
+                            //sound effect
+                            await CheckWhichChoice(aboveCauldronText.text);
+                            buttonsToAddLeftover.SetActive(false);
+                            _playerData.VictoryPoints.Value++;
+                        }
+
+
+
+                        if (other.gameObject.tag.Contains("Two"))
+                        {
+                            buttonsToAddLeftover.SetActive(true);
+                            button5.SetActive(true);
+                            aboveCauldronText.text = "Medium Crow Skull on score with ruby! Immediatley recieve 2 Victory Points!";
+                            //sound effect
+                            await CheckWhichChoice(aboveCauldronText.text);
+                            buttonsToAddLeftover.SetActive(false);
+                            _playerData.VictoryPoints.Value += 2;
+                        }
+                        if (other.gameObject.tag.Contains("Four"))
+                        {
+                            buttonsToAddLeftover.SetActive(true);
+                            button5.SetActive(true);
+                            aboveCauldronText.text = "Medium Crow Skull on score with ruby! Immediatley recieve 4 Victory Point!";
+                            //sound effect
+                            await CheckWhichChoice(aboveCauldronText.text);
+                            buttonsToAddLeftover.SetActive(false);
+                            _playerData.VictoryPoints.Value += 4;
+                        }
+                        ResetChoices();
+                    }
+                }
+
+
+                if (crowSkullRule == 4)
+                {
+                    if (other.gameObject.tag.Contains("crowSkullOne"))
+                    {
+
+
                         buttonsToAddLeftover.SetActive(true);
-                        button5.SetActive(true);
-                        aboveCauldronText.text = "Medium Crow Skull on score with ruby! Immediatley recieve 2 Victory Points!";
-                        //sound effect
+                        button1.SetActive(true);
+                        button2.SetActive(true);
+                        int choiceOneNumber = grabIngredient.RandomlyDrawSeveralIngredients();
+                        choiceOne.text = getNameOfIngredientFromNumber(choiceOneNumber);
+                        choiceTwo.text = "Skip";
+                        aboveCauldronText.text = $"Small crow skull! Pick one random ingredient from your bag to add to your pot!";
                         await CheckWhichChoice(aboveCauldronText.text);
+
+                        if (choiceOneCauldron)
+                        {
+                            leftOverIngredientLocation = leftOverIngredient.transform.position;
+                            Instantiate(ingredients[choiceOneNumber], leftOverIngredientLocation, Quaternion.identity);
+                        }
                         buttonsToAddLeftover.SetActive(false);
-                        _playerData.VictoryPoints.Value += 2;
+                        ResetChoices();
                     }
-                    if (other.gameObject.tag.Contains("Four"))
+                    if (other.gameObject.tag.Contains("crowSkullTwo"))
                     {
                         buttonsToAddLeftover.SetActive(true);
-                        button5.SetActive(true);
-                        aboveCauldronText.text = "Medium Crow Skull on score with ruby! Immediatley recieve 4 Victory Point!";
-                        //sound effect
+                        button1.SetActive(true);
+                        button2.SetActive(true);
+                        button3.SetActive(true);
+                        int choiceOneNumber = grabIngredient.RandomlyDrawSeveralIngredients();
+                        int choiceTwoNumber = grabIngredient.RandomlyDrawSeveralIngredients();
+                        choiceOne.text = getNameOfIngredientFromNumber(choiceOneNumber);
+                        choiceTwo.text = getNameOfIngredientFromNumber(choiceTwoNumber);
+                        choiceThree.text = "Skip";
+                        aboveCauldronText.text = $"Medium crow skull! Pick one random ingredient from your bag to add to your pot!";
                         await CheckWhichChoice(aboveCauldronText.text);
+                        if (choiceOneCauldron)
+                        {
+                            leftOverIngredientLocation = leftOverIngredient.transform.position;
+                            Instantiate(ingredients[choiceOneNumber], leftOverIngredientLocation, Quaternion.identity);
+                        }
+                        if (choiceTwoCauldron)
+                        {
+                            leftOverIngredientLocation = leftOverIngredient.transform.position;
+                            Instantiate(ingredients[choiceTwoNumber], leftOverIngredientLocation, Quaternion.identity);
+                        }
                         buttonsToAddLeftover.SetActive(false);
-                        _playerData.VictoryPoints.Value += 4;
-                    }
-                    ResetChoices();
-                }
-            }
-
-
-            if (crowSkullRule == 4)
-            {
-                if (other.gameObject.tag.Contains("crowSkullOne"))
-                {
-
-
-                    buttonsToAddLeftover.SetActive(true);
-                    button1.SetActive(true);
-                    button2.SetActive(true);
-                    int choiceOneNumber = grabIngredient.RandomlyDrawSeveralIngredients();
-                    choiceOne.text = getNameOfIngredientFromNumber(choiceOneNumber);
-                    choiceTwo.text = "Skip";
-                    aboveCauldronText.text = $"Small crow skull! Pick one random ingredient from your bag to add to your pot!";
-                    await CheckWhichChoice(aboveCauldronText.text);
-
-                    if (choiceOneCauldron)
-                    {
-                        leftOverIngredientLocation = leftOverIngredient.transform.position;
-                        Instantiate(ingredients[choiceOneNumber], leftOverIngredientLocation, Quaternion.identity);
-                    }
-                    buttonsToAddLeftover.SetActive(false);
-                    ResetChoices();
-                }
-                if (other.gameObject.tag.Contains("crowSkullTwo"))
-                {
-                    buttonsToAddLeftover.SetActive(true);
-                    button1.SetActive(true);
-                    button2.SetActive(true);
-                    button3.SetActive(true);
-                    int choiceOneNumber = grabIngredient.RandomlyDrawSeveralIngredients();
-                    int choiceTwoNumber = grabIngredient.RandomlyDrawSeveralIngredients();
-                    choiceOne.text = getNameOfIngredientFromNumber(choiceOneNumber);
-                    choiceTwo.text = getNameOfIngredientFromNumber(choiceTwoNumber);
-                    choiceThree.text = "Skip";
-                    aboveCauldronText.text = $"Medium crow skull! Pick one random ingredient from your bag to add to your pot!";
-                    await CheckWhichChoice(aboveCauldronText.text);
-                    if (choiceOneCauldron)
-                    {
-                        leftOverIngredientLocation = leftOverIngredient.transform.position;
-                        Instantiate(ingredients[choiceOneNumber], leftOverIngredientLocation, Quaternion.identity);
-                    }
-                    if (choiceTwoCauldron)
-                    {
-                        leftOverIngredientLocation = leftOverIngredient.transform.position;
-                        Instantiate(ingredients[choiceTwoNumber], leftOverIngredientLocation, Quaternion.identity);
-                    }
-                    buttonsToAddLeftover.SetActive(false);
-                    ResetChoices();
-                }
-                if (other.gameObject.tag.Contains("crowSkullFour"))
-                {
-                    buttonsToAddLeftover.SetActive(true);
-                    button1.SetActive(true);
-                    button2.SetActive(true);
-                    button3.SetActive(true);
-                    button4.SetActive(true);
-                    button5.SetActive(true);
-                    int choiceOneNumber = grabIngredient.RandomlyDrawSeveralIngredients();
-                    int choiceTwoNumber = grabIngredient.RandomlyDrawSeveralIngredients();
-                    int choiceThreeNumber = grabIngredient.RandomlyDrawSeveralIngredients();
-                    int choiceFourNumber = grabIngredient.RandomlyDrawSeveralIngredients();
-                    choiceOne.text = getNameOfIngredientFromNumber(choiceOneNumber);
-                    choiceTwo.text = getNameOfIngredientFromNumber(choiceTwoNumber);
-                    choiceThree.text = getNameOfIngredientFromNumber(choiceThreeNumber);
-                    choiceThree.text = getNameOfIngredientFromNumber(choiceFourNumber);
-                    choiceFive.text = "Skip";
-                    aboveCauldronText.text = $"Large crow skull! Pick one random ingredient from your bag to add to your pot!";
-                    await CheckWhichChoice(aboveCauldronText.text);
-                    if (choiceOneCauldron)
-                    {
-                        leftOverIngredientLocation = leftOverIngredient.transform.position;
-                        Instantiate(ingredients[choiceOneNumber], leftOverIngredientLocation, Quaternion.identity);
-                    }
-                    if (choiceTwoCauldron)
-                    {
-                        leftOverIngredientLocation = leftOverIngredient.transform.position;
-                        Instantiate(ingredients[choiceTwoNumber], leftOverIngredientLocation, Quaternion.identity);
-                    }
-                    if (choiceThreeCauldron)
-                    {
-                        leftOverIngredientLocation = leftOverIngredient.transform.position;
-                        Instantiate(ingredients[choiceThreeNumber], leftOverIngredientLocation, Quaternion.identity);
-                    }
-                    if (choiceFourCauldron)
-                    {
-                        leftOverIngredientLocation = leftOverIngredient.transform.position;
-                        Instantiate(ingredients[choiceFourNumber], leftOverIngredientLocation, Quaternion.identity);
-                    }
-                    buttonsToAddLeftover.SetActive(false);
-                    ResetChoices();
-                }
-                //Draw 1 / 2 / 4 chips from your bad. You MAY place 1 of them in your pot. S = 5, M = 10, L = 19. - need to impliment bag system before i can add this rule.
-            }
-
-
-
-            if (ghostsBreathRule == 4)
-            {
-
-                if (other.gameObject.tag.Contains("ghost"))
-
-                {
-
-                    if (Coins >= 10 && Coins < 20)
-                    { 
-                        buttonsToAddLeftover.SetActive(true);
-                        button5.SetActive(true);
-                        aboveCauldronText.text = "ghosts breath adds 1 point to extra points."; 
-                        extraVictoryPoints++;
-                        await CheckWhichChoice(aboveCauldronText.text);
-                        //buttonsToAddLeftover.SetActive(false);
                         ResetChoices();
                     }
-                    if (Coins >= 20 && Coins < 30)
+                    if (other.gameObject.tag.Contains("crowSkullFour"))
                     {
                         buttonsToAddLeftover.SetActive(true);
+                        button1.SetActive(true);
+                        button2.SetActive(true);
+                        button3.SetActive(true);
+                        button4.SetActive(true);
                         button5.SetActive(true);
-                        aboveCauldronText.text = "ghosts breath adds 2 points to extra points.";
+                        int choiceOneNumber = grabIngredient.RandomlyDrawSeveralIngredients();
+                        int choiceTwoNumber = grabIngredient.RandomlyDrawSeveralIngredients();
+                        int choiceThreeNumber = grabIngredient.RandomlyDrawSeveralIngredients();
+                        int choiceFourNumber = grabIngredient.RandomlyDrawSeveralIngredients();
+                        choiceOne.text = getNameOfIngredientFromNumber(choiceOneNumber);
+                        choiceTwo.text = getNameOfIngredientFromNumber(choiceTwoNumber);
+                        choiceThree.text = getNameOfIngredientFromNumber(choiceThreeNumber);
+                        choiceThree.text = getNameOfIngredientFromNumber(choiceFourNumber);
+                        choiceFive.text = "Skip";
+                        aboveCauldronText.text = $"Large crow skull! Pick one random ingredient from your bag to add to your pot!";
                         await CheckWhichChoice(aboveCauldronText.text);
-                        //buttonsToAddLeftover.SetActive(false);
-                        ResetChoices();
-                  
-                        extraVictoryPoints += 2; }
-                    if (Coins >= 30)
-                    {
-                        buttonsToAddLeftover.SetActive(true);
-                        button5.SetActive(true);
-                        aboveCauldronText.text = "ghosts breath adds 3 points to extra points.";
-                       
-                        extraVictoryPoints += 3;
-                        await CheckWhichChoice(aboveCauldronText.text);
-                        //buttonsToAddLeftover.SetActive(false);
+                        if (choiceOneCauldron)
+                        {
+                            leftOverIngredientLocation = leftOverIngredient.transform.position;
+                            Instantiate(ingredients[choiceOneNumber], leftOverIngredientLocation, Quaternion.identity);
+                        }
+                        if (choiceTwoCauldron)
+                        {
+                            leftOverIngredientLocation = leftOverIngredient.transform.position;
+                            Instantiate(ingredients[choiceTwoNumber], leftOverIngredientLocation, Quaternion.identity);
+                        }
+                        if (choiceThreeCauldron)
+                        {
+                            leftOverIngredientLocation = leftOverIngredient.transform.position;
+                            Instantiate(ingredients[choiceThreeNumber], leftOverIngredientLocation, Quaternion.identity);
+                        }
+                        if (choiceFourCauldron)
+                        {
+                            leftOverIngredientLocation = leftOverIngredient.transform.position;
+                            Instantiate(ingredients[choiceFourNumber], leftOverIngredientLocation, Quaternion.identity);
+                        }
+                        buttonsToAddLeftover.SetActive(false);
                         ResetChoices();
                     }
+                    //Draw 1 / 2 / 4 chips from your bad. You MAY place 1 of them in your pot. S = 5, M = 10, L = 19. - need to impliment bag system before i can add this rule.
                 }
-            }
-           await _fortuneManager.DuringRoundFortuneEffects(other.gameObject.tag);
 
-            cauldronScoreFront.text = Score.ToString();
-            cauldronScoreBack.text = Score.ToString();
-            CountIngredientsInPot();
-            ChangePotionHeight();
 
-            if (ingredients.Count == 5)
-            {
-                _fortuneManager.firstFiveIngredientsHappened = true;
+
+                if (ghostsBreathRule == 4)
+                {
+
+                    if (other.gameObject.tag.Contains("ghost"))
+
+                    {
+
+                        if (Coins >= 10 && Coins < 20)
+                        {
+                            buttonsToAddLeftover.SetActive(true);
+                            button5.SetActive(true);
+                            aboveCauldronText.text = "ghosts breath adds 1 point to extra points.";
+                            extraVictoryPoints++;
+                            await CheckWhichChoice(aboveCauldronText.text);
+                            //buttonsToAddLeftover.SetActive(false);
+                            ResetChoices();
+                        }
+                        if (Coins >= 20 && Coins < 30)
+                        {
+                            buttonsToAddLeftover.SetActive(true);
+                            button5.SetActive(true);
+                            aboveCauldronText.text = "ghosts breath adds 2 points to extra points.";
+                            await CheckWhichChoice(aboveCauldronText.text);
+                            //buttonsToAddLeftover.SetActive(false);
+                            ResetChoices();
+
+                            extraVictoryPoints += 2;
+                        }
+                        if (Coins >= 30)
+                        {
+                            buttonsToAddLeftover.SetActive(true);
+                            button5.SetActive(true);
+                            aboveCauldronText.text = "ghosts breath adds 3 points to extra points.";
+
+                            extraVictoryPoints += 3;
+                            await CheckWhichChoice(aboveCauldronText.text);
+                            //buttonsToAddLeftover.SetActive(false);
+                            ResetChoices();
+                        }
+                    }
+                }
+                await _fortuneManager.DuringRoundFortuneEffects(other.gameObject.tag);
+
+                cauldronScoreFront.text = Score.ToString();
+                cauldronScoreBack.text = Score.ToString();
+                CountIngredientsInPot();
+                ChangePotionHeight();
+                quality.nextIngredientTime = true;
+
+                if (ingredients.Count == 5)
+                {
+                    _fortuneManager.firstFiveIngredientsHappened = true;
+                }
+
+
             }
-            
-            
         }
     }
 
@@ -1000,6 +1022,10 @@ public class ChipPoints : MonoBehaviour
     public void AddDroplet()
     {
         InitialScore += 1;
+        leftOverIngredientLocation = leftOverIngredient.transform.position;
+        
+        GameObject dropletObj = Instantiate(droplet, leftOverIngredientLocation, Quaternion.identity);
+        FunctionTimer.Create(() => Destroy(dropletObj), 1f);
     }
 
   
@@ -1065,7 +1091,7 @@ public class ChipPoints : MonoBehaviour
                         ChangeRubyUI();
                         AddDroplet();
                         ResetScore();
-                        CheckGhostsBreath();
+                        
                         cauldronScoreFront.text = Score.ToString();
                         cauldronScoreBack.text = Score.ToString();
                     }
@@ -1117,7 +1143,7 @@ public class ChipPoints : MonoBehaviour
                         else
                         {
                             turn = 1;
-                            CheckGhostsBreath();
+                         
                         }
 
                     }
@@ -1340,7 +1366,7 @@ public class ChipPoints : MonoBehaviour
         while (!IsChoiceMade())
         {
             Debug.Log("no choice chosen: " + message + " - " + gameObject.name);
-            await Task.Yield();
+            await Task.Delay(100);
         }
         Debug.Log("choice MADE");
         isCheckingChoice = false;  // Reset the flag when done
@@ -2507,8 +2533,15 @@ public class ChipPoints : MonoBehaviour
                 button5.SetActive(true);
                 _animatorScript.StartTalking(5);
                 aboveCauldronText.text = $"You have {rubiesToSpend} rubies, do you want to buy a droplet or refill your purifier potion?";
-                choiceTwo.text = "Buy refill of purifier potion";
-
+                choiceTwo.text = "refill purifier";
+                if (_playerData.Rubies.Value >= 4)
+                {
+                    button3.SetActive(true);
+                    choiceThree.text = "Buy 2 droplets";
+                    button4.SetActive(true);
+                    choiceFour.text = "Refill and Drop";
+                }
+             
                 await CheckWhichChoice(aboveCauldronText.text);
                 if (choiceOneCauldron)
                 {
@@ -2520,25 +2553,77 @@ public class ChipPoints : MonoBehaviour
                     FillPurifier();
                  
                 }
+                if (choiceThreeCauldron)
+                {
+                    BuyDrop();
+                    FunctionTimer.Create(() => BuyDrop(), 4f);
+                }
+                if (choiceFourCauldron)
+                {
+                    BuyDrop();
+                    FillPurifier();
+                }
 
                 ResetChoices();
 
             }
-            else
+            else if(_playerData.Rubies.Value >= 2)
             {
                 buttonsToAddLeftover.SetActive(true);
                 _animatorScript.StartTalking(4);
                 aboveCauldronText.text = $"You have {rubiesToSpend} rubies, do you want to buy a droplet?";
                 choiceTwo.text = "Skip";
+                if (_playerData.Rubies.Value >= 4)
+                {
+                    button3.SetActive(true);
+                    choiceThree.text = "Buy 2 droplets";
+                }
+                if (_playerData.Rubies.Value >= 6)
+                {
+                    button4.SetActive(true);
+                    choiceFour.text = "Buy 3 droplets";
+                }
+                if (_playerData.Rubies.Value >= 8)
+                {
+                    button5.SetActive(true);
+                    choiceFive.text = "Buy 4 droplets";
+                }
+                if (_playerData.Rubies.Value >= 10)
+                {
+                    button6.SetActive(true);
+                    choiceSix.text = "Buy 5 droplets";
+                }
 
                 await CheckWhichChoice(aboveCauldronText.text);
                 if (choiceOneCauldron)
                 {
                     BuyDrop();
-                    if (_playerData.Rubies.Value >= 2)
-                    {
-                        SpendRubiesUI();
-                    }
+                }
+                if (choiceThreeCauldron)
+                {
+                    BuyDrop();
+                    FunctionTimer.Create(() => BuyDrop(), 6f);
+                }
+                if (choiceFourCauldron)
+                {
+                    BuyDrop();
+                    FunctionTimer.Create(() => BuyDrop(), 6f);
+                    FunctionTimer.Create(() => BuyDrop(), 6f);
+                }
+                if (choiceFiveCauldron)
+                {
+                    BuyDrop();
+                    FunctionTimer.Create(() => BuyDrop(), 6f);
+                    FunctionTimer.Create(() => BuyDrop(), 6f);
+                    FunctionTimer.Create(() => BuyDrop(), 6f);
+                }
+                if (choiceSixCauldron)
+                {
+                    BuyDrop();
+                    FunctionTimer.Create(() => BuyDrop(), 6f);
+                    FunctionTimer.Create(() => BuyDrop(), 6f);
+                    FunctionTimer.Create(() => BuyDrop(), 6f);
+                    FunctionTimer.Create(() => BuyDrop(), 6f);
                 }
                 ResetChoices();
 
@@ -2580,8 +2665,10 @@ public class ChipPoints : MonoBehaviour
         aboveCauldronText.text = $"You have {ratTails} rat tails to add to your pot this round";
         Score += ratTails;
         
+
         await CheckWhichChoice(aboveCauldronText.text);
         aboveCauldronText.text = "";
+        await InstantiateRatTails(ratTails);
         quality.ResetPotionColour();
         quality.ResetCherryBombLimit();
         quality.SetCherryBombText();
@@ -2598,19 +2685,31 @@ public class ChipPoints : MonoBehaviour
         ChangePotionHeight();
         bottleUp.GetComponent<bottleUpPotionTrigger>().ReserPotionBottle();
         quality.SetSmokeColor("green");
+        ResetPotionHeight();
         GameManager.Instance.UpdateGameState(GameState.FortuneTeller);
     }
 
+    private async Task InstantiateRatTails(int ratTails)
+    {
+        int newRatTails = ratTails;
+        while (newRatTails > 0) {
+            Instantiate(ratTailObject, rubyInstantiationLocation, Quaternion.identity);
+            newRatTails -= 1;
+            await Task.Delay(200);
+        }
 
+    } 
 
-    public void BuyDrop()
+ 
+public void BuyDrop()
     {
        AddDroplet();
        _playerData.Rubies.Value -= 2;
        ResetScore();
        resetScoreText();
        ChangeRubyUI();
-       _animatorScript.StartTalking(1);
+       
+
     }
 
     public void FillPurifier()
@@ -2665,70 +2764,77 @@ public class ChipPoints : MonoBehaviour
         rubyNumber.text = _playerData.Rubies.Value.ToString();
         rubyInstantiationLocation = rubylocationSphere.transform.position;
 
-        if (_playerData.Rubies.Value == 0)
+        if (RubyobjNum < _playerData.Rubies.Value)
         {
-            Ruby1.SetActive(false);
-            Ruby2.SetActive(false);
-            Ruby3.SetActive(false);
-            Ruby4.SetActive(false);
-            Ruby5.SetActive(false);
-            Ruby6.SetActive(false);
+            if (_playerData.Rubies.Value == 1)
+            {
+                rubyOne = Instantiate(rubyForBowl, rubyInstantiationLocation, Quaternion.identity);
+            }
+            if (_playerData.Rubies.Value == 2)
+            {
+                rubyTwo = Instantiate(rubyForBowl, rubyInstantiationLocation, Quaternion.identity);
+            }
+            if (_playerData.Rubies.Value == 3)
+            {
+                rubyThree = Instantiate(rubyForBowl, rubyInstantiationLocation, Quaternion.identity);
+            }
+            if (_playerData.Rubies.Value == 4)
+            {
+                rubyFour = Instantiate(rubyForBowl, rubyInstantiationLocation, Quaternion.identity);
+            }
+            if (_playerData.Rubies.Value == 5)
+            {
+                rubyFive = Instantiate(rubyForBowl, rubyInstantiationLocation, Quaternion.identity);
+            }
+            if (_playerData.Rubies.Value == 6)
+            {
+                rubySix = Instantiate(rubyForBowl, rubyInstantiationLocation, Quaternion.identity);
+            }
+            if (_playerData.Rubies.Value == 7)
+            {
+                rubySeven = Instantiate(rubyForBowl, rubyInstantiationLocation, Quaternion.identity);
+            }
+            if (_playerData.Rubies.Value == 8)
+            {
+                rubyEight = Instantiate(rubyForBowl, rubyInstantiationLocation, Quaternion.identity);
+            }
+
         }
-        if (_playerData.Rubies.Value == 1)
-        {
-            Ruby1.SetActive(true);
-            Ruby2.SetActive(false);
-            Ruby3.SetActive(false);
-            Ruby4.SetActive(false);
-            Ruby5.SetActive(false);
-            Ruby6.SetActive(false);
+        else {
+            if (_playerData.Rubies.Value <= 7)
+            {
+                Destroy(rubyEight);
+            }
+            if (_playerData.Rubies.Value <= 6)
+            {
+                Destroy(rubySeven);
+            }
+            if (_playerData.Rubies.Value <= 5)
+            {
+                Destroy(rubySix);
+            }
+            if (_playerData.Rubies.Value <= 4)
+            {
+                Destroy(rubyFive);
+            }
+            if (_playerData.Rubies.Value <= 3)
+            {
+                Destroy(rubyFour);
+            }
+            if (_playerData.Rubies.Value <= 2)
+            {
+                Destroy(rubyThree);
+            }
+            if (_playerData.Rubies.Value <= 1)
+            {
+                Destroy(rubyTwo);
+            }
+            if (_playerData.Rubies.Value <= 0)
+            {
+                Destroy(rubyOne);
+            }
         }
-        if (_playerData.Rubies.Value == 2)
-        {
-            Ruby1.SetActive(true);
-            Ruby2.SetActive(true);
-            Ruby3.SetActive(false);
-            Ruby4.SetActive(false);
-            Ruby5.SetActive(false);
-            Ruby6.SetActive(false);
-        }
-        if (_playerData.Rubies.Value == 3)
-        {
-            Ruby1.SetActive(true);
-            Ruby2.SetActive(true);
-            Ruby3.SetActive(true);
-            Ruby4.SetActive(false);
-            Ruby5.SetActive(false);
-            Ruby6.SetActive(false);
-        }
-        if (_playerData.Rubies.Value == 4)
-        {
-            Ruby1.SetActive(true);
-            Ruby2.SetActive(true);
-            Ruby3.SetActive(true);
-            Ruby4.SetActive(true);
-            Ruby5.SetActive(false);
-            Ruby6.SetActive(false);
-        }
-        if (_playerData.Rubies.Value == 5)
-        {
-            Ruby1.SetActive(true);
-            Ruby2.SetActive(true);
-            Ruby3.SetActive(true);
-            Ruby4.SetActive(true);
-            Ruby5.SetActive(true);
-            Ruby6.SetActive(false);
-        }
-        if (_playerData.Rubies.Value >= 6)
-        {
-            Ruby1.SetActive(true);
-            Ruby2.SetActive(true);
-            Ruby3.SetActive(true);
-            Ruby4.SetActive(true);
-            Ruby5.SetActive(true);
-            Ruby6.SetActive(true);
-        }
-        //Instantiate(rubyForBowl, rubyInstantiationLocation, Quaternion.identity);
+        RubyobjNum = _playerData.Rubies.Value;
     }
 
     public void SetRules()
@@ -2748,29 +2854,26 @@ public class ChipPoints : MonoBehaviour
         grabIngredient = FindObjectOfType<GrabIngredient>();
         if (lastIngredient == "cherryBombOne")
         { grabIngredient.AddToBagThisRound(0);
-            quality.RemoveFromCherryBombs();
-            quality.SetCherryBombText();
             Score -= 1;
+            quality.RemoveFromCherryBombs(1);
         }
         if (lastIngredient == "cherryBombTwo")
         { grabIngredient.AddToBagThisRound(2);
-            quality.RemoveFromCherryBombs();
-            quality.RemoveFromCherryBombs();
-            quality.SetCherryBombText();
+           
             Score -= 2;
+            quality.RemoveFromCherryBombs(2);
+            
         }
         if (lastIngredient == "cherryBombThree")
         { grabIngredient.AddToBagThisRound(1);
-            quality.RemoveFromCherryBombs();
-            quality.RemoveFromCherryBombs();
-            quality.RemoveFromCherryBombs();
-            quality.SetCherryBombText();
+           
+            quality.RemoveFromCherryBombs(3);
             Score -= 3;
         }
         int ingredientsCount = ingredientsList.Count - 1;
 
         ingredientsList.RemoveAt(ingredientsCount);
-
+        quality.SetCherryBombText();
         cauldronScoreFront.text = Score.ToString();
         cauldronScoreBack.text = Score.ToString();
     }
@@ -2792,12 +2895,13 @@ public class ChipPoints : MonoBehaviour
 
     private void ResetPotionHeight()
     {
+        ResetScore();
         float Added = (float)(Score * 0.010);
 
         float newHeight = startHeightPotion + Added;
 
         float threshold = 0.01f;
-        float speed = 5f;
+        float speed = 10f;
 
 
 

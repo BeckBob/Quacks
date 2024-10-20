@@ -70,6 +70,7 @@ public class WinnerManager : NetworkBehaviour
     private ChipPoints _chipPoints;
     private GrabIngredient _grabIngredient;
     private AnimatorScript _animatorScript;
+    private GameManager _gameManager;
 
     private int numberOfPlayers;
     private int MothNumbersBeaten;
@@ -87,6 +88,11 @@ public class WinnerManager : NetworkBehaviour
     [SerializeField] GameObject RedFutureCanvas;
     [SerializeField] GameObject BlueFutureCanvas;
     [SerializeField] GameObject YellowFutureCanvas;
+
+    [SerializeField] GameObject PurplePresentCanvas;
+    [SerializeField] GameObject RedPresentCanvas;
+    [SerializeField] GameObject BluePresentCanvas;
+    [SerializeField] GameObject YellowPresentCanvas;
 
     [SerializeField] GameObject purpleConfetti;
     [SerializeField] GameObject redConfetti;
@@ -139,6 +145,7 @@ public class WinnerManager : NetworkBehaviour
 
         _networkConnect = FindObjectOfType<NetworkConnect>();
         _animatorScript = FindObjectOfType<AnimatorScript>();
+        _gameManager = FindObjectOfType<GameManager>();
         YellowExists.Value = false;
         BlueExists.Value = false;
         RedExists.Value = false;
@@ -377,7 +384,7 @@ public class WinnerManager : NetworkBehaviour
         RoundWinnerScore.Value = new[] { RedPoints.Value, BluePoints.Value, YellowPoints.Value, PurplePoints.Value }.Max();
         Debug.Log(RoundWinnerScore.Value);
         _chipPoints = FindObjectOfType<ChipPoints>();
-
+        _gameManager.StopMusic();
         if (RedExists.Value && RoundWinnerScore.Value == RedPoints.Value)
         {
             
@@ -385,12 +392,13 @@ public class WinnerManager : NetworkBehaviour
             if (_playerData.Colour.Value == "Red")
             {
                 _animatorScript.GoodJobAnimation();
+                
                 winningRound.Play();
                 RedFutureCanvas.SetActive(false);
                 RedRoundWinCanvas.SetActive(true);
                 DiceFloor.SetActive(true);
                 await CheckAllPlayersReady();
-
+                FunctionTimer.Create(() => _gameManager.SetMusicForRound(), 5f);
                 ResetReady();
                 _chipPoints.CheckMoths();
             }
@@ -409,7 +417,7 @@ public class WinnerManager : NetworkBehaviour
                 YellowRoundWinCanvas.SetActive(true);
                 DiceFloor.SetActive(true);
                 await CheckAllPlayersReady();
-
+                FunctionTimer.Create(() => _gameManager.SetMusicForRound(), 5f);
                 ResetReady();
                 _chipPoints.CheckMoths();
             }
@@ -427,7 +435,7 @@ public class WinnerManager : NetworkBehaviour
                 BlueRoundWinCanvas.SetActive(true);
                 DiceFloor.SetActive(true);
                 await CheckAllPlayersReady();
-
+                FunctionTimer.Create(() => _gameManager.SetMusicForRound(), 5f);
                 ResetReady();
                 _chipPoints.CheckMoths();
             }
@@ -444,7 +452,7 @@ public class WinnerManager : NetworkBehaviour
                 PurpleRoundWinCanvas.SetActive(true);
                 DiceFloor.SetActive(true);
                 await CheckAllPlayersReady();
-
+                FunctionTimer.Create(() => _gameManager.SetMusicForRound(), 5f);
                 ResetReady();
                 _chipPoints.CheckMoths();
             }
@@ -457,7 +465,8 @@ public class WinnerManager : NetworkBehaviour
             LosingRound.Play();
             ReadyUp();
             await CheckAllPlayersReady();
-
+            FunctionTimer.Create(() => _gameManager.SetMusicForRound(), 1f);
+            
             ResetReady();
             _chipPoints.CheckMoths();
         }
@@ -606,18 +615,23 @@ public class WinnerManager : NetworkBehaviour
     {
         if(_playerData.Colour.Value == "Purple")
         {
+            PurplePresentCanvas.SetActive(false);
             purpleEndGameCanvas.SetActive(true);
+            
         }
         if (_playerData.Colour.Value == "Yellow")
         {
+            YellowPresentCanvas.SetActive(false);
             yellowEndGameCanvas.SetActive(true);
         }
         if (_playerData.Colour.Value == "Blue")
         {
+            BluePresentCanvas.SetActive(false);
             blueEndGameCanvas.SetActive(true);
         }
         if (_playerData.Colour.Value == "Red")
         {
+            RedPresentCanvas.SetActive(false);
             redEndGameCanvas.SetActive(true);
         }
     }
@@ -638,7 +652,7 @@ public class WinnerManager : NetworkBehaviour
         {
             Debug.Log("all players ARE NOT ready");
 
-            await Task.Yield();
+            await Task.Delay(100);
         }
         Debug.Log("players READY");
        
@@ -1079,6 +1093,8 @@ public class WinnerManager : NetworkBehaviour
         purpleExploded.Value = false;
         yellowExploded.Value = false;
         blueExploded.Value = false;
+        winningGame.Stop();
+        LosingGame.Stop();
 
     }
 

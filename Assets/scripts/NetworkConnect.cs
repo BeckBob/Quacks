@@ -254,8 +254,9 @@ public class NetworkConnect : MonoBehaviour
     {
         playerData = FindObjectOfType<PlayerData>();
         grabIngredient = FindObjectOfType<GrabIngredient>();
-        chipPoints = FindObjectOfType<ChipPoints>();
         gameManager = FindObjectOfType<GameManager>();
+        chipPoints = FindObjectOfType<ChipPoints>();
+       
 
         player.transform.position = playerStartPos;
         _bigBook.SetActive(true);

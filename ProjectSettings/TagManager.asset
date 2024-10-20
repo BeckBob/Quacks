@@ -36,6 +36,7 @@ TagManager:
   - Purple
   - wizard
   - walkSpot
+  - droplet
   layers:
   - Default
   - TransparentFX

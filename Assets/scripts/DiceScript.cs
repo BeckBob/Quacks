@@ -89,8 +89,6 @@ public class DiceScript : MonoBehaviour
                        
                         alreadyCalled = true;
                         chipPoints.AddDroplet();
-                        chipPoints.ResetScore();
-                        chipPoints.resetScoreText();
                         await chipPoints.MessageAboveCauldron("Added a droplet to your pot!");
                          DeactivateDice(colour);
                         break;

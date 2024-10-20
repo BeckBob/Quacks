@@ -56,7 +56,7 @@ public class FortuneManager : MonoBehaviour
         {
             Debug.Log("no choice chosen");
 
-            await Task.Yield();
+            await Task.Delay(100);
         }
         Debug.Log("choice MADE");
 
@@ -247,6 +247,7 @@ public class FortuneManager : MonoBehaviour
             _grabIngredient.fortuneDrawAmount = 5;
 
             _grabIngredient.fortuneDrawTime = true;
+            _grabIngredient.fortunedrawpulls = true;
             await _grabIngredient.CheckDrawnRightAmount();
         
             _grabIngredient.ResetChoices();
@@ -350,21 +351,16 @@ public class FortuneManager : MonoBehaviour
                     if (ingredient.Contains("One"))
                     {
                         _grabIngredient.AddToBagThisRound(0);
-                        _quality.RemoveFromCherryBombs();
 
                     }
                     if (ingredient.Contains("Two"))
                     {
                         _grabIngredient.AddToBagThisRound(2);
-                        _quality.RemoveFromCherryBombs();
-                        _quality.RemoveFromCherryBombs();
                     }
                     if (ingredient.Contains("Three"))
                     {
                         _grabIngredient.AddToBagThisRound(1);
-                        _quality.RemoveFromCherryBombs();
-                        _quality.RemoveFromCherryBombs();
-                        _quality.RemoveFromCherryBombs();
+                     
                     }
                     _chipPoints.RemoveLastIngredient();
                     _grabIngredient.CountIngredientsInBag();
@@ -562,6 +558,7 @@ public class FortuneManager : MonoBehaviour
         if (_fortuneTeller.fortuneNumber == 14)
         {
             Debug.Log(_winnerManager.purpleExploded.Value);
+            _grabIngredient.fortuneDrawTime = true;
             if (_playerData.Colour.Value == "Purple" && !_winnerManager.purpleExploded.Value)
            {
                 await DrawIngredientsAndPutOneInPot();

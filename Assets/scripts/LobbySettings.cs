@@ -212,6 +212,7 @@ public class LobbySettings : NetworkBehaviour
                 _teleportationManager.StartGameTeleportation();
                 GameManager.Instance.UpdateGameState(GameState.FortuneTeller);
                 _bigBook.SetActive(false);
+                ResetReady();
             }
         }
         if (!_ready)
@@ -233,9 +234,16 @@ public class LobbySettings : NetworkBehaviour
                 _teleportationManager.StartGameTeleportation();
                 GameManager.Instance.UpdateGameState(GameState.FortuneTeller);
                 _bigBook.SetActive(false);
+                ResetReady();
             }
         }
        
+    }
+
+    public void ResetReady()
+    {
+        _ready = false;
+        readyPlayers.Value = 0;
     }
 
     public void ChangeColour()

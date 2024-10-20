@@ -1,0 +1,12 @@
+# Blender 4.0.2 MTL File: 'rubyBowl.blend'
+# www.blender.org
+
+newmtl Material.001
+Ns 442.696442
+Ka 0.913386 0.913386 0.913386
+Kd 0.205791 0.224670 0.187877
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 3

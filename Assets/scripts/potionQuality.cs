@@ -142,9 +142,9 @@ public class PotionQuality : MonoBehaviour
         cherryBombLimit--;
     }
 
-    public void RemoveFromCherryBombs()
+    public void RemoveFromCherryBombs(int num)
     {
-        _cherryBombs--;
+        _cherryBombs-=num;
     }
 
     public void FalseNextIngredientMethod()
@@ -237,7 +237,7 @@ public class PotionQuality : MonoBehaviour
        
        
         _grabIngredient.updateCherryBombs();
-        nextIngredientTime = true;
+     
         SetCherryBombText();
     }
 
