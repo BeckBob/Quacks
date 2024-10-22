@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using TMPro;
 using Unity.Collections;
 using Unity.Netcode;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -71,6 +72,7 @@ public class WinnerManager : NetworkBehaviour
     private GrabIngredient _grabIngredient;
     private AnimatorScript _animatorScript;
     private GameManager _gameManager;
+    private PotionQuality _quality;
 
     private int numberOfPlayers;
     private int MothNumbersBeaten;
@@ -233,13 +235,25 @@ public class WinnerManager : NetworkBehaviour
         ResetReady();
 
         // Calculate the lowest victory points
-        int[] victoryPoints = {
-            RedVictoryPoints.Value,
-            YellowVictoryPoints.Value,
-            BlueVictoryPoints.Value,
-            PurpleVictoryPoints.Value
-        };
+        List<int> victoryPoints = new List<int>();
 
+        // Conditionally add points if RedExists
+        if (RedExists.Value)
+        {
+            victoryPoints.Add(RedVictoryPoints.Value);
+        }
+        if (PurpleExists.Value)
+        {
+            victoryPoints.Add(PurpleVictoryPoints.Value);
+        }
+        if (YellowExists.Value)
+        {
+            victoryPoints.Add(YellowVictoryPoints.Value);
+        }
+        if (BlueExists.Value)
+        {
+            victoryPoints.Add(BlueVictoryPoints.Value);
+        }
         // Ensure we have valid points before calculating minimum
         if (victoryPoints.All(vp => vp >= 0))
         {
@@ -322,33 +336,67 @@ public class WinnerManager : NetworkBehaviour
         // figure out who has the highest score and then get them to roll dice and initiate dice function
         if (_playerData.Colour.Value == "Red")
         {
-            RedPoints.Value = _playerData.Score.Value;
+           
             RedExists.Value = true;
             ReadyPlayers.Value += 1;
+            if (!redExploded.Value)
+            {
+                RedPoints.Value = _playerData.Score.Value;
+            }
+            else
+            {
+                RedPoints.Value = 0;
+            }
             RoundWinnerDecider();
+       
         }
-        if (_playerData.Colour.Value == "Yellow")
+        else if (_playerData.Colour.Value == "Yellow")
         {
-            YellowPoints.Value = _playerData.Score.Value;
+            
             ReadyPlayers.Value += 1;
             YellowExists.Value = true;
+            if (!yellowExploded.Value)
+            {
+                YellowPoints.Value = _playerData.Score.Value;
+            }
+            else
+            {
+                YellowPoints.Value = 0;
+            }
             RoundWinnerDecider();
 
         }
-        if (_playerData.Colour.Value == "Blue")
+        else if (_playerData.Colour.Value == "Blue")
         {
-            BluePoints.Value = _playerData.Score.Value;
+            
             ReadyPlayers.Value += 1;
             BlueExists.Value = true;
+            if (!blueExploded.Value)
+            {
+                BluePoints.Value = _playerData.Score.Value;
+            }
+            else
+            {
+                BluePoints.Value = 0;
+            }
             RoundWinnerDecider();
         }
-        if (_playerData.Colour.Value == "Purple")
+        else if (_playerData.Colour.Value == "Purple")
         {
-            PurplePoints.Value = _playerData.Score.Value;
+           
             ReadyPlayers.Value += 1;
             PurpleExists.Value = true;
+            if (!purpleExploded.Value)
+            {
+                PurplePoints.Value = _playerData.Score.Value;
+            }
+            else
+            {
+                PurplePoints.Value = 0;
+            }
             RoundWinnerDecider();
         }
+      
         round++;
         Debug.Log(round);
     }
@@ -398,7 +446,7 @@ public class WinnerManager : NetworkBehaviour
                 RedRoundWinCanvas.SetActive(true);
                 DiceFloor.SetActive(true);
                 await CheckAllPlayersReady();
-                FunctionTimer.Create(() => _gameManager.SetMusicForRound(), 5f);
+                FunctionTimer.Create(() => _gameManager.SetMusicForRound(), 1f);
                 ResetReady();
                 _chipPoints.CheckMoths();
             }
@@ -417,7 +465,7 @@ public class WinnerManager : NetworkBehaviour
                 YellowRoundWinCanvas.SetActive(true);
                 DiceFloor.SetActive(true);
                 await CheckAllPlayersReady();
-                FunctionTimer.Create(() => _gameManager.SetMusicForRound(), 5f);
+                FunctionTimer.Create(() => _gameManager.SetMusicForRound(), 1f);
                 ResetReady();
                 _chipPoints.CheckMoths();
             }
@@ -435,7 +483,7 @@ public class WinnerManager : NetworkBehaviour
                 BlueRoundWinCanvas.SetActive(true);
                 DiceFloor.SetActive(true);
                 await CheckAllPlayersReady();
-                FunctionTimer.Create(() => _gameManager.SetMusicForRound(), 5f);
+                FunctionTimer.Create(() => _gameManager.SetMusicForRound(), 1f);
                 ResetReady();
                 _chipPoints.CheckMoths();
             }
@@ -446,13 +494,14 @@ public class WinnerManager : NetworkBehaviour
             PurpleDice.SetActive(true);
             if (_playerData.Colour.Value == "Purple")
             {
+
                 _animatorScript.GoodJobAnimation();
                 winningRound.Play();
                 PurpleFutureCanvas.SetActive(false);
                 PurpleRoundWinCanvas.SetActive(true);
                 DiceFloor.SetActive(true);
                 await CheckAllPlayersReady();
-                FunctionTimer.Create(() => _gameManager.SetMusicForRound(), 5f);
+                FunctionTimer.Create(() => _gameManager.SetMusicForRound(), 1f);
                 ResetReady();
                 _chipPoints.CheckMoths();
             }
@@ -474,6 +523,7 @@ public class WinnerManager : NetworkBehaviour
     }
     private async void GameWinnerDecider()
     {
+        _quality = FindObjectOfType<PotionQuality>();
         await CheckAllPlayersReady();
         
         ResetReady();
@@ -486,6 +536,7 @@ public class WinnerManager : NetworkBehaviour
             redConfetti.SetActive(true);
             if (_playerData.Colour.Value == "Red")
             {
+                _quality.WonGamePotion();
                 _animatorScript.GoodJobAnimation();
                 winningGame.Play();
                 aboveCauldronUIRed.SetActive(true);
@@ -512,6 +563,7 @@ public class WinnerManager : NetworkBehaviour
             yellowConfetti.SetActive(true);
             if (_playerData.Colour.Value == "Yellow")
             {
+                _quality.WonGamePotion();
                 _animatorScript.GoodJobAnimation();
                 winningGame.Play();
                 
@@ -537,6 +589,7 @@ public class WinnerManager : NetworkBehaviour
            blueConfetti.SetActive(true);
             if (_playerData.Colour.Value == "Blue")
             {
+                _quality.WonGamePotion();
                 _animatorScript.GoodJobAnimation();
                 winningGame.Play();
 
@@ -562,6 +615,7 @@ public class WinnerManager : NetworkBehaviour
            purpleConfetti.SetActive(true);
             if (_playerData.Colour.Value == "Purple")
             {
+                _quality.WonGamePotion();
                 _animatorScript.GoodJobAnimation();
                 winningGame.Play();
 
@@ -1071,7 +1125,10 @@ public class WinnerManager : NetworkBehaviour
         purpleEndGameCanvas.SetActive(false);
         yellowEndGameCanvas.SetActive(false);
         blueEndGameCanvas.SetActive(false);
-        round = 1;
+        winningGame.Stop();
+        LosingGame.Stop();
+        round = 0;
+        _quality.ResetPotionColour();
         PurpleVictoryPoints.Value = 0;
         RedVictoryPoints.Value = 0;
         BlueVictoryPoints.Value= 0;
@@ -1095,6 +1152,10 @@ public class WinnerManager : NetworkBehaviour
         blueExploded.Value = false;
         winningGame.Stop();
         LosingGame.Stop();
+        aboveCauldronTextPurple.text = "";
+        aboveCauldronTextBlue.text = "";
+        aboveCauldronTextRed.text = "";
+        aboveCauldronTextYellow.text = "";
 
     }
 

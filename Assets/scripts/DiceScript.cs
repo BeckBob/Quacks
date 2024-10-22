@@ -72,8 +72,6 @@ public class DiceScript : MonoBehaviour
                         
                         alreadyCalled = true;
                         grabIngredient.AddToBagPermanantly(14);
-                        chipPoints.ResetScore();
-                        chipPoints.resetScoreText();
                         await chipPoints.MessageAboveCauldron("Pumpkin added to your bag!");
                         DeactivateDice(colour);
                         break;

@@ -69,7 +69,10 @@ public class GameManager : MonoBehaviour
 
     [SerializeField] private GameObject networkObject;
 
-    [SerializeField] private TextMeshProUGUI _bigText;
+    [SerializeField] private TextMeshProUGUI _bigPurpleText;
+    [SerializeField] private TextMeshProUGUI _bigRedText;
+    [SerializeField] private TextMeshProUGUI _bigblueText;
+    [SerializeField] private TextMeshProUGUI _bigyellowText;
 
     [SerializeField] private GameObject purpleBottleUp;
     [SerializeField] private GameObject blueBottleUp;
@@ -321,7 +324,7 @@ public class GameManager : MonoBehaviour
         _redPlayerSpace.SetActive(true);
         _BluePlayerSpace.SetActive(true);
      
-        
+        Debug.Log(_playerData.Colour.Value);
         if (_playerData.Colour.Value == "Purple")
         {
             _fortuneTextPurple.SetActive(true);
@@ -375,14 +378,32 @@ public class GameManager : MonoBehaviour
 
     private async Task bigScreenText(string text, int time)
     {
-        _bigText.text = text;
+        if (_playerData.Colour.Value == "Purple")
+        {
+            _bigPurpleText.text = text;
+        }
+        else if (_playerData.Colour.Value == "Blue")
+        {
+            _bigblueText.text = text;
+        }
+        else if (_playerData.Colour.Value == "Red")
+        {
+            _bigRedText.text = text;
+        }
+        else
+        {
+            _bigyellowText.text = text;
+        }
         await Task.Delay(time * 1000);  
         undoBigScreenText();
     }
 
     private void undoBigScreenText () 
         {
-        _bigText.text = "";
+        _bigPurpleText.text = "";
+        _bigblueText.text = "";
+        _bigyellowText.text = "";
+        _bigRedText.text = "";
         
     }
 

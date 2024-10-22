@@ -227,7 +227,7 @@ public class ChipPoints : MonoBehaviour
             {
                 futureScore.SetActive(false);
                 potExplodedCanvas.SetActive(true);
-                Score = 0;
+             
             }
 
         }
@@ -236,7 +236,7 @@ public class ChipPoints : MonoBehaviour
 
             futureScore.SetActive(false);
             potExplodedCanvas.SetActive(true);
-            Score = 0;
+
 
         }
         if (_playerData.Colour.Value == "Purple")
@@ -273,8 +273,9 @@ public class ChipPoints : MonoBehaviour
     public async void OnTriggerEnter(Collider other)
     {
 
-        if (other.tag.Contains("Untagged") || other.tag.Contains("potion") || other.tag.Contains("purifier"))
+        if (other.tag.Contains("Untagged") || other.tag.Contains("potion") || other.tag.Contains("purifier") || other.tag.Contains("droplet"))
         {
+            Debug.Log(other.gameObject.tag);
             return;
         }
         else
@@ -282,7 +283,7 @@ public class ChipPoints : MonoBehaviour
 
 
 
-            Debug.Log(other.gameObject.tag);
+            
             ingredientsList.Add(other.gameObject.tag);
             extraPoints = 0; extraRubies = 0;
             lastIngredient = other.gameObject.tag;
@@ -1021,7 +1022,7 @@ public class ChipPoints : MonoBehaviour
 
     public void AddDroplet()
     {
-        InitialScore += 1;
+        InitialScore++;
         leftOverIngredientLocation = leftOverIngredient.transform.position;
         
         GameObject dropletObj = Instantiate(droplet, leftOverIngredientLocation, Quaternion.identity);
@@ -1079,7 +1080,7 @@ public class ChipPoints : MonoBehaviour
                 if (ingredientsList[ingredientsList.Count - 1].Contains("spider") && _playerData.Rubies.Value >= 1 || ingredientsList[ingredientsList.Count - 2].Contains("spider") && _playerData.Rubies.Value >= 1)
                 {
                     buttonsToAddLeftover.SetActive(true);
-                    aboveCauldronText.text = "You had a spider last or next to last in your pot, you may pay one ruby to to add a droplet to your pot permanatly";
+                    aboveCauldronText.text = "You had a spider last or next to last in your pot, you may pay one ruby to";
                     button1.SetActive(true);
                     button2.SetActive(true);
                     choiceOne.text = "buy droplet";
@@ -1090,7 +1091,7 @@ public class ChipPoints : MonoBehaviour
                         _playerData.Rubies.Value--;
                         ChangeRubyUI();
                         AddDroplet();
-                        ResetScore();
+                       
                         
                         cauldronScoreFront.text = Score.ToString();
                         cauldronScoreBack.text = Score.ToString();
@@ -1101,7 +1102,7 @@ public class ChipPoints : MonoBehaviour
                 if (ingredientsList[ingredientsList.Count - 1].Contains("spider") && ingredientsList[ingredientsList.Count - 2].Contains("spider") && _playerData.Rubies.Value >= 1)
                 {
                     buttonsToAddLeftover.SetActive(true);
-                    aboveCauldronText.text = "You had spiders both last or next to last in your pot, you may pay one ruby to to add a droplet to your pot permanatly for each spider";
+                    aboveCauldronText.text = "You had spiders both last AND next to last in your pot, you may pay one ruby to";
                     int turn = 1;
                     button1.SetActive(true);
                     button2.SetActive(true);
@@ -1112,10 +1113,10 @@ public class ChipPoints : MonoBehaviour
                     {
                         if (_playerData.Rubies.Value >= 0)
                         {
-                            _playerData.Rubies.Value = -1;
+                            _playerData.Rubies.Value--;
                             ChangeRubyUI();
                             AddDroplet();
-                            ResetScore() ;
+                         
                             cauldronScoreFront.text = Score.ToString();
                             cauldronScoreBack.text = Score.ToString();
                             if (turn == 1)
@@ -1174,7 +1175,7 @@ public class ChipPoints : MonoBehaviour
                     }
 
                     buttonsToAddLeftover.SetActive(true);
-                    aboveCauldronText.text = $"you have a spider in your potion and  also the Cherrybombs equal 7 so you get to choose, do you want to add total of spiders to pot ({totalSpiders})";
+                    aboveCauldronText.text = $"you have a spider in your potion and the Cherrybombs equal 7 so you CAN add total of spiders to pot ({totalSpiders})";
                     button1.SetActive(true);
                     button2.SetActive(true);
                     choiceOne.text = "add to pot";
@@ -1210,10 +1211,15 @@ public class ChipPoints : MonoBehaviour
                     aboveCauldronText.text = "You had a spider last AND next to last in your pot, you get TWO rubies!";
                     button5.SetActive(true);
                     //some sound effect for rubies
-                    _playerData.Rubies.Value += 2;
-                   
+                  
+
                     await CheckWhichChoice(aboveCauldronText.text);
-                    ChangeRubyUI();
+
+                    for (int i = 0; i <= 2; i++)
+                    {
+                        _playerData.Rubies.Value++;
+                        ChangeRubyUI();
+                    }
                 }
 
             }
@@ -1284,7 +1290,7 @@ public class ChipPoints : MonoBehaviour
                     {
 
                         buttonsToAddLeftover.SetActive(true);
-                        aboveCauldronText.text = "You had a small spider next to last in your pot, added pumpkin to bag!";
+                        aboveCauldronText.text = "Small spider next to last in your pot, added pumpkin to bag!";
                         button5.SetActive(true);
                         //some sound effect for Pumpkin
                         grabIngredient.AddToBagPermanantly(14);
@@ -1295,7 +1301,7 @@ public class ChipPoints : MonoBehaviour
                     if (ingredientsList[ingredientsList.Count - 1] == "spiderTwo")
                     {
                         buttonsToAddLeftover.SetActive(true);
-                        aboveCauldronText.text = "You had a medium spider next to last in your pot, choose which small ingredient to add to bag!";
+                        aboveCauldronText.text = "Medium spider next to last in your pot, choose small ingredient to add to bag!";
                         button1.SetActive(true);
                         button2.SetActive(true);
                         choiceOne.text = "Crow skull";
@@ -1317,7 +1323,7 @@ public class ChipPoints : MonoBehaviour
                     if (ingredientsList[ingredientsList.Count - 1] == "spiderFour")
                     {
                         buttonsToAddLeftover.SetActive(true);
-                        aboveCauldronText.text = "You had a large spider next to last in your pot, choose which small ingredient to add to bag!";
+                        aboveCauldronText.text = "Large spider next to last in your pot, choose which small ingredient to add to bag!";
                         button1.SetActive(true);
                         button2.SetActive(true);
                         choiceOne.text = "Mandrake";
@@ -1426,7 +1432,7 @@ public class ChipPoints : MonoBehaviour
                     aboveCauldronText.text = $"You had {ghosts} GhostsBreath in your potion and get two extra victory points and one droplet";
                     button5.SetActive(true);
                     VictoryPoints += 2;
-                    InitialScore++;
+                    AddDroplet();
                     await CheckWhichChoice(aboveCauldronText.text);
                 }
                 //For 1, 2 or 3 purple chips, you receive the indicated bonus.  1 = 1 victory point 2 = victory point and ruby 3 = 2 victory points and teardrop forward one space.COSTS 9. - END OF ROUND
@@ -1469,7 +1475,7 @@ public class ChipPoints : MonoBehaviour
                     {
                         _playerData.VictoryPoints.Value += 3;
                         AddDroplet();
-                        ResetScore();
+                       
                         grabIngredient.AddToBagPermanantly(16);
                         grabIngredient.AddToBagPermanantly(5);
                     }
@@ -1497,7 +1503,7 @@ public class ChipPoints : MonoBehaviour
                     {
                         _playerData.VictoryPoints.Value += 3;
                         AddDroplet();
-                        ResetScore();
+                        
                         cauldronScoreFront.text = Score.ToString();
                         cauldronScoreBack.text = Score.ToString();
                         grabIngredient.AddToBagPermanantly(16);
@@ -1507,8 +1513,8 @@ public class ChipPoints : MonoBehaviour
                     {
                         _playerData.VictoryPoints.Value += 6;
                         AddDroplet();
-                        AddDroplet();
-                        ResetScore();
+                        FunctionTimer.Create(() => AddDroplet(), 3f);
+                        
                         cauldronScoreFront.text = Score.ToString();
                         cauldronScoreBack.text = Score.ToString();
                         grabIngredient.AddToBagPermanantly(7);
@@ -2539,7 +2545,7 @@ public class ChipPoints : MonoBehaviour
                     button3.SetActive(true);
                     choiceThree.text = "Buy 2 droplets";
                     button4.SetActive(true);
-                    choiceFour.text = "Refill and Drop";
+                    choiceFour.text = "Refill and Droplet";
                 }
              
                 await CheckWhichChoice(aboveCauldronText.text);
@@ -2556,7 +2562,7 @@ public class ChipPoints : MonoBehaviour
                 if (choiceThreeCauldron)
                 {
                     BuyDrop();
-                    FunctionTimer.Create(() => BuyDrop(), 4f);
+                    FunctionTimer.Create(() => BuyDrop(), 1f);
                 }
                 if (choiceFourCauldron)
                 {
@@ -2602,28 +2608,28 @@ public class ChipPoints : MonoBehaviour
                 if (choiceThreeCauldron)
                 {
                     BuyDrop();
-                    FunctionTimer.Create(() => BuyDrop(), 6f);
+                    FunctionTimer.Create(() => BuyDrop(), 1f);
                 }
                 if (choiceFourCauldron)
                 {
                     BuyDrop();
-                    FunctionTimer.Create(() => BuyDrop(), 6f);
-                    FunctionTimer.Create(() => BuyDrop(), 6f);
+                    FunctionTimer.Create(() => BuyDrop(), 1f);
+                    FunctionTimer.Create(() => BuyDrop(), 1f);
                 }
                 if (choiceFiveCauldron)
                 {
                     BuyDrop();
-                    FunctionTimer.Create(() => BuyDrop(), 6f);
-                    FunctionTimer.Create(() => BuyDrop(), 6f);
-                    FunctionTimer.Create(() => BuyDrop(), 6f);
+                    FunctionTimer.Create(() => BuyDrop(), 1f);
+                    FunctionTimer.Create(() => BuyDrop(), 1f);
+                    FunctionTimer.Create(() => BuyDrop(), 1f);
                 }
                 if (choiceSixCauldron)
                 {
                     BuyDrop();
-                    FunctionTimer.Create(() => BuyDrop(), 6f);
-                    FunctionTimer.Create(() => BuyDrop(), 6f);
-                    FunctionTimer.Create(() => BuyDrop(), 6f);
-                    FunctionTimer.Create(() => BuyDrop(), 6f);
+                    FunctionTimer.Create(() => BuyDrop(), 1f);
+                    FunctionTimer.Create(() => BuyDrop(), 1f);
+                    FunctionTimer.Create(() => BuyDrop(), 1f);
+                    FunctionTimer.Create(() => BuyDrop(), 1f);
                 }
                 ResetChoices();
 
@@ -2704,20 +2710,29 @@ public class ChipPoints : MonoBehaviour
 public void BuyDrop()
     {
        AddDroplet();
-       _playerData.Rubies.Value -= 2;
-       ResetScore();
+      
+        for (int i = 0; i < 2; i++)
+        {
+            _playerData.Rubies.Value--;
+            ChangeRubyUI();
+        }
+        ResetScore();
        resetScoreText();
-       ChangeRubyUI();
+    
        
 
     }
 
     public void FillPurifier()
     {
-        _playerData.Rubies.Value -= 2;
+        for (int i = 0; i < 2; i++)
+        {
+            _playerData.Rubies.Value--;
+            ChangeRubyUI();
+        }
         _playerData.PurifierFull.Value = true;
         bottleUp.GetComponent<bottleUpPotionTrigger>().ReserPurifier();
-        ChangeRubyUI();
+      
         _animatorScript.StartTalking(1);
         //when have proper 3d model fill with the liquid.
     }

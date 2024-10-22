@@ -70,7 +70,7 @@ public class PotionQuality : MonoBehaviour
         var main = Smoke.main;
         if (Colour == "black")
         {
-            main.startColor = Color.white;
+            main.startColor = Color.grey;
             Smoke.Play();
         }
         if (Colour == "green")
@@ -164,7 +164,7 @@ public class PotionQuality : MonoBehaviour
 
             if (_cherryBombs > cherryBombLimit)
             {
-                StartCoroutine(FadeToColor(potionOne, fadeColor, Color.red, Color.black));
+                StartCoroutine(FadeToColor(potionOne, fadeColor, Color.white, Color.black));
                 _chipPoints.PotExplosionEndRound();
                 _explosion.Play();
                 SetSmokeColor("black");
@@ -343,6 +343,14 @@ public class PotionQuality : MonoBehaviour
             // Increment the elapsed time
             elapsedTime += pulseDuration;
         }
+    }
+
+    public void WonGamePotion()
+    {
+        Color customPurple = new Color(0.5f, 0f, 0.5f);  // Equivalent to RGB(128, 0, 128)
+        
+
+        StartCoroutine(FadeToColor(potionOne, customPurple, Color.yellow, customPurple));
     }
 
 }

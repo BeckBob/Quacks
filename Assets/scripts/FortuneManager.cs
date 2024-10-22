@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -36,6 +37,7 @@ public class FortuneManager : MonoBehaviour
     public bool firstFiveIngredientsHappened = false;
     public bool fortuneShopDone = false;
     // Start is called before the first frame update
+
 
     private void Start()
     {
@@ -92,7 +94,8 @@ public class FortuneManager : MonoBehaviour
         _quality = FindObjectOfType<PotionQuality>();
         Debug.Log("pre round fortune task");
         Debug.Log(_fortuneTeller.fortuneNumber);
-        
+        _grabIngredient.fortuneDrawTime = false;
+
         if (_fortuneTeller.fortuneNumber == 0)
         {
             if(_onClickFortune.buttonOne == true)
@@ -116,18 +119,22 @@ public class FortuneManager : MonoBehaviour
             
         }
         if (_fortuneTeller.fortuneNumber == 4)
-        {
-            if(_onClickFortune.buttonOne == true)
+        {if(_onClickFortune.buttonOne == true)
             {
                 //nothing changes
             }
+            
             if(_onClickFortune.buttonTwo== true)
             {
-                _playerData.Rubies.Value += _playerData.RatTails.Value;
+                 
                 await _chipPoints.MessageAboveCauldron($"Added {_playerData.RatTails.Value} to Rubies!");
                 _playerData.RatTails.Value = 0;
-
-                _chipPoints.ChangeRubyUI();
+                for (int i = 0; i < _playerData.RatTails.Value; i++)
+                {
+                    _playerData.Rubies.Value++;
+                    _chipPoints.ChangeRubyUI();
+                }
+                
                 //trade rat tails for rubies
             }
         }
@@ -205,8 +212,12 @@ public class FortuneManager : MonoBehaviour
             }
            if(_onClickFortune.buttonTwo == true)
             {
-                _playerData.Rubies.Value += 3;
-                _chipPoints.ChangeRubyUI();
+                for (int i = 0; i < 3; i++)
+                {
+                    _playerData.Rubies.Value++;
+                    _chipPoints.ChangeRubyUI();
+                }
+
                 await _chipPoints.MessageAboveCauldron($"Added 3 Rubies!");
             }
             ResetChoices();
@@ -225,7 +236,7 @@ public class FortuneManager : MonoBehaviour
             if (_onClickFortune.buttonOne == true)
             {
                 _chipPoints.AddDroplet();
-                _chipPoints.AddDroplet();
+                FunctionTimer.Create(() => _chipPoints.AddDroplet(), 1f);
                 _chipPoints.ResetScore();
                 _chipPoints.resetScoreText();
                 await _chipPoints.MessageAboveCauldron($"Added 2 droplets to potion!");
@@ -248,6 +259,7 @@ public class FortuneManager : MonoBehaviour
 
             _grabIngredient.fortuneDrawTime = true;
             _grabIngredient.fortunedrawpulls = true;
+            _grabIngredient.SetCauldronMessage("Draw 5 ingredients from your bag!");
             await _grabIngredient.CheckDrawnRightAmount();
         
             _grabIngredient.ResetChoices();
@@ -317,8 +329,9 @@ public class FortuneManager : MonoBehaviour
         }
         if (_fortuneTeller.fortuneNumber == 23)
         {
+            _grabIngredient.SetCauldronMessage("Draw 4 chips from your bag!");
             _grabIngredient.fortuneDrawAmount = 4;
-
+            _grabIngredient.fortunedrawpulls = true;
             _grabIngredient.fortuneDrawTime = true;
             await _grabIngredient.CheckDrawnRightAmount();
            
@@ -335,6 +348,7 @@ public class FortuneManager : MonoBehaviour
             
             //PRE ROUND - "Draw 4 chips from your bag/ You may trade in 1 of them for a chip of the same colour with the next higher value. If you can’t make a trade take a small spider. Put all chips back in the bag." - shop pops up with all the icons of the ingredients drawn.
         }
+        _grabIngredient.fortuneDrawTime = true;
         ResetChoices();
     }
 
@@ -558,7 +572,7 @@ public class FortuneManager : MonoBehaviour
         if (_fortuneTeller.fortuneNumber == 14)
         {
             Debug.Log(_winnerManager.purpleExploded.Value);
-            _grabIngredient.fortuneDrawTime = true;
+            
             if (_playerData.Colour.Value == "Purple" && !_winnerManager.purpleExploded.Value)
            {
                 await DrawIngredientsAndPutOneInPot();
@@ -597,8 +611,7 @@ public class FortuneManager : MonoBehaviour
             {
                 await _chipPoints.MessageAboveCauldron("Your Cherry Bombs total exactly 7! You get another droplet in your potion!");
                 _chipPoints.AddDroplet();
-                _chipPoints.ResetScore();
-                _chipPoints.resetScoreText();
+              
             }
             else
             {
@@ -764,18 +777,14 @@ public class FortuneManager : MonoBehaviour
 
     private async Task DrawIngredientsAndPutOneInPot()
     {
-        if (!_grabIngredient.fortuneDrawTime)
-        {
-            Debug.LogWarning("Attempted to draw ingredients but fortuneDrawTime is false.");
-            return; // Prevent re-entry if it's not the correct time to draw.
-        }
+        _grabIngredient.fortuneDrawTime = true;
+        _grabIngredient.fortunedrawpulls = true;
 
         Debug.Log("fortune 14 after round effects - drawing ingredients");
         _grabIngredient.fortuneDrawAmount = 5;  // Set the number of ingredients to draw
-        _grabIngredient.fortuneDrawTime = true; // This should be set before drawing starts
+        _grabIngredient.SetCauldronMessage("Your pot didn't explode! Draw 5 ingredients from bag!");
 
-        try
-        {
+        
             // Check that we have drawn the right amount, then send the ingredients to the pot
             await _grabIngredient.CheckDrawnRightAmount();
             await _grabIngredient.SendDrawnIngredientsInfoToAddToPot();
@@ -784,12 +793,10 @@ public class FortuneManager : MonoBehaviour
             _grabIngredient.ResetBagContents();
             _grabIngredient.CountIngredientsInBag();
             _grabIngredient.ResetChoices();
-        }
-        finally
-        {
-            // Whether the draw was successful or not, fortune draw time is over
+       
+       
             _grabIngredient.fortuneDrawTime = false;
-        }
+     
     }
 
     public async Task AtTheVeryEndOfRound()

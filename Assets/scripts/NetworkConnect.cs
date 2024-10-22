@@ -256,7 +256,7 @@ public class NetworkConnect : MonoBehaviour
         grabIngredient = FindObjectOfType<GrabIngredient>();
         gameManager = FindObjectOfType<GameManager>();
         chipPoints = FindObjectOfType<ChipPoints>();
-       
+        winnerManager = FindObjectOfType<WinnerManager>();
 
         player.transform.position = playerStartPos;
         _bigBook.SetActive(true);
@@ -269,7 +269,7 @@ public class NetworkConnect : MonoBehaviour
 
         playerData.ResetGame();
         grabIngredient.ResetGame();
-        
+        winnerManager.ResetGame();
         chipPoints.ResetGame();
         gameManager.ResetGame();
         GameManager.Instance.UpdateGameState(GameState.Lobby);

@@ -59,6 +59,10 @@ public class ScoreboardItem : MonoBehaviour
                 break;
             case "Yellow":
                 image.color = Color.yellow;
+                NameUI.color = Color.black;
+                VictoryPointUI.color = Color.black;
+                Rubies.color = Color.black;
+                RatTails.color = Color.black;
                 break;
             case "Purple":
                 image.color = Color.magenta;

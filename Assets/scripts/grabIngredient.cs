@@ -168,6 +168,10 @@ public class GrabIngredient : MonoBehaviour
         fortunedrawpulls = false;
     }
 
+    public void SetCauldronMessage(string msg)
+    {
+        aboveCauldronText.text = msg;
+    }
 
 
     public bool EverythingDrawn()
@@ -222,7 +226,7 @@ public class GrabIngredient : MonoBehaviour
                     await Task.Delay(1000);
                  
                 ingredientToAddOneToPot.Add(num);
-                ingredientsToUpgrade.Add(num);
+             
                 bagContents.RemoveAt(num);
                 CountIngredientsInBag();
                 CountDrawnIngredients(num);
@@ -451,7 +455,7 @@ public class GrabIngredient : MonoBehaviour
             await _chipPoints.MessageAboveCauldronMultipleChoice(num, "OH NO! You had no ingredients left to draw!", "", "", "", "", "");
             _chipPoints.ResetChoices();
         }
-        if (num == 1)
+        else if (num == 1)
         {
             int ingredientNumber = ingredientToAddOneToPot[0];
             string ingredientName = GetNameOFIngredient(ingredientNumber);
@@ -464,7 +468,7 @@ public class GrabIngredient : MonoBehaviour
             
             
         }
-        if (num == 2)
+        else if (num == 2)
         {
             int ingredientNumber = ingredientToAddOneToPot[0];
             string ingredientName = GetNameOFIngredient(ingredientNumber);
@@ -482,7 +486,7 @@ public class GrabIngredient : MonoBehaviour
             _chipPoints.ResetChoices();
 
         }
-        if (num == 3)
+        else if (num == 3)
         {
             int ingredientNumber = ingredientToAddOneToPot[0];
             string ingredientName = GetNameOFIngredient(ingredientNumber);
@@ -505,7 +509,7 @@ public class GrabIngredient : MonoBehaviour
             }
             _chipPoints.ResetChoices();
         }
-        if (num == 4)
+        else if (num == 4)
         {
             int ingredientNumber = ingredientToAddOneToPot[0];
             string ingredientName = GetNameOFIngredient(ingredientNumber);
@@ -535,7 +539,7 @@ public class GrabIngredient : MonoBehaviour
             _chipPoints.ResetChoices();
 
         }
-        if (num == 4)
+        else if (num == 5)
         {
             int ingredientNumber = ingredientToAddOneToPot[0];
             string ingredientName = GetNameOFIngredient(ingredientNumber);
