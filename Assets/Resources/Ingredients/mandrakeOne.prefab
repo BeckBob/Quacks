@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &4680271050688572590
+--- !u!1 &1773021049184689703
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,12 +8,12 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 5456244082586580500}
-  - component: {fileID: 8941794259706149297}
-  - component: {fileID: 6625733798610439547}
-  - component: {fileID: 4922607966265378672}
-  - component: {fileID: 2795805783023705388}
-  - component: {fileID: 4531335115525678060}
+  - component: {fileID: 1427880691881854109}
+  - component: {fileID: 2629823429532896056}
+  - component: {fileID: 260070990570995698}
+  - component: {fileID: 8261121592687552421}
+  - component: {fileID: 7250539602287718524}
+  - component: {fileID: 2993917158391776016}
   m_Layer: 0
   m_Name: mandrakeOne
   m_TagString: mandrakeOne
@@ -21,36 +21,36 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &5456244082586580500
+--- !u!4 &1427880691881854109
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4680271050688572590}
+  m_GameObject: {fileID: 1773021049184689703}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.636203, y: 0.3283312, z: -0.38741153, w: 0.58082414}
-  m_LocalPosition: {x: 0.048, y: 1.644365, z: 2.347}
-  m_LocalScale: {x: 0.006025098, y: 0.0060250987, z: 0.041299805}
+  m_LocalRotation: {x: -0.19157743, y: -0.1906168, z: -0.71649545, w: 0.6431156}
+  m_LocalPosition: {x: 8.7283945, y: 4.1000013, z: 3.0684643}
+  m_LocalScale: {x: 0.002242318, y: 0.002242318, z: 0.015370253}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: -151.011, y: -177.797, z: 82.796}
---- !u!33 &8941794259706149297
+  m_LocalEulerAnglesHint: {x: -148.697, y: -178.031, z: 83.27}
+--- !u!33 &2629823429532896056
 MeshFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4680271050688572590}
+  m_GameObject: {fileID: 1773021049184689703}
   m_Mesh: {fileID: 6255687079079774844, guid: 61db07f89e13b5149a9105503ba27e0d, type: 3}
---- !u!23 &6625733798610439547
+--- !u!23 &260070990570995698
 MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4680271050688572590}
+  m_GameObject: {fileID: 1773021049184689703}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -87,13 +87,13 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!54 &4922607966265378672
+--- !u!54 &8261121592687552421
 Rigidbody:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4680271050688572590}
+  m_GameObject: {fileID: 1773021049184689703}
   serializedVersion: 4
   m_Mass: 1
   m_Drag: 0
@@ -114,13 +114,13 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 1
---- !u!114 &2795805783023705388
+--- !u!114 &7250539602287718524
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4680271050688572590}
+  m_GameObject: {fileID: 1773021049184689703}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0ad34abafad169848a38072baa96cdb2, type: 3}
@@ -262,13 +262,13 @@ MonoBehaviour:
   m_StartingSingleGrabTransformers: []
   m_StartingMultipleGrabTransformers: []
   m_AddDefaultGrabTransformers: 1
---- !u!64 &4531335115525678060
+--- !u!64 &2993917158391776016
 MeshCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4680271050688572590}
+  m_GameObject: {fileID: 1773021049184689703}
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2

@@ -21,10 +21,11 @@ public class FortuneNumber : NetworkBehaviour
         if (IsHost)
         {
             System.Random rand = new System.Random();
-            NumberGenerated.Value = rand.Next(0, fortunes.Count);
+            NumberGenerated.Value = rand.Next(0, fortunes.Count - 1);
             if (fortuneNumbers.Contains(NumberGenerated.Value))
             {
                 FortuneNumberGenerator();
+                fortunes.RemoveAt(NumberGenerated.Value);
             }
             else
             {
@@ -35,7 +36,7 @@ public class FortuneNumber : NetworkBehaviour
         await _winnerManager.CheckAllPlayersReady();
         fortuneNum = NumberGenerated.Value;
         _winnerManager.ResetReady();
-        fortunes.RemoveAt(NumberGenerated.Value);
+       
         _fortuneTeller.ReadFortune(NumberGenerated.Value);
 
     }

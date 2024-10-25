@@ -58,7 +58,7 @@ public class GrabIngredient : MonoBehaviour
     public bool fortuneDrawTime = false;
 
     public int totalOfFortuneIngredients;
-   
+
 
     private GameObject drawnOne;
     private GameObject drawnTwo;
@@ -170,6 +170,7 @@ public class GrabIngredient : MonoBehaviour
 
     public void SetCauldronMessage(string msg)
     {
+        aboveCauldronSphere.SetActive(true);
         aboveCauldronText.text = msg;
     }
 

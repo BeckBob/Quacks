@@ -1036,7 +1036,7 @@ public class ChipPoints : MonoBehaviour
         //_networkConnect = FindObjectOfType<NetworkConnect>();
         //numberOfPlayers = _networkConnect.players;
         //if (numberOfPlayers > 2) { hawkMothRule = 2; }
-        winnerManager = FindObjectOfType<WinnerManager>();
+       
         int moths = 0;
         foreach (string ingredient in ingredientsList)
         {
@@ -1049,16 +1049,19 @@ public class ChipPoints : MonoBehaviour
         }
         else
         {
-            buttonsToAddLeftover.SetActive(true);
-            button5.SetActive(true);
-            aboveCauldronText.text = "No moths in your potion";
-            await CheckWhichChoice(aboveCauldronText.text);
+            await MessageAboveCauldron("You had no Moths in your pot");
             Debug.Log("no moths in cauldron");
 
         }
         Debug.Log("checkingMoths");
-        ResetChoices();
-        CheckSpiders();
+        
+
+        if (!isCheckingChoice)
+        {
+            ResetChoices();
+            CheckSpiders();
+        }
+       
 
     }
 
@@ -1350,10 +1353,8 @@ public class ChipPoints : MonoBehaviour
         }
         else
         {
-            buttonsToAddLeftover.SetActive(true);
-            aboveCauldronText.text = "You had no spiders in your pot";
-            button5.SetActive(true);
-            await CheckWhichChoice(aboveCauldronText.text);
+           
+            await MessageAboveCauldron("You had no spiders in your pot");
             Debug.Log("no spiders");
         }
         Debug.Log("checkSpiders");
@@ -3058,9 +3059,11 @@ public void BuyDrop()
         int pointsFromRubies = _playerData.Rubies.Value / 2;
         _animatorScript.StartTalking(5);
         await MessageAboveCauldron($"You get a victory point for every 2 Rubies, giving you {pointsFromRubies} Victory Points");
+        _playerData.VictoryPoints.Value += pointsFromRubies;
         int pointsFromMoney = _playerData.Coins.Value / 5;
         _animatorScript.StartTalking(5);
         await MessageAboveCauldron($"You get a victory point for every 5 Coins, giving you {pointsFromMoney} Victory Points");
+        _playerData.VictoryPoints.Value += pointsFromMoney;
     }
 
 }
