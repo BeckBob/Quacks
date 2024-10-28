@@ -236,7 +236,7 @@ public class FortuneManager : MonoBehaviour
             if (_onClickFortune.buttonOne == true)
             {
                 _chipPoints.AddDroplet();
-                FunctionTimer.Create(() => _chipPoints.AddDroplet(), 1f);
+                FunctionTimer.Create(() => _chipPoints.AddDroplet(), 2f);
                 _chipPoints.ResetScore();
                 _chipPoints.resetScoreText();
                 await _chipPoints.MessageAboveCauldron($"Added 2 droplets to potion!");
@@ -401,7 +401,7 @@ public class FortuneManager : MonoBehaviour
         if (_fortuneTeller.fortuneNumber == 22)
         {
             //this broke it too
-            if (firstFiveIngredientsHappened == true)
+            if (firstFiveIngredientsHappened == false && _chipPoints.ingredients.Count == 5)
             {
                 await _chipPoints.MessageAboveCauldronMultipleChoice(2, "You've had your first 5 ingredients, do you want to carry on or restart?", "Carry on", "Restart", "", "", "");
                 if (_chipPoints.choiceTwoCauldron)
@@ -415,7 +415,7 @@ public class FortuneManager : MonoBehaviour
                     _chipPoints.ResetStuffInBook();
                 }
                 _chipPoints.ResetChoices();
-                firstFiveIngredientsHappened = false;
+                firstFiveIngredientsHappened = true;
             }
             //DURING ROUND MULTIPLE CHOICE BUTTONS APPEAR - After you have places the first 5 ingredients in your pot, choose to continue OR begin the round all over again – but you get this choice only once."
         }
@@ -732,14 +732,16 @@ public class FortuneManager : MonoBehaviour
         {
             return "Purple";
         }
-
-        return string.Empty; 
+        else
+        {
+            return string.Empty;
+        }
     }
 
     private void ActivateDiceForWinner(string color)
     {
         GameObject diceToActivate = null;
-
+        Debug.Log(color);
         switch (color)
         {
             case "Red":
@@ -755,8 +757,8 @@ public class FortuneManager : MonoBehaviour
                 diceToActivate = purpleDice;
                 break;
         }
+        Debug.Log(diceToActivate);
 
-        
         if (diceToActivate != null)
         {
             diceToActivate.SetActive(true);

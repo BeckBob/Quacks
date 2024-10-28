@@ -52,6 +52,8 @@ public class ChipPoints : MonoBehaviour
     [SerializeField] GameObject buttonsToAddLeftover;
 
     [SerializeField] AudioSource ghostClip;
+    [SerializeField] AudioSource spiderClip;
+    [SerializeField] AudioSource potionEffectClip;
 
     Vector3 leftOverIngredientLocation;
     Vector3 rubyInstantiationLocation;
@@ -102,13 +104,14 @@ public class ChipPoints : MonoBehaviour
     [SerializeField] GameObject ratTailObject;
 
     public Material Round1Sky;
-    public Material Round2Sky;
+   
     public Material Round3Sky;
-    public Material Round4Sky;
+
     public Material Round5Sky;
-    public Material Round6Sky;
+
     public Material Round7Sky;
-    public Material Round8Sky;
+
+    public Material Round9Sky;
 
     [SerializeField] private GameObject potionOne;
 
@@ -191,6 +194,7 @@ public class ChipPoints : MonoBehaviour
             {
                 buttonsToAddLeftover.SetActive(true);
                 button5.SetActive(true);
+                potionEffectClip.Play();
                 aboveCauldronText.text = "small crow skull last in cauldron saved your potion, you get your victory points and coins";
               
                 _playerData.Coins.Value = Coins;
@@ -203,6 +207,7 @@ public class ChipPoints : MonoBehaviour
             {
                 buttonsToAddLeftover.SetActive(true);
                 button5.SetActive(true);
+                potionEffectClip.Play();
                 aboveCauldronText.text = "medium crow skull one of the last two ingredients in cauldron saved your potion, you get your victory points and coins";
                 
                 _playerData.Coins.Value = Coins;
@@ -215,6 +220,7 @@ public class ChipPoints : MonoBehaviour
             {
                 buttonsToAddLeftover.SetActive(true);
                 button5.SetActive(true);
+                potionEffectClip.Play();
                 aboveCauldronText.text = "Large crow skull one of the last three ingredients in cauldron saved your potion, you get your victory points and coins";
               
                 _playerData.Coins.Value = Coins;
@@ -292,37 +298,44 @@ public class ChipPoints : MonoBehaviour
             {
                 ghostClip.Play();
             }
+            if (other.gameObject.tag.Contains("spider"))
+            {
+                spiderClip.Play();
+            }
 
             if (mushroomRule == 1)
             {
                 if (other.gameObject.tag.Contains("mushroom") && ingredientsList.Count >= 2 && ingredientsList[ingredientsList.Count - 2].Contains("cherryBomb"))
                 {
 
-                    if (ingredientsList[ingredientsList.Count - 1].Contains("One"))
+                    if (ingredientsList[ingredientsList.Count - 2].Contains("One"))
                     {
 
                         buttonsToAddLeftover.SetActive(true);
                         button5.SetActive(true);
+                        potionEffectClip.Play();
                         aboveCauldronText.text = "Small cherrybomb was right before mushroom! Add 1 to score!";
                         //sound effect
                         Score += 1;
                         await CheckWhichChoice(aboveCauldronText.text);
                         buttonsToAddLeftover.SetActive(false);
                     }
-                    else if (ingredientsList[ingredientsList.Count - 1].Contains("Two"))
+                    else if (ingredientsList[ingredientsList.Count - 2].Contains("Two"))
                     {
                         buttonsToAddLeftover.SetActive(true);
                         button5.SetActive(true);
+                        potionEffectClip.Play();
                         aboveCauldronText.text = "Medium cherrybomb was right before mushroom! Add 2 to score!";
                         //sound effect
                         Score += 2;
                         await CheckWhichChoice(aboveCauldronText.text);
                         buttonsToAddLeftover.SetActive(false);
                     }
-                    else if (ingredientsList[ingredientsList.Count - 1].Contains("Three"))
+                    else if (ingredientsList[ingredientsList.Count - 2].Contains("Three"))
                     {
                         buttonsToAddLeftover.SetActive(true);
                         button5.SetActive(true);
+                        potionEffectClip.Play();
                         aboveCauldronText.text = "Large cherrybomb was right before mushroom! Add 3 to score!";
                         //sound effect
                         Score += 3;
@@ -341,6 +354,7 @@ public class ChipPoints : MonoBehaviour
 
                     buttonsToAddLeftover.SetActive(true);
                     button5.SetActive(true);
+                    potionEffectClip.Play();
                     aboveCauldronText.text = "mushroom in potion adds one to score when small cherrybomb is added!";
                     //sound effect
                     Score += 1;
@@ -360,6 +374,7 @@ public class ChipPoints : MonoBehaviour
                 {
                     buttonsToAddLeftover.SetActive(true);
                     button5.SetActive(true);
+                    potionEffectClip.Play();
                     aboveCauldronText.text = "pumpkin in potion adds 1 to score when adding mushroom!";
                     //sound effect
                     Score += 1;
@@ -372,6 +387,7 @@ public class ChipPoints : MonoBehaviour
                 {
                     buttonsToAddLeftover.SetActive(true);
                     button5.SetActive(true);
+                    potionEffectClip.Play();
                     aboveCauldronText.text = "3 or more pumpkins in potion adds 2 to score when adding mushroom!";
                     //sound effect
                     Score += 2;
@@ -388,6 +404,7 @@ public class ChipPoints : MonoBehaviour
                 {
                     buttonsToAddLeftover.SetActive(true);
                     button5.SetActive(true);
+                    potionEffectClip.Play();
                     aboveCauldronText.text = "Put mushroom to the side and decide whether to add to pot at the end or keep to the side for a future round!";
                     await CheckWhichChoice(aboveCauldronText.text);
                     //sound effect
@@ -408,6 +425,7 @@ public class ChipPoints : MonoBehaviour
                         Score += 1;
                         buttonsToAddLeftover.SetActive(true);
                         button5.SetActive(true);
+                        potionEffectClip.Play();
                         aboveCauldronText.text = "Mandrake immediatley before doubles this ingredient!";
                         //sound effect
                         await CheckWhichChoice(aboveCauldronText.text);
@@ -418,6 +436,7 @@ public class ChipPoints : MonoBehaviour
                         Score += 2;
                         buttonsToAddLeftover.SetActive(true);
                         button5.SetActive(true);
+                        potionEffectClip.Play();
                         aboveCauldronText.text = "Mandrake immediatley before doubles this ingredient!";
                         //sound effect
                         await CheckWhichChoice(aboveCauldronText.text);
@@ -428,6 +447,7 @@ public class ChipPoints : MonoBehaviour
                         Score += 3;
                         buttonsToAddLeftover.SetActive(true);
                         button5.SetActive(true);
+                        potionEffectClip.Play();
                         aboveCauldronText.text = "Mandrake immediatley before doubles this ingredient!";
                         //some sound effect
                         await CheckWhichChoice(aboveCauldronText.text);
@@ -438,6 +458,7 @@ public class ChipPoints : MonoBehaviour
                         Score += 4;
                         buttonsToAddLeftover.SetActive(true);
                         button5.SetActive(true);
+                        potionEffectClip.Play();
                         aboveCauldronText.text = "Mandrake immediatley before doubles this ingredient!";
                         //some sound effect
                         await CheckWhichChoice(aboveCauldronText.text);
@@ -457,6 +478,7 @@ public class ChipPoints : MonoBehaviour
                         grabIngredient.AddToBagThisRound(0);
                         buttonsToAddLeftover.SetActive(true);
                         button5.SetActive(true);
+                        potionEffectClip.Play();
                         aboveCauldronText.text = "Mandrake immediatley after cherrybomb! Removing cherrybomb from potion and putting back in your bag";
                         //having some sort of animation here to visulaise it might help.
                         await CheckWhichChoice(aboveCauldronText.text);
@@ -469,6 +491,7 @@ public class ChipPoints : MonoBehaviour
                         grabIngredient.AddToBagThisRound(2);
                         buttonsToAddLeftover.SetActive(true);
                         button5.SetActive(true);
+                        potionEffectClip.Play();
                         aboveCauldronText.text = "Mandrake immediatley after cherrybomb! Removing cherrybomb from potion and putting back in your bag";
                         //having some sort of animation here to visulaise it might help.
                         await CheckWhichChoice(aboveCauldronText.text);
@@ -481,6 +504,7 @@ public class ChipPoints : MonoBehaviour
                         grabIngredient.AddToBagThisRound(1);
                         buttonsToAddLeftover.SetActive(true);
                         button5.SetActive(true);
+                        potionEffectClip.Play();
                         aboveCauldronText.text = "Mandrake immediatley after cherrybomb! Removing cherrybomb from potion and putting back in your bag";
                         //having some sort of animation here to visulaise it might help.
                         await CheckWhichChoice(aboveCauldronText.text);
@@ -500,6 +524,7 @@ public class ChipPoints : MonoBehaviour
                     {
                         buttonsToAddLeftover.SetActive(true);
                         button5.SetActive(true);
+                        potionEffectClip.Play();
                         aboveCauldronText.text = "One mandrake in potion! Limit of cherry bombs increased to 8!";
                         //sound effect
                         await CheckWhichChoice(aboveCauldronText.text);
@@ -511,6 +536,7 @@ public class ChipPoints : MonoBehaviour
                     {
                         buttonsToAddLeftover.SetActive(true);
                         button5.SetActive(true);
+                        potionEffectClip.Play();
                         aboveCauldronText.text = "One mandrake in potion! Limit of cherry bombs increased to 9!";
                         //sound effect
                         await CheckWhichChoice(aboveCauldronText.text);
@@ -531,6 +557,7 @@ public class ChipPoints : MonoBehaviour
                     {
                         buttonsToAddLeftover.SetActive(true);
                         button5.SetActive(true);
+                        potionEffectClip.Play();
                         aboveCauldronText.text = "One mandrake in potion! Add 1 extra point to score!";
                         //sound effect
                         await CheckWhichChoice(aboveCauldronText.text);
@@ -540,6 +567,7 @@ public class ChipPoints : MonoBehaviour
                     {
                         buttonsToAddLeftover.SetActive(true);
                         button5.SetActive(true);
+                        potionEffectClip.Play();
                         aboveCauldronText.text = "Two mandrakes in potion! Add 2 extra points to score!";
                         //sound effect
                         await CheckWhichChoice(aboveCauldronText.text);
@@ -550,6 +578,7 @@ public class ChipPoints : MonoBehaviour
                     {
                         buttonsToAddLeftover.SetActive(true);
                         button5.SetActive(true);
+                        potionEffectClip.Play();
                         aboveCauldronText.text = "Three or more mandrakes in potion! Add 3 extra points to score!";
                         //sound effect
                         await CheckWhichChoice(aboveCauldronText.text);
@@ -605,6 +634,7 @@ public class ChipPoints : MonoBehaviour
                     {
                         buttonsToAddLeftover.SetActive(true);
                         button5.SetActive(true);
+                        potionEffectClip.Play();
                         aboveCauldronText.text = "Crow Skull on score with ruby! Immediatley recieve one ruby!";
                         //sound effect
                         await CheckWhichChoice(aboveCauldronText.text);
@@ -623,6 +653,7 @@ public class ChipPoints : MonoBehaviour
                         {
                             buttonsToAddLeftover.SetActive(true);
                             button5.SetActive(true);
+                            potionEffectClip.Play();
                             aboveCauldronText.text = "Small Crow Skull on score with ruby! Immediatley recieve 1 Victory Point!";
                             //sound effect
                             await CheckWhichChoice(aboveCauldronText.text);
@@ -636,6 +667,7 @@ public class ChipPoints : MonoBehaviour
                         {
                             buttonsToAddLeftover.SetActive(true);
                             button5.SetActive(true);
+                            potionEffectClip.Play();
                             aboveCauldronText.text = "Medium Crow Skull on score with ruby! Immediatley recieve 2 Victory Points!";
                             //sound effect
                             await CheckWhichChoice(aboveCauldronText.text);
@@ -646,6 +678,7 @@ public class ChipPoints : MonoBehaviour
                         {
                             buttonsToAddLeftover.SetActive(true);
                             button5.SetActive(true);
+                            potionEffectClip.Play();
                             aboveCauldronText.text = "Medium Crow Skull on score with ruby! Immediatley recieve 4 Victory Point!";
                             //sound effect
                             await CheckWhichChoice(aboveCauldronText.text);
@@ -669,6 +702,7 @@ public class ChipPoints : MonoBehaviour
                         int choiceOneNumber = grabIngredient.RandomlyDrawSeveralIngredients();
                         choiceOne.text = getNameOfIngredientFromNumber(choiceOneNumber);
                         choiceTwo.text = "Skip";
+                        potionEffectClip.Play();
                         aboveCauldronText.text = $"Small crow skull! Pick one random ingredient from your bag to add to your pot!";
                         await CheckWhichChoice(aboveCauldronText.text);
 
@@ -691,6 +725,7 @@ public class ChipPoints : MonoBehaviour
                         choiceOne.text = getNameOfIngredientFromNumber(choiceOneNumber);
                         choiceTwo.text = getNameOfIngredientFromNumber(choiceTwoNumber);
                         choiceThree.text = "Skip";
+                        potionEffectClip.Play();
                         aboveCauldronText.text = $"Medium crow skull! Pick one random ingredient from your bag to add to your pot!";
                         await CheckWhichChoice(aboveCauldronText.text);
                         if (choiceOneCauldron)
@@ -723,6 +758,7 @@ public class ChipPoints : MonoBehaviour
                         choiceThree.text = getNameOfIngredientFromNumber(choiceThreeNumber);
                         choiceThree.text = getNameOfIngredientFromNumber(choiceFourNumber);
                         choiceFive.text = "Skip";
+                        potionEffectClip.Play();
                         aboveCauldronText.text = $"Large crow skull! Pick one random ingredient from your bag to add to your pot!";
                         await CheckWhichChoice(aboveCauldronText.text);
                         if (choiceOneCauldron)
@@ -764,6 +800,7 @@ public class ChipPoints : MonoBehaviour
                         {
                             buttonsToAddLeftover.SetActive(true);
                             button5.SetActive(true);
+                            potionEffectClip.Play();
                             aboveCauldronText.text = "ghosts breath adds 1 point to extra points.";
                             extraVictoryPoints++;
                             await CheckWhichChoice(aboveCauldronText.text);
@@ -774,6 +811,7 @@ public class ChipPoints : MonoBehaviour
                         {
                             buttonsToAddLeftover.SetActive(true);
                             button5.SetActive(true);
+                            potionEffectClip.Play();
                             aboveCauldronText.text = "ghosts breath adds 2 points to extra points.";
                             await CheckWhichChoice(aboveCauldronText.text);
                             //buttonsToAddLeftover.SetActive(false);
@@ -785,6 +823,7 @@ public class ChipPoints : MonoBehaviour
                         {
                             buttonsToAddLeftover.SetActive(true);
                             button5.SetActive(true);
+                            potionEffectClip.Play();
                             aboveCauldronText.text = "ghosts breath adds 3 points to extra points.";
 
                             extraVictoryPoints += 3;
@@ -794,6 +833,7 @@ public class ChipPoints : MonoBehaviour
                         }
                     }
                 }
+     
                 await _fortuneManager.DuringRoundFortuneEffects(other.gameObject.tag);
 
                 cauldronScoreFront.text = Score.ToString();
@@ -802,10 +842,7 @@ public class ChipPoints : MonoBehaviour
                 ChangePotionHeight();
                 quality.nextIngredientTime = true;
 
-                if (ingredients.Count == 5)
-                {
-                    _fortuneManager.firstFiveIngredientsHappened = true;
-                }
+               
 
 
             }
@@ -1050,11 +1087,12 @@ public class ChipPoints : MonoBehaviour
         else
         {
             await MessageAboveCauldron("You had no Moths in your pot");
+            //this currently doesn't show up when playing as blue player, not sure why because other things using the same function do.
             Debug.Log("no moths in cauldron");
 
         }
         Debug.Log("checkingMoths");
-        
+        //maybe make these checks tasks that happen in add VP and coins? 
 
         if (!isCheckingChoice)
         {
@@ -2462,7 +2500,7 @@ public class ChipPoints : MonoBehaviour
        
         
 
-        if (winnerManager.round == 8)
+        if (winnerManager.round == 9)
         {
             GameManager.Instance.UpdateGameState(GameState.DeclareWinner);
         }
@@ -2755,6 +2793,10 @@ public void BuyDrop()
         {
             RenderSettings.skybox = Round7Sky;
 
+        }
+        if(winnerManager.round == 8)
+        {
+            RenderSettings.skybox= Round9Sky;
         }
     
     }

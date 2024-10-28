@@ -56,6 +56,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private AudioSource noonMusic;
     [SerializeField] private AudioSource afternoonMusic;
     [SerializeField] private AudioSource eveningMusic;
+    [SerializeField] private AudioSource lastRoundMusic;
 
     [SerializeField] private GameObject wizardLocation;
     [SerializeField] private GameObject wizardCharacter;
@@ -366,7 +367,7 @@ public class GameManager : MonoBehaviour
         {
         "Round One!", "Round Two!", "Round Three!",
         "Round Four!", "Round Five!", "Round Six!",
-        "Round Seven!", "Round Eight!"
+        "Round Seven!", "Round Eight!", "Final Round!"
     };
 
        
@@ -436,6 +437,11 @@ public class GameManager : MonoBehaviour
             eveningMusic.Play();
             ChangeColor(eveningColor);
         }
+        else if (gameRound == 9)
+        {
+            lastRoundMusic.Play();
+            ChangeColor(eveningColor);
+        }
     }
 
     public void SetMusicForShop()
@@ -483,7 +489,7 @@ public class GameManager : MonoBehaviour
 
     public void ResetGame()
     {
-        eveningMusic.Stop();
+        lastRoundMusic.Stop();
         menuMusic.Play();
         gameRound = 0;
         _purplePlayerSpace.SetActive(false);

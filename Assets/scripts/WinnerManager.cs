@@ -333,193 +333,125 @@ public class WinnerManager : NetworkBehaviour
     public void RoundWinner()
     {
         _playerData = FindObjectOfType<PlayerData>();
-        // figure out who has the highest score and then get them to roll dice and initiate dice function
-        if (_playerData.Colour.Value == "Red")
-        {
-           
-            RedExists.Value = true;
-            ReadyPlayers.Value += 1;
-            if (!redExploded.Value)
-            {
-                RedPoints.Value = _playerData.Score.Value;
-            }
-            else
-            {
-                RedPoints.Value = 0;
-            }
-            RoundWinnerDecider();
-       
-        }
-        else if (_playerData.Colour.Value == "Yellow")
-        {
-            
-            ReadyPlayers.Value += 1;
-            YellowExists.Value = true;
-            if (!yellowExploded.Value)
-            {
-                YellowPoints.Value = _playerData.Score.Value;
-            }
-            else
-            {
-                YellowPoints.Value = 0;
-            }
-            RoundWinnerDecider();
+        string colour = _playerData.Colour.Value.ToSafeString();
+        // Update player's state and score based on color
+        UpdatePlayerState(colour, _playerData.Score.Value);
 
-        }
-        else if (_playerData.Colour.Value == "Blue")
-        {
-            
-            ReadyPlayers.Value += 1;
-            BlueExists.Value = true;
-            if (!blueExploded.Value)
-            {
-                BluePoints.Value = _playerData.Score.Value;
-            }
-            else
-            {
-                BluePoints.Value = 0;
-            }
-            RoundWinnerDecider();
-        }
-        else if (_playerData.Colour.Value == "Purple")
-        {
-           
-            ReadyPlayers.Value += 1;
-            PurpleExists.Value = true;
-            if (!purpleExploded.Value)
-            {
-                PurplePoints.Value = _playerData.Score.Value;
-            }
-            else
-            {
-                PurplePoints.Value = 0;
-            }
-            RoundWinnerDecider();
-        }
-      
+        ReadyPlayers.Value += 1;
         round++;
         Debug.Log(round);
     }
 
+    private void UpdatePlayerState(string color, int score)
+    {
+        bool hasExploded = false;
+        int points = score;
+
+        // Define each player's specific properties using a switch statement
+        switch (color)
+        {
+            case "Red":
+                RedExists.Value = true;
+                hasExploded = redExploded.Value;
+                points = hasExploded ? 0 : score;
+                RedPoints.Value = points;
+                break;
+            case "Yellow":
+                YellowExists.Value = true;
+                hasExploded = yellowExploded.Value;
+                points = hasExploded ? 0 : score;
+                YellowPoints.Value = points;
+                break;
+            case "Blue":
+                BlueExists.Value = true;
+                hasExploded = blueExploded.Value;
+                points = hasExploded ? 0 : score;
+                BluePoints.Value = points;
+                break;
+            case "Purple":
+                PurpleExists.Value = true;
+                hasExploded = purpleExploded.Value;
+                points = hasExploded ? 0 : score;
+                PurplePoints.Value = points;
+                break;
+        }
+
+        RoundWinnerDecider();
+    }
+
     private async void RatTailsCalculator()
     {
-        
         ResetReady();
-        int RatTailsToAdd = 0;
+        int ratTailsToAdd = 0;
+
+        // Calculate the highest victory points among players
         ratTailTopScore.Value = new[] { RedVictoryPoints.Value, BlueVictoryPoints.Value, YellowVictoryPoints.Value, PurpleVictoryPoints.Value }.Max();
 
-        if (_playerData.VictoryPoints.Value == ratTailTopScore.Value) { _playerData.RatTails.Value = 0; }
+        if (_playerData.VictoryPoints.Value == ratTailTopScore.Value)
+        {
+            _playerData.RatTails.Value = 0;
+        }
         else
         {
             for (int i = 0; i < ratTailTopScore.Value; i++)
             {
-                if (i == 11|| i == 8|| i == 5|| i==2) { RatTailsToAdd++; }
-                else if (i % 2 == 0) {  RatTailsToAdd++; }
+                if (i == 11 || i == 8 || i == 5 || i == 2 || i % 2 == 0)
+                {
+                    ratTailsToAdd++;
+                }
             }
-            _playerData.RatTails.Value = RatTailsToAdd;
-            
+            _playerData.RatTails.Value = ratTailsToAdd;
         }
 
         await Task.CompletedTask;
-
     }
 
     private async void RoundWinnerDecider()
     {
         await CheckAllPlayersReady();
-      
+
         ResetReady();
         RoundWinnerScore.Value = new[] { RedPoints.Value, BluePoints.Value, YellowPoints.Value, PurplePoints.Value }.Max();
         Debug.Log(RoundWinnerScore.Value);
         _chipPoints = FindObjectOfType<ChipPoints>();
         _gameManager.StopMusic();
-        if (RedExists.Value && RoundWinnerScore.Value == RedPoints.Value)
-        {
-            
-            RedDice.SetActive(true);
-            if (_playerData.Colour.Value == "Red")
-            {
-                _animatorScript.GoodJobAnimation();
-                
-                winningRound.Play();
-                RedFutureCanvas.SetActive(false);
-                RedRoundWinCanvas.SetActive(true);
-                DiceFloor.SetActive(true);
-                await CheckAllPlayersReady();
-                FunctionTimer.Create(() => _gameManager.SetMusicForRound(), 1f);
-                ResetReady();
-                _chipPoints.CheckMoths();
-            }
-            // UI announcing they won - in book and above head?
-            //instantiate dice in front of them and add whatever it lands on to their player Data
-        }
-        if (YellowExists.Value && RoundWinnerScore.Value == YellowPoints.Value)
-        {
-        
-            YellowDice.SetActive(true);
-            if (_playerData.Colour.Value == "Yellow")
-            {
-                _animatorScript.GoodJobAnimation();
-                winningRound.Play();
-                YellowFutureCanvas.SetActive(false);
-                YellowRoundWinCanvas.SetActive(true);
-                DiceFloor.SetActive(true);
-                await CheckAllPlayersReady();
-                FunctionTimer.Create(() => _gameManager.SetMusicForRound(), 1f);
-                ResetReady();
-                _chipPoints.CheckMoths();
-            }
- 
-        }
-        if (BlueExists.Value && RoundWinnerScore.Value == BluePoints.Value)
-        {
-         
-            BlueDice.SetActive(true);
-            if (_playerData.Colour.Value == "Blue")
-            {
-                _animatorScript.GoodJobAnimation();
-                winningRound.Play();
-                BlueFutureCanvas.SetActive(false);
-                BlueRoundWinCanvas.SetActive(true);
-                DiceFloor.SetActive(true);
-                await CheckAllPlayersReady();
-                FunctionTimer.Create(() => _gameManager.SetMusicForRound(), 1f);
-                ResetReady();
-                _chipPoints.CheckMoths();
-            }
-        }
-        if (PurpleExists.Value && RoundWinnerScore.Value == PurplePoints.Value)
-        {
-           
-            PurpleDice.SetActive(true);
-            if (_playerData.Colour.Value == "Purple")
-            {
 
-                _animatorScript.GoodJobAnimation();
-                winningRound.Play();
-                PurpleFutureCanvas.SetActive(false);
-                PurpleRoundWinCanvas.SetActive(true);
-                DiceFloor.SetActive(true);
-                await CheckAllPlayersReady();
-                FunctionTimer.Create(() => _gameManager.SetMusicForRound(), 1f);
-                ResetReady();
-                _chipPoints.CheckMoths();
-            }
-     
-            
+        // Determine and set the winner's UI, animations, and actions
+        SetWinnerUI("Red", RedExists.Value, RedPoints.Value, RedDice, RedFutureCanvas, RedRoundWinCanvas);
+        SetWinnerUI("Yellow", YellowExists.Value, YellowPoints.Value, YellowDice, YellowFutureCanvas, YellowRoundWinCanvas);
+        SetWinnerUI("Blue", BlueExists.Value, BluePoints.Value, BlueDice, BlueFutureCanvas, BlueRoundWinCanvas);
+        SetWinnerUI("Purple", PurpleExists.Value, PurplePoints.Value, PurpleDice, PurpleFutureCanvas, PurpleRoundWinCanvas);
 
-        }
-        else
+        if (RoundWinnerScore.Value == 0 || _playerData.Score.Value < RoundWinnerScore.Value)
         {
             LosingRound.Play();
             ReadyUp();
-            await CheckAllPlayersReady();
-            FunctionTimer.Create(() => _gameManager.SetMusicForRound(), 1f);
             
-            ResetReady();
-            _chipPoints.CheckMoths();
+            FunctionTimer.Create(() => _gameManager.SetMusicForRound(), 1f);
         }
 
+        await CheckAllPlayersReady();
+        ResetReady();
+        _chipPoints.CheckMoths();
+    }
+
+    private void SetWinnerUI(string color, bool colorExists, int colorPoints, GameObject dice, GameObject futureCanvas, GameObject roundWinCanvas)
+    {
+        if (colorExists && RoundWinnerScore.Value == colorPoints)
+        {
+            dice.SetActive(true);
+            if (_playerData.Colour.Value == color)
+            {
+                _animatorScript.GoodJobAnimation();
+                winningRound.Play();
+                futureCanvas.SetActive(false);
+                roundWinCanvas.SetActive(true);
+                DiceFloor.SetActive(true);
+                
+                FunctionTimer.Create(() => _gameManager.SetMusicForRound(), 1f);
+                
+            }
+        }
     }
     private async void GameWinnerDecider()
     {
@@ -757,21 +689,21 @@ public class WinnerManager : NetworkBehaviour
             await CheckAllPlayersReady();
             MothEffects(amount);
         }
-        if (_playerData.Colour.Value == "Yellow")
+        else if (_playerData.Colour.Value == "Yellow")
         {
             YellowMoths.Value = amount;
             ReadyPlayers.Value += 1;
             await CheckAllPlayersReady();
             MothEffects(amount);
         }
-        if (_playerData.Colour.Value == "Blue")
+        else if (_playerData.Colour.Value == "Blue")
         {
             BlueMoths.Value = amount;
             ReadyPlayers.Value += 1;
             await CheckAllPlayersReady();
             MothEffects(amount);
         }
-        if (_playerData.Colour.Value == "Purple")
+        else if (_playerData.Colour.Value == "Purple")
         {
             PurpleMoths.Value = amount;
             ReadyPlayers.Value += 1;

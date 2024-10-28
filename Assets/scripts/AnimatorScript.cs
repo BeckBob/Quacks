@@ -22,7 +22,7 @@ public class AnimatorScript : MonoBehaviour
 
     [SerializeField] private AudioSource walking;
 
-    public float rotationSpeed = 3.0f;
+    public float rotationSpeed = 5.0f;
     public float rotationTolerance = 5.0f;
 
     public bool isWalkingToTurn = false;
