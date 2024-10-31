@@ -44,6 +44,8 @@ public class PotionQuality : MonoBehaviour
     public Color objectColor = Color.green;
     public Color fadeColor = Color.black;
 
+    public bool changingColour = false;
+
     string hexColor = "#539546";
     Color topColor;
 
@@ -244,7 +246,7 @@ public class PotionQuality : MonoBehaviour
     private IEnumerator FadeToColor(Renderer renderer, Color targetTopColor, Color targetVoronoiColor, Color targetFoamColour)
     {
         float elapsedTime = 0.0f;
-
+        changingColour = true;
         // Store the current colors before starting the fade
         currentTopColor = renderer.material.GetColor("_topColor");
         currentVoronoiColor = renderer.material.GetColor("_voronoiColor");
@@ -262,7 +264,7 @@ public class PotionQuality : MonoBehaviour
 
             yield return null;
         }
-
+        changingColour = true;
         // Ensure final colors are set and update current colors
         renderer.material.SetColor("_topColor", targetTopColor);
         renderer.material.SetColor("_voronoiColor", targetVoronoiColor);
@@ -272,6 +274,7 @@ public class PotionQuality : MonoBehaviour
         currentTopColor = targetTopColor;
         currentVoronoiColor = targetVoronoiColor;
         currentFoamColor = targetFoamColour;
+        changingColour = false;
     }
 
     private IEnumerator ReturnColor()
@@ -279,7 +282,7 @@ public class PotionQuality : MonoBehaviour
         float elapsedTime = 0.0f;
 
         // Parse the top color from hex
-        if (UnityEngine.ColorUtility.TryParseHtmlString(hexColor, out topColor))
+        if (UnityEngine.ColorUtility.TryParseHtmlString(hexColor, out topColor) && !changingColour)
         {
             while (elapsedTime < fadeDuration)
             {

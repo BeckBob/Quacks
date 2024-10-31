@@ -184,7 +184,7 @@ public class ChipPoints : MonoBehaviour
 
     public async void PotExplosionEndRound()
     {
-        
+        ResetChoices();
 
         _playerData = FindObjectOfType<PlayerData>();
         if (crowSkullRule == 3)
@@ -195,53 +195,65 @@ public class ChipPoints : MonoBehaviour
                 buttonsToAddLeftover.SetActive(true);
                 button5.SetActive(true);
                 potionEffectClip.Play();
-                aboveCauldronText.text = "small crow skull last in cauldron saved your potion, you get your victory points and coins";
+                aboveCauldronText.text = "<color=#89CFF0>Small</color> <sprite name=\"crowSkull\">  last in cauldron saved your potion, you get to keep your <sprite name=\"VP\">  and <sprite name=\"coin\"> ";
               
                 _playerData.Coins.Value = Coins;
                 _playerData.VictoryPoints.Value = VictoryPoints;
                 _playerData.Score.Value = 0;
                 await CheckWhichChoice(aboveCauldronText.text);
                 ResetChoices();
+                EndRoundSafely();
             }
             if (ingredientsList[ingredientsList.Count - 1] == "crowSkullTwo" || ingredientsList[ingredientsList.Count - 2] == "crowSkullTwo")
             {
                 buttonsToAddLeftover.SetActive(true);
                 button5.SetActive(true);
                 potionEffectClip.Play();
-                aboveCauldronText.text = "medium crow skull one of the last two ingredients in cauldron saved your potion, you get your victory points and coins";
+                aboveCauldronText.text = "<color=#89CFF0>Medium</color> <sprite name=\"crowSkull\">  one of the last two ingredients in cauldron saved your potion, you get to keep your <sprite name=\"VP\">  and <sprite name=\"coin\"> ";
                 
                 _playerData.Coins.Value = Coins;
                 _playerData.VictoryPoints.Value = VictoryPoints;
                 Score = 0;
                 await CheckWhichChoice(aboveCauldronText.text);
                 ResetChoices();
+                EndRoundSafely();
             }
             if (ingredientsList[ingredientsList.Count - 1] == "crowSkullFour" || ingredientsList[ingredientsList.Count - 2] == "crowSkullFour" || ingredientsList[ingredientsList.Count - 3] == "crowSkullFour")
             {
                 buttonsToAddLeftover.SetActive(true);
                 button5.SetActive(true);
                 potionEffectClip.Play();
-                aboveCauldronText.text = "Large crow skull one of the last three ingredients in cauldron saved your potion, you get your victory points and coins";
+                aboveCauldronText.text = "<color=#89CFF0>Large</color> <sprite name=\"crowSkull\">  one of the last three ingredients in cauldron saved your potion, you get to keep your <sprite name=\"VP\">  and <sprite name=\"coin\"> ";
               
                 _playerData.Coins.Value = Coins;
                 _playerData.VictoryPoints.Value = VictoryPoints;
                 _playerData.Score.Value = 0;
                 await CheckWhichChoice(aboveCauldronText.text);
                 ResetChoices();
+                EndRoundSafely();
             }
             else
             {
-                futureScore.SetActive(false);
-                potExplodedCanvas.SetActive(true);
-             
+                buttonsToAddLeftover.SetActive(true);
+                button1.SetActive(true);
+                button2.SetActive(true);
+                
+                aboveCauldronText.text = "POT EXPLODED!!!!      WHAT DO YOU WANT TO KEEP?";
+                choiceOne.text = "COiNS";
+                choiceTwo.text = "VICTORY POINTS";
             }
 
         }
         else
         {
 
-            futureScore.SetActive(false);
-            potExplodedCanvas.SetActive(true);
+            buttonsToAddLeftover.SetActive(true);
+            button1.SetActive(true);
+            button2.SetActive(true);
+
+            aboveCauldronText.text = "POT EXPLODED!!!!      WHAT DO YOU WANT TO KEEP?";
+            choiceOne.text = "<sprite name=\"coin\">";
+            choiceTwo.text = "<sprite name=\"VP\">";
 
 
         }
@@ -261,8 +273,18 @@ public class ChipPoints : MonoBehaviour
         {
             winnerManager.yellowExploded.Value = true;
         }
-        AfterRoundChipEffects();
-        await _fortuneManager.PostRoundFortuneEffects();
+        await CheckWhichChoice(aboveCauldronText.text);
+        if (choiceOneCauldron)
+        {
+            ChooseCoins();
+            ResetChoices();
+        }
+        if (choiceOneCauldron)
+        {
+            ChooseVictoryPoints();
+            ResetChoices();
+        }
+        
         
         
 
@@ -314,7 +336,7 @@ public class ChipPoints : MonoBehaviour
                         buttonsToAddLeftover.SetActive(true);
                         button5.SetActive(true);
                         potionEffectClip.Play();
-                        aboveCauldronText.text = "Small cherrybomb was right before mushroom! Add 1 to score!";
+                        aboveCauldronText.text = "<color=#FFFFFF>Small</color> <sprite name=\"cherrybomb\">  was right before <sprite name=\"toadstool\"> ! Add <color=#800080>1</color> <sprite name=\"droplet\"> !";
                         //sound effect
                         Score += 1;
                         await CheckWhichChoice(aboveCauldronText.text);
@@ -325,7 +347,7 @@ public class ChipPoints : MonoBehaviour
                         buttonsToAddLeftover.SetActive(true);
                         button5.SetActive(true);
                         potionEffectClip.Play();
-                        aboveCauldronText.text = "Medium cherrybomb was right before mushroom! Add 2 to score!";
+                        aboveCauldronText.text = "<color=#FFFFFF>Medium</color> <sprite name=\"cherrybomb\">  was right before <sprite name=\"toadstool\"> ! Add <color=#800080>2</color> <sprite name=\"droplet\"> !";
                         //sound effect
                         Score += 2;
                         await CheckWhichChoice(aboveCauldronText.text);
@@ -336,7 +358,7 @@ public class ChipPoints : MonoBehaviour
                         buttonsToAddLeftover.SetActive(true);
                         button5.SetActive(true);
                         potionEffectClip.Play();
-                        aboveCauldronText.text = "Large cherrybomb was right before mushroom! Add 3 to score!";
+                        aboveCauldronText.text = "<color=#FFFFFF>Large</color> <sprite name=\"cherrybomb\">  was right before <sprite name=\"toadstool\">  ! Add <color=#800080>3</color> <sprite name=\"droplet\"> !";
                         //sound effect
                         Score += 3;
                         await CheckWhichChoice(aboveCauldronText.text);
@@ -355,7 +377,7 @@ public class ChipPoints : MonoBehaviour
                     buttonsToAddLeftover.SetActive(true);
                     button5.SetActive(true);
                     potionEffectClip.Play();
-                    aboveCauldronText.text = "mushroom in potion adds one to score when small cherrybomb is added!";
+                    aboveCauldronText.text = "<sprite name=\"toadstool\">  in potion adds one to score when <color=#FFFFFF>small</color> <sprite name=\"cherrybomb\">  is added!";
                     //sound effect
                     Score += 1;
                     await CheckWhichChoice(aboveCauldronText.text);
@@ -375,7 +397,7 @@ public class ChipPoints : MonoBehaviour
                     buttonsToAddLeftover.SetActive(true);
                     button5.SetActive(true);
                     potionEffectClip.Play();
-                    aboveCauldronText.text = "pumpkin in potion adds 1 to score when adding mushroom!";
+                    aboveCauldronText.text = "<sprite name=\"pumpkin\">  in potion adds <color=#800080>1</color> <sprite name=\"droplet\">  when adding <sprite name=\"toadstool\"> !";
                     //sound effect
                     Score += 1;
                     await CheckWhichChoice(aboveCauldronText.text);
@@ -388,7 +410,7 @@ public class ChipPoints : MonoBehaviour
                     buttonsToAddLeftover.SetActive(true);
                     button5.SetActive(true);
                     potionEffectClip.Play();
-                    aboveCauldronText.text = "3 or more pumpkins in potion adds 2 to score when adding mushroom!";
+                    aboveCauldronText.text = "<color=#CD7F32>3 or more</color> <sprite name=\"pumpkin\">  in potion adds <color=#800080>2</color> <sprite name=\"droplet\">  when adding <sprite name=\"toadstool\"> !";
                     //sound effect
                     Score += 2;
                     await CheckWhichChoice(aboveCauldronText.text);
@@ -405,7 +427,7 @@ public class ChipPoints : MonoBehaviour
                     buttonsToAddLeftover.SetActive(true);
                     button5.SetActive(true);
                     potionEffectClip.Play();
-                    aboveCauldronText.text = "Put mushroom to the side and decide whether to add to pot at the end or keep to the side for a future round!";
+                    aboveCauldronText.text = "Put <sprite name=\"toadstool\">  to the side and decide whether to add to pot at the end or keep to the side for a future round!";
                     await CheckWhichChoice(aboveCauldronText.text);
                     //sound effect
                     buttonsToAddLeftover.SetActive(false);
@@ -426,7 +448,7 @@ public class ChipPoints : MonoBehaviour
                         buttonsToAddLeftover.SetActive(true);
                         button5.SetActive(true);
                         potionEffectClip.Play();
-                        aboveCauldronText.text = "Mandrake immediatley before doubles this ingredient!";
+                        aboveCauldronText.text = "<sprite name=\"mandrake\">  immediatley before doubles this ingredient!";
                         //sound effect
                         await CheckWhichChoice(aboveCauldronText.text);
                         buttonsToAddLeftover.SetActive(false);
@@ -437,7 +459,7 @@ public class ChipPoints : MonoBehaviour
                         buttonsToAddLeftover.SetActive(true);
                         button5.SetActive(true);
                         potionEffectClip.Play();
-                        aboveCauldronText.text = "Mandrake immediatley before doubles this ingredient!";
+                        aboveCauldronText.text = "<sprite name=\"mandrake\">  immediatley before doubles this ingredient!";
                         //sound effect
                         await CheckWhichChoice(aboveCauldronText.text);
                         buttonsToAddLeftover.SetActive(false);
@@ -448,7 +470,7 @@ public class ChipPoints : MonoBehaviour
                         buttonsToAddLeftover.SetActive(true);
                         button5.SetActive(true);
                         potionEffectClip.Play();
-                        aboveCauldronText.text = "Mandrake immediatley before doubles this ingredient!";
+                        aboveCauldronText.text = "<sprite name=\"mandrake\">  immediatley before doubles this ingredient!";
                         //some sound effect
                         await CheckWhichChoice(aboveCauldronText.text);
                         buttonsToAddLeftover.SetActive(false);
@@ -459,7 +481,7 @@ public class ChipPoints : MonoBehaviour
                         buttonsToAddLeftover.SetActive(true);
                         button5.SetActive(true);
                         potionEffectClip.Play();
-                        aboveCauldronText.text = "Mandrake immediatley before doubles this ingredient!";
+                        aboveCauldronText.text = "<sprite name=\"mandrake\">  immediatley before doubles this ingredient!";
                         //some sound effect
                         await CheckWhichChoice(aboveCauldronText.text);
                         buttonsToAddLeftover.SetActive(false);
@@ -479,7 +501,7 @@ public class ChipPoints : MonoBehaviour
                         buttonsToAddLeftover.SetActive(true);
                         button5.SetActive(true);
                         potionEffectClip.Play();
-                        aboveCauldronText.text = "Mandrake immediatley after cherrybomb! Removing cherrybomb from potion and putting back in your bag";
+                        aboveCauldronText.text = "<sprite name=\"mandrake\">  immediatley after <sprite name=\"cherrybomb\"> ! Removing <sprite name=\"cherrybomb\">  from potion and putting back in your bag";
                         //having some sort of animation here to visulaise it might help.
                         await CheckWhichChoice(aboveCauldronText.text);
                         buttonsToAddLeftover.SetActive(false);
@@ -492,7 +514,7 @@ public class ChipPoints : MonoBehaviour
                         buttonsToAddLeftover.SetActive(true);
                         button5.SetActive(true);
                         potionEffectClip.Play();
-                        aboveCauldronText.text = "Mandrake immediatley after cherrybomb! Removing cherrybomb from potion and putting back in your bag";
+                        aboveCauldronText.text = "<sprite name=\"mandrake\">  immediatley after <sprite name=\"cherrybomb\"> ! Removing <sprite name=\"cherrybomb\">  from potion and putting back in your bag";
                         //having some sort of animation here to visulaise it might help.
                         await CheckWhichChoice(aboveCauldronText.text);
                         buttonsToAddLeftover.SetActive(false);
@@ -505,7 +527,7 @@ public class ChipPoints : MonoBehaviour
                         buttonsToAddLeftover.SetActive(true);
                         button5.SetActive(true);
                         potionEffectClip.Play();
-                        aboveCauldronText.text = "Mandrake immediatley after cherrybomb! Removing cherrybomb from potion and putting back in your bag";
+                        aboveCauldronText.text = "<sprite name=\"mandrake\">  immediatley after <sprite name=\"cherrybomb\"> ! Removing <sprite name=\"cherrybomb\">  from potion and putting back in your bag";
                         //having some sort of animation here to visulaise it might help.
                         await CheckWhichChoice(aboveCauldronText.text);
                         buttonsToAddLeftover.SetActive(false);
@@ -525,7 +547,7 @@ public class ChipPoints : MonoBehaviour
                         buttonsToAddLeftover.SetActive(true);
                         button5.SetActive(true);
                         potionEffectClip.Play();
-                        aboveCauldronText.text = "One mandrake in potion! Limit of cherry bombs increased to 8!";
+                        aboveCauldronText.text = "<color=#FFD700>1</color> <sprite name=\"mandrake\">  in potion! Limit of <sprite name=\"cherrybomb\"> increased to 8!";
                         //sound effect
                         await CheckWhichChoice(aboveCauldronText.text);
 
@@ -537,7 +559,7 @@ public class ChipPoints : MonoBehaviour
                         buttonsToAddLeftover.SetActive(true);
                         button5.SetActive(true);
                         potionEffectClip.Play();
-                        aboveCauldronText.text = "One mandrake in potion! Limit of cherry bombs increased to 9!";
+                        aboveCauldronText.text = "<color=#FFD700>3</color> <sprite name=\"mandrake\">  in potion! Limit of <sprite name=\"cherrybomb\"> increased to 9!";
                         //sound effect
                         await CheckWhichChoice(aboveCauldronText.text);
                         buttonsToAddLeftover.SetActive(false);
@@ -558,7 +580,7 @@ public class ChipPoints : MonoBehaviour
                         buttonsToAddLeftover.SetActive(true);
                         button5.SetActive(true);
                         potionEffectClip.Play();
-                        aboveCauldronText.text = "One mandrake in potion! Add 1 extra point to score!";
+                        aboveCauldronText.text = "<color=#FFD700>1</color>  <sprite name=\"mandrake\">  in potion! Add <color=#800080>1</color> <sprite name=\"droplet\"> !";
                         //sound effect
                         await CheckWhichChoice(aboveCauldronText.text);
                         buttonsToAddLeftover.SetActive(false); Score += 1;
@@ -568,7 +590,7 @@ public class ChipPoints : MonoBehaviour
                         buttonsToAddLeftover.SetActive(true);
                         button5.SetActive(true);
                         potionEffectClip.Play();
-                        aboveCauldronText.text = "Two mandrakes in potion! Add 2 extra points to score!";
+                        aboveCauldronText.text = "<color=#FFD700>2</color>  <sprite name=\"mandrake\">  in potion! Add <color=#800080>2</color> <sprite name=\"droplet\"> !";
                         //sound effect
                         await CheckWhichChoice(aboveCauldronText.text);
                         buttonsToAddLeftover.SetActive(false); Score += 2;
@@ -579,12 +601,12 @@ public class ChipPoints : MonoBehaviour
                         buttonsToAddLeftover.SetActive(true);
                         button5.SetActive(true);
                         potionEffectClip.Play();
-                        aboveCauldronText.text = "Three or more mandrakes in potion! Add 3 extra points to score!";
+                        aboveCauldronText.text = "<color=#FFD700>3 or more</color> <sprite name=\"mandrake\">  in potion! Add <color=#800080>3</color> <sprite name=\"droplet\"> !";
                         //sound effect
                         await CheckWhichChoice(aboveCauldronText.text);
                         buttonsToAddLeftover.SetActive(false); Score += 3;
                     }
-
+                    
                 }
             }
 
@@ -635,7 +657,7 @@ public class ChipPoints : MonoBehaviour
                         buttonsToAddLeftover.SetActive(true);
                         button5.SetActive(true);
                         potionEffectClip.Play();
-                        aboveCauldronText.text = "Crow Skull on score with ruby! Immediatley recieve one ruby!";
+                        aboveCauldronText.text = "<color=#F0F8FF>Crow Skull</color> <sprite name=\"crowSkull\">  on score with <sprite name=\"ruby\"> ! Immediatley recieve <color=#FF0000>1</color> <sprite name=\"ruby\"> !";
                         //sound effect
                         await CheckWhichChoice(aboveCauldronText.text);
                         buttonsToAddLeftover.SetActive(false);
@@ -654,7 +676,7 @@ public class ChipPoints : MonoBehaviour
                             buttonsToAddLeftover.SetActive(true);
                             button5.SetActive(true);
                             potionEffectClip.Play();
-                            aboveCauldronText.text = "Small Crow Skull on score with ruby! Immediatley recieve 1 Victory Point!";
+                            aboveCauldronText.text = "<color=#F0F8FF>Small Crow Skull</color> <sprite name=\"crowSkull\">  on score with <sprite name=\"ruby\"> ! Immediatley recieve <color=#006400>1</color> <sprite name=\"VP\"> !";
                             //sound effect
                             await CheckWhichChoice(aboveCauldronText.text);
                             buttonsToAddLeftover.SetActive(false);
@@ -668,7 +690,7 @@ public class ChipPoints : MonoBehaviour
                             buttonsToAddLeftover.SetActive(true);
                             button5.SetActive(true);
                             potionEffectClip.Play();
-                            aboveCauldronText.text = "Medium Crow Skull on score with ruby! Immediatley recieve 2 Victory Points!";
+                            aboveCauldronText.text = "<color=#F0F8FF>Medium Crow Skull</color> <sprite name=\"crowSkull\">  on score with <sprite name=\"ruby\"> ! Immediatley recieve <color=#006400>2</color> <sprite name=\"VP\"> !";
                             //sound effect
                             await CheckWhichChoice(aboveCauldronText.text);
                             buttonsToAddLeftover.SetActive(false);
@@ -679,7 +701,7 @@ public class ChipPoints : MonoBehaviour
                             buttonsToAddLeftover.SetActive(true);
                             button5.SetActive(true);
                             potionEffectClip.Play();
-                            aboveCauldronText.text = "Medium Crow Skull on score with ruby! Immediatley recieve 4 Victory Point!";
+                            aboveCauldronText.text = "<color=#F0F8FF>Medium Crow Skull</color><sprite name=\"crowSkull\">  on score with <sprite name=\"ruby\"> ! Immediatley recieve <color=#006400>4</color> <sprite name=\"VP\"> !";
                             //sound effect
                             await CheckWhichChoice(aboveCauldronText.text);
                             buttonsToAddLeftover.SetActive(false);
@@ -703,7 +725,7 @@ public class ChipPoints : MonoBehaviour
                         choiceOne.text = getNameOfIngredientFromNumber(choiceOneNumber);
                         choiceTwo.text = "Skip";
                         potionEffectClip.Play();
-                        aboveCauldronText.text = $"Small crow skull! Pick one random ingredient from your bag to add to your pot!";
+                        aboveCauldronText.text = $"<color=#F0F8FF>Small</color> <sprite name=\"crowSkull\"> ! Pick one random ingredient from your bag to add to your pot!";
                         await CheckWhichChoice(aboveCauldronText.text);
 
                         if (choiceOneCauldron)
@@ -726,7 +748,7 @@ public class ChipPoints : MonoBehaviour
                         choiceTwo.text = getNameOfIngredientFromNumber(choiceTwoNumber);
                         choiceThree.text = "Skip";
                         potionEffectClip.Play();
-                        aboveCauldronText.text = $"Medium crow skull! Pick one random ingredient from your bag to add to your pot!";
+                        aboveCauldronText.text = $"<color=#F0F8FF>Medium</color> <sprite name=\"crowSkull\"> ! Pick one random ingredient from your bag to add to your pot!";
                         await CheckWhichChoice(aboveCauldronText.text);
                         if (choiceOneCauldron)
                         {
@@ -759,7 +781,7 @@ public class ChipPoints : MonoBehaviour
                         choiceThree.text = getNameOfIngredientFromNumber(choiceFourNumber);
                         choiceFive.text = "Skip";
                         potionEffectClip.Play();
-                        aboveCauldronText.text = $"Large crow skull! Pick one random ingredient from your bag to add to your pot!";
+                        aboveCauldronText.text = $"<color=#F0F8FF>Large</color> <sprite name=\"crowSkull\"> ! Pick one random ingredient from your bag to add to your pot!";
                         await CheckWhichChoice(aboveCauldronText.text);
                         if (choiceOneCauldron)
                         {
@@ -801,7 +823,7 @@ public class ChipPoints : MonoBehaviour
                             buttonsToAddLeftover.SetActive(true);
                             button5.SetActive(true);
                             potionEffectClip.Play();
-                            aboveCauldronText.text = "ghosts breath adds 1 point to extra points.";
+                            aboveCauldronText.text = "<color=#800080>Ghosts Breath</color> <sprite name=\"ghostsbreath\"> adds <color=#00FF00>1</color> <sprite name=\"VP\"> ";
                             extraVictoryPoints++;
                             await CheckWhichChoice(aboveCauldronText.text);
                             //buttonsToAddLeftover.SetActive(false);
@@ -812,7 +834,7 @@ public class ChipPoints : MonoBehaviour
                             buttonsToAddLeftover.SetActive(true);
                             button5.SetActive(true);
                             potionEffectClip.Play();
-                            aboveCauldronText.text = "ghosts breath adds 2 points to extra points.";
+                            aboveCauldronText.text = "<color=#800080>Ghosts Breath</color> <sprite name=\"ghostsbreath\"> adds <color=#00FF00>2</color> <sprite name=\"VP\"> ";
                             await CheckWhichChoice(aboveCauldronText.text);
                             //buttonsToAddLeftover.SetActive(false);
                             ResetChoices();
@@ -824,7 +846,7 @@ public class ChipPoints : MonoBehaviour
                             buttonsToAddLeftover.SetActive(true);
                             button5.SetActive(true);
                             potionEffectClip.Play();
-                            aboveCauldronText.text = "ghosts breath adds 3 points to extra points.";
+                            aboveCauldronText.text = "<color=#800080>Ghosts Breath</color> <sprite name=\"ghostsbreath\"> adds <color=#00FF00>3</color> <sprite name=\"VP\">.";
 
                             extraVictoryPoints += 3;
                             await CheckWhichChoice(aboveCauldronText.text);
@@ -898,31 +920,35 @@ public class ChipPoints : MonoBehaviour
     {
         ResetChoices();
         _playerData = FindObjectOfType<PlayerData>();
-
+        AfterRoundChipEffects();
+        await _fortuneManager.PostRoundFortuneEffects();
         buttonsToAddLeftover.SetActive(true);
         button5.SetActive(true);
-        aboveCauldronText.text = $"added {VictoryPoints} Victory Points";
+        aboveCauldronText.text = $"added <color=#006400>{VictoryPoints}</color> <sprite name=\"VP\">";
         await CheckWhichChoice(aboveCauldronText.text);
        
         ResetChoices();
         winnerManager.ReadyUp();
         await winnerManager.CheckAllPlayersReady();
         winnerManager.ResetReady();
-        Coins = 0;  
-        
+        Coins = 0;
 
-        potExplodedCanvas.SetActive(false);
-        GameManager.Instance.UpdateGameState(GameState.RollDice);
 
+        if (!isCheckingChoice)
+        {
+            
+            GameManager.Instance.UpdateGameState(GameState.RollDice);
+        }
     }
 
     public async void ChooseCoins()
     {
         _playerData = FindObjectOfType<PlayerData>();
-
+        AfterRoundChipEffects();
+        await _fortuneManager.PostRoundFortuneEffects();
         buttonsToAddLeftover.SetActive(true);
         button5.SetActive(true);
-        aboveCauldronText.text = $"added {Coins} Coins";
+        aboveCauldronText.text = $"added <color=#FFA500>>{Coins}</color> <sprite name=\"coin\">";
         await CheckWhichChoice(aboveCauldronText.text);
         buttonsToAddLeftover.SetActive(false);
         ResetChoices();
@@ -934,8 +960,11 @@ public class ChipPoints : MonoBehaviour
         await winnerManager.CheckAllPlayersReady();
         winnerManager.ResetReady();
 
-        potExplodedCanvas.SetActive(false);
-        GameManager.Instance.UpdateGameState(GameState.RollDice);
+        if (!isCheckingChoice)
+        {
+            
+            GameManager.Instance.UpdateGameState(GameState.RollDice);
+        }
 
     }
 
@@ -978,7 +1007,7 @@ public class ChipPoints : MonoBehaviour
             if (ingredientsPutToSide[0] == "mushroomOne")
             {
                 buttonsToAddLeftover.SetActive(true);
-                aboveCauldronText.text = "small mushroom put to side left over. Add now or leave for future round";
+                aboveCauldronText.text = "<color=#FF0000>Small</color> <sprite name=\"toadstool\">  put to side left over. Add now or leave for future round";
                 button1.SetActive(true);
                 button2.SetActive(true);
                 choiceOne.text = "Add to pot";
@@ -1004,7 +1033,7 @@ public class ChipPoints : MonoBehaviour
             if (ingredientsPutToSide[0] == "mushroomTwo")
             {
                 buttonsToAddLeftover.SetActive(true);
-                aboveCauldronText.text = "medium mushroom put to side left over. Add now or leave for future round";
+                aboveCauldronText.text = "<color=#FF0000>Medium</color> <sprite name=\"toadstool\">  put to side left over. Add now or leave for future round";
                 button1.SetActive(true);
                 button2.SetActive(true);
                 choiceOne.text = "Add to pot";
@@ -1030,7 +1059,7 @@ public class ChipPoints : MonoBehaviour
             if (ingredientsPutToSide[0] == "mushroomFour")
             {
                 buttonsToAddLeftover.SetActive(true);
-                aboveCauldronText.text = "large mushroom put to side left over. Add now or leave for future round";
+                aboveCauldronText.text = "<color=#FF0000>Large</color> <sprite name=\"toadstool\">  put to side left over. Add now or leave for future round";
                 button1.SetActive(true);
                 button2.SetActive(true);
                 choiceOne.text = "Add to pot";
@@ -1086,7 +1115,7 @@ public class ChipPoints : MonoBehaviour
         }
         else
         {
-            await MessageAboveCauldron("You had no Moths in your pot");
+            await MessageAboveCauldron("<color=#708090>0</color> <sprite name=\"moth\">  in your pot");
             //this currently doesn't show up when playing as blue player, not sure why because other things using the same function do.
             Debug.Log("no moths in cauldron");
 
@@ -1099,7 +1128,7 @@ public class ChipPoints : MonoBehaviour
             ResetChoices();
             CheckSpiders();
         }
-       
+
 
     }
 
@@ -1121,10 +1150,10 @@ public class ChipPoints : MonoBehaviour
                 if (ingredientsList[ingredientsList.Count - 1].Contains("spider") && _playerData.Rubies.Value >= 1 || ingredientsList[ingredientsList.Count - 2].Contains("spider") && _playerData.Rubies.Value >= 1)
                 {
                     buttonsToAddLeftover.SetActive(true);
-                    aboveCauldronText.text = "You had a spider last or next to last in your pot, you may pay one ruby to";
+                    aboveCauldronText.text = "You had a <sprite name=\"spider\">  last or next to last in your pot, you may pay <color=#FF0000>1</color> <sprite name=\"ruby\">  to";
                     button1.SetActive(true);
                     button2.SetActive(true);
-                    choiceOne.text = "buy droplet";
+                    choiceOne.text = "buy <sprite name=\"droplet\">";
                     choiceTwo.text = "skip";
                     await CheckWhichChoice(aboveCauldronText.text);
                     if (choiceOneCauldron)
@@ -1143,11 +1172,11 @@ public class ChipPoints : MonoBehaviour
                 if (ingredientsList[ingredientsList.Count - 1].Contains("spider") && ingredientsList[ingredientsList.Count - 2].Contains("spider") && _playerData.Rubies.Value >= 1)
                 {
                     buttonsToAddLeftover.SetActive(true);
-                    aboveCauldronText.text = "You had spiders both last AND next to last in your pot, you may pay one ruby to";
+                    aboveCauldronText.text = "You had <sprite name=\"spider\">  both last AND next to last in your pot, you may pay <color=#FF0000>1</color> <sprite name=\"ruby\">  to";
                     int turn = 1;
                     button1.SetActive(true);
                     button2.SetActive(true);
-                    choiceOne.text = "buy droplet";
+                    choiceOne.text = "buy <sprite name=\"droplet\">";
                     choiceTwo.text = "skip";
                     await CheckWhichChoice(aboveCauldronText.text);
                     if (choiceOneCauldron)
@@ -1216,7 +1245,7 @@ public class ChipPoints : MonoBehaviour
                     }
 
                     buttonsToAddLeftover.SetActive(true);
-                    aboveCauldronText.text = $"you have a spider in your potion and the Cherrybombs equal 7 so you CAN add total of spiders to pot ({totalSpiders})";
+                    aboveCauldronText.text = $"you have a <sprite name=\"spider\">  in your potion and the <sprite name=\"cherrybomb\">  <color=#00FF00>equal 7</color> so you CAN add <color=#006400>total of</color> <sprite name=\"spider\">  to pot ({totalSpiders})";
                     button1.SetActive(true);
                     button2.SetActive(true);
                     choiceOne.text = "add to pot";
@@ -1237,7 +1266,7 @@ public class ChipPoints : MonoBehaviour
                 if (ingredientsList[ingredientsList.Count - 1].Contains("spider") || ingredientsList[ingredientsList.Count - 2].Contains("spider"))
                 {
                     buttonsToAddLeftover.SetActive(true);
-                    aboveCauldronText.text = "You had a spider last or next to last in your pot, you get a ruby!";
+                    aboveCauldronText.text = "You had a <sprite name=\"spider\">  last or next to last in your pot, you get a <sprite name=\"ruby\"> !";
                     button5.SetActive(true);
                     //some sound effect for rubies
                     _playerData.Rubies.Value++;
@@ -1249,7 +1278,7 @@ public class ChipPoints : MonoBehaviour
                 if (ingredientsList[ingredientsList.Count - 1].Contains("spider") && ingredientsList[ingredientsList.Count - 2].Contains("spider"))
                 {
                     buttonsToAddLeftover.SetActive(true);
-                    aboveCauldronText.text = "You had a spider last AND next to last in your pot, you get TWO rubies!";
+                    aboveCauldronText.text = "You had a <sprite name=\"spider\">  last AND next to last in your pot, you get <color=#FF0000>2</color> <sprite name=\"ruby\"> !";
                     button5.SetActive(true);
                     //some sound effect for rubies
                   
@@ -1273,7 +1302,7 @@ public class ChipPoints : MonoBehaviour
                     if (ingredientsList[ingredientsList.Count - 2] == "spiderOne")
                     {
                         buttonsToAddLeftover.SetActive(true);
-                        aboveCauldronText.text = "You had a small spider next to last in your pot, added pumpkin to bag!";
+                        aboveCauldronText.text = "You had a <color=#006400>small</color> <sprite name=\"spider\">  next to last in your pot, added <sprite name=\"pumpkin\">  to bag!";
                         button5.SetActive(true);
                         //some sound effect for Pumpkin
                         grabIngredient.AddToBagPermanantly(14);
@@ -1282,11 +1311,11 @@ public class ChipPoints : MonoBehaviour
                     if (ingredientsList[ingredientsList.Count - 2] == "spiderTwo")
                     {
                         buttonsToAddLeftover.SetActive(true);
-                        aboveCauldronText.text = "You had a medium spider next to last in your pot, choose which small ingredient to add to bag!";
+                        aboveCauldronText.text = "You had a <color=#006400>medium</color> <sprite name=\"spider\">  next to last in your pot, choose which small ingredient to add to bag!";
                         button1.SetActive(true);
                         button2.SetActive(true);
-                        choiceOne.text = "Crow skull";
-                        choiceTwo.text = "Mushroom";
+                        choiceOne.text = "<sprite name=\"crowSkull\">";
+                        choiceTwo.text = "<sprite name=\"toadstool\">";
 
                         await CheckWhichChoice(aboveCauldronText.text);
                         if (choiceOneCauldron)
@@ -1304,11 +1333,11 @@ public class ChipPoints : MonoBehaviour
                     if (ingredientsList[ingredientsList.Count - 2] == "spiderFour")
                     {
                         buttonsToAddLeftover.SetActive(true);
-                        aboveCauldronText.text = "You had a large spider next to last in your pot, choose which small ingredient to add to bag!";
+                        aboveCauldronText.text = "You had a <color=#006400>large</color> <sprite name=\"spider\">  next to last in your pot, choose which small ingredient to add to bag!";
                         button1.SetActive(true);
                         button2.SetActive(true);
-                        choiceOne.text = "Mandrake";
-                        choiceTwo.text = "GhostsBreath";
+                        choiceOne.text = "<sprite name=\"mandrake\">";
+                        choiceTwo.text = "<sprite name=\"ghostsbreath\">";
 
                         await CheckWhichChoice(aboveCauldronText.text);
                         if (choiceOneCauldron)
@@ -1331,7 +1360,7 @@ public class ChipPoints : MonoBehaviour
                     {
 
                         buttonsToAddLeftover.SetActive(true);
-                        aboveCauldronText.text = "Small spider next to last in your pot, added pumpkin to bag!";
+                        aboveCauldronText.text = "<color=#006400>Small</color> <sprite name=\"spider\">  next to last in your pot, added <sprite name=\"pumpkin\">  to bag!";
                         button5.SetActive(true);
                         //some sound effect for Pumpkin
                         grabIngredient.AddToBagPermanantly(14);
@@ -1342,11 +1371,11 @@ public class ChipPoints : MonoBehaviour
                     if (ingredientsList[ingredientsList.Count - 1] == "spiderTwo")
                     {
                         buttonsToAddLeftover.SetActive(true);
-                        aboveCauldronText.text = "Medium spider next to last in your pot, choose small ingredient to add to bag!";
+                        aboveCauldronText.text = "<color=#006400>Medium</color> <sprite name=\"spider\">  next to last in your pot, choose small ingredient to add to bag!";
                         button1.SetActive(true);
                         button2.SetActive(true);
-                        choiceOne.text = "Crow skull";
-                        choiceTwo.text = "Mushroom";
+                        choiceOne.text = "<sprite name=\"crowSkull\">";
+                        choiceTwo.text = "<sprite name=\"toadstool\">";
 
                         await CheckWhichChoice(aboveCauldronText.text);
                         if (choiceOneCauldron)
@@ -1364,11 +1393,11 @@ public class ChipPoints : MonoBehaviour
                     if (ingredientsList[ingredientsList.Count - 1] == "spiderFour")
                     {
                         buttonsToAddLeftover.SetActive(true);
-                        aboveCauldronText.text = "Large spider next to last in your pot, choose which small ingredient to add to bag!";
+                        aboveCauldronText.text = "<color=#006400>Large</color> <sprite name=\"spider\">  next to last in your pot, choose which small ingredient to add to bag!";
                         button1.SetActive(true);
                         button2.SetActive(true);
-                        choiceOne.text = "Mandrake";
-                        choiceTwo.text = "GhostsBreath";
+                        choiceOne.text = "<sprite name=\"mandrake\">";
+                        choiceTwo.text = "<sprite name=\"ghostsbreath\">";
 
                         await CheckWhichChoice(aboveCauldronText.text);
                         if (choiceOneCauldron)
@@ -1392,7 +1421,7 @@ public class ChipPoints : MonoBehaviour
         else
         {
            
-            await MessageAboveCauldron("You had no spiders in your pot");
+            await MessageAboveCauldron("<color=#006400>0</color> <sprite name=\"spider\"> in your pot");
             Debug.Log("no spiders");
         }
         Debug.Log("checkSpiders");
@@ -1450,7 +1479,7 @@ public class ChipPoints : MonoBehaviour
                 if (ghosts == 1)
                 {
                     buttonsToAddLeftover.SetActive(true);
-                    aboveCauldronText.text = "You had one GhostsBreath in your potion and get one extra victory point";
+                    aboveCauldronText.text = "You had <color=#800080>1</color> <sprite name=\"ghostsbreath\">  in your potion and get <color=#006400>1</color> <sprite name=\"VP\" >";
                     button5.SetActive(true);
                     VictoryPoints++;
                     await CheckWhichChoice(aboveCauldronText.text); 
@@ -1458,7 +1487,7 @@ public class ChipPoints : MonoBehaviour
                 if (ghosts == 2)
                 {
                     buttonsToAddLeftover.SetActive(true);
-                    aboveCauldronText.text = "You had two GhostsBreath in your potion and get one extra victory point and one extra ruby!";
+                    aboveCauldronText.text = "You had <color=#800080>2</color> <sprite name=\"ghostsbreath\">  in your potion and get <color=#006400>1</color> <sprite name=\"VP\">  and <color=#FF0000>1</color> <sprite name=\"ruby\"> !";
                     button5.SetActive(true);
                     VictoryPoints++;
                     _playerData.Rubies.Value++;
@@ -1468,7 +1497,7 @@ public class ChipPoints : MonoBehaviour
                 if (ghosts >= 3)
                 {
                     buttonsToAddLeftover.SetActive(true);
-                    aboveCauldronText.text = $"You had {ghosts} GhostsBreath in your potion and get two extra victory points and one droplet";
+                    aboveCauldronText.text = $"You had <color=#800080>{ghosts}</color> <sprite name=\"ghostsbreath\">  in your potion and get <color=#006400>2</color> <sprite name=\"VP\">  points and <color=#800080>1</color> <sprite name=\"droplet\"> ";
                     button5.SetActive(true);
                     VictoryPoints += 2;
                     AddDroplet();
@@ -1479,12 +1508,12 @@ public class ChipPoints : MonoBehaviour
             if (ghostsBreathRule == 2)
             {
                 buttonsToAddLeftover.SetActive(true);
-                aboveCauldronText.text = "You may trade the ghosts breath in your potion for these things. One for a Moth, Victory point and a Ruby. Two for a small spider, a medium crow skull, 3 victory points and one droplet. 3 for a large Mandrake, 6 victory points, a ruby and two droplets";
+               
                 button1.SetActive(true);
                 button2.SetActive(true);
                 if (ghosts == 1) {
-                    aboveCauldronText.text = "You have one ghostsbreath in your potion, you may permanantly trade the ghostsbreath in your potion for these things. One for a HawkMoth, Victory point and a Ruby.";
-                    choiceOne.text = "trade one";
+                    aboveCauldronText.text = "<color=#800080>1</color> <sprite name=\"ghostsbreath\">  in your potion, you may permanantly trade the <sprite name=\"ghostsbreath\">  in your potion for <color=#708090>1</color> <sprite name=\"moth\"> , <color=#006400>1</color> <sprite name=\"VP\">  and <color=#FF0000>1</color> <sprite name=\"ruby\"> ";
+                    choiceOne.text = "Trade 1";
                     choiceTwo.text = "skip";
                     await CheckWhichChoice(aboveCauldronText.text);
                     if (choiceOneCauldron)
@@ -1497,9 +1526,9 @@ public class ChipPoints : MonoBehaviour
                 }
                 if (ghosts == 2) {
                     button3.SetActive(true);
-                    aboveCauldronText.text = "You have two ghostsbreath in your potion, you may permanantly trade the ghosts breath in your potion for these things. One for a Moth, Victory point and a Ruby. Trade two for a small spider, a medium crow skull, 3 victory points and one droplet.";
-                    choiceOne.text = "trade one";
-                    choiceTwo.text = "trade two";
+                    aboveCauldronText.text = "<color=#800080>2</color> <sprite name=\"ghostsbreath\">  in your potion, you may permanantly trade <color=#800080>1</color> <sprite name=\"ghostsbreath\">  for <color=#708090>1</color> <sprite name=\"moth\"> , <color=#006400>1</color> <sprite name=\"VP\">  and <color=#FF0000>1</color> <sprite name=\"ruby\">. Trade 2 for a <color=#006400>small</color> <sprite name=\"spider\"> , a <color=#708090>medium</color> <sprite name=\"crowSkull\"> , <color=#006400>3</color> <sprite name=\"VP\">  and <color=#800080>1</color> <sprite name=\"droplet\"> ";
+                    choiceOne.text = "trade 1";
+                    choiceTwo.text = "trade 2";
                     choiceThree.text = "skip";
 
                     await CheckWhichChoice(aboveCauldronText.text);
@@ -1524,10 +1553,10 @@ public class ChipPoints : MonoBehaviour
                 {
                     button3.SetActive(true);
                     button4.SetActive(true);
-                    aboveCauldronText.text = "You have three or more ghostsbreath in your potion, you may trade the ghosts breath in your potion for these things. One for a Moth, Victory point and a Ruby. Trade two for a small spider, a medium crow skull, 3 victory points and one droplet. Trade three for a large Mandrake, 6 victory points, a ruby and two droplets";
-                    choiceOne.text = "trade one";
-                    choiceTwo.text = "trade two";
-                    choiceThree.text = "trade three";
+                    aboveCauldronText.text = "You have <color=#800080>3 or more</color> <sprite name=\"ghostsbreath\">  in your potion, you may trade <color=#800080>1</color> <sprite name=\"ghostsbreath\">  for <color=#708090>1</color> <sprite name=\"moth\"> , <color=#00FF00>1</color> <sprite name=\"VP\">  and <color=#FF0000>1</color> <sprite name=\"ruby\"> . Trade 2 for a <color=#006400>small</color> <sprite name=\"spider\"> , a <color=#708090>medium</color> <sprite name=\"crowSkull\"> , <color=#006400>3</color> <sprite name=\"VP\">  and <color=#800080>1</color> <sprite name=\"droplet\"> . Trade 3 for a <color=#FFA500>large</color> <sprite name=\"mandrake\"> , <color=#00FF00>6</color> <sprite name=\"VP\"> , <color=#FF0000>1</color> <sprite name=\"ruby\"> and <color=#800080>2</color> <sprite name=\"droplet\"> ";
+                    choiceOne.text = "Trade 1";
+                    choiceTwo.text = "Trade 2";
+                    choiceThree.text = "Trade 3";
                     choiceFour.text = "skip";
 
                     await CheckWhichChoice(aboveCauldronText.text);
@@ -1579,7 +1608,7 @@ public class ChipPoints : MonoBehaviour
                 {
                     if(smallIngredients.Count == 1)
                     {
-                        aboveCauldronText.text = "You had one ghostsbreath in your potion, you can trade one small ingredient that was in your pot for a medium version of it!";
+                        aboveCauldronText.text = "You had <color=#800080>1</color> <sprite name=\"ghostsbreath\">  in your potion, you can trade one small ingredient that was in your pot for a medium version of it!";
                         
                         button1.SetActive(true);
                       
@@ -1612,7 +1641,7 @@ public class ChipPoints : MonoBehaviour
                     }
                     if (smallIngredients.Count == 2)
                     {
-                        aboveCauldronText.text = "You had one ghostsbreath in your potion, you can trade one small ingredient that was in your pot for a medium version of it!";
+                        aboveCauldronText.text = "You had <color=#800080>1</color>  <sprite name=\"ghostsbreath\">  in your potion, you can trade one small ingredient that was in your pot for a medium version of it!";
 
                         button1.SetActive(true);
                         button2.SetActive(true);
@@ -1670,7 +1699,7 @@ public class ChipPoints : MonoBehaviour
                     }
                     if (smallIngredients.Count == 3)
                     {
-                        aboveCauldronText.text = "You had one ghostsbreath in your potion, you can trade one small ingredient that was in your pot for a medium version of it!";
+                        aboveCauldronText.text = "You had <color=#800080>1</color>  <sprite name=\"ghostsbreath\">  in your potion, you can trade one small ingredient that was in your pot for a medium version of it!";
 
                         button1.SetActive(true);
                         button2.SetActive(true);
@@ -1752,7 +1781,7 @@ public class ChipPoints : MonoBehaviour
                     }
                     if (smallIngredients.Count == 4)
                     {
-                        aboveCauldronText.text = "You had one ghostsbreath in your potion, you can trade one small ingredient that was in your pot for a medium version of it!";
+                        aboveCauldronText.text = "You had <color=#800080>1</color> <sprite name=\"ghostsbreath\">  in your potion, you can trade one small ingredient that was in your pot for a medium version of it!";
 
                         button1.SetActive(true);
                         button2.SetActive(true);
@@ -1862,7 +1891,7 @@ public class ChipPoints : MonoBehaviour
                 {
                     if (mediumIngredients.Count == 1)
                     {
-                        aboveCauldronText.text = "You had two ghostsbreath in your potion, you can trade one medium ingredient that was in your pot for a large version of it!";
+                        aboveCauldronText.text = "You had <color=#800080>2</color>  <sprite name=\"ghostsbreath\">  in your potion, you can trade 1 medium ingredient that was in your pot for a large version of it!";
 
                         button1.SetActive(true);
 
@@ -1894,7 +1923,7 @@ public class ChipPoints : MonoBehaviour
                     }
                     if (mediumIngredients.Count == 2)
                     {
-                        aboveCauldronText.text = "You had two ghostsbreath in your potion, you can trade one medium ingredient that was in your pot for a large version of it!";
+                        aboveCauldronText.text = "You had <color=#800080>2</color> <sprite name=\"ghostsbreath\">  in your potion, you can trade 1 medium ingredient that was in your pot for a large version of it!";
 
                         button1.SetActive(true);
                         button2.SetActive(true);
@@ -1951,7 +1980,7 @@ public class ChipPoints : MonoBehaviour
                     }
                     if (mediumIngredients.Count == 3)
                     {
-                        aboveCauldronText.text = "You had two ghostsbreath in your potion, you can trade one medium ingredient that was in your pot for a large version of it!";
+                        aboveCauldronText.text = "You had <color=#800080>2</color> <sprite name=\"ghostsbreath\">  in your potion, you can trade 1 medium ingredient that was in your pot for a large version of it!";
 
                         button1.SetActive(true);
                         button2.SetActive(true);
@@ -2033,7 +2062,7 @@ public class ChipPoints : MonoBehaviour
                     }
                     if (mediumIngredients.Count == 4)
                     {
-                        aboveCauldronText.text = "You had two ghostsbreath in your potion, you can trade one medium ingredient that was in your pot for a large version of it!";
+                        aboveCauldronText.text = "You had <color=#800080>2</color> <sprite name=\"ghostsbreath\">  in your potion, you can trade one medium ingredient that was in your pot for a large version of it!";
 
                         button1.SetActive(true);
                         button2.SetActive(true);
@@ -2143,7 +2172,7 @@ public class ChipPoints : MonoBehaviour
                 {
                     if (smallIngredients.Count == 1)
                     {
-                        aboveCauldronText.text = "You had one ghostsbreath in your potion, you can trade one small ingredient that was in your pot for a large version of it!";
+                        aboveCauldronText.text = "You had <color=#800080>3</color> <sprite name=\"ghostsbreath\">  in your potion, you can trade one small ingredient that was in your pot for a large version of it!";
 
                         button1.SetActive(true);
 
@@ -2176,7 +2205,7 @@ public class ChipPoints : MonoBehaviour
                     }
                     if (smallIngredients.Count == 2)
                     {
-                        aboveCauldronText.text = "You had three ghostsbreath in your potion, you can trade one small ingredient that was in your pot for a large version of it!";
+                        aboveCauldronText.text = "You had <color=#800080>3</color> <sprite name=\"ghostsbreath\">  in your potion, you can trade one small ingredient that was in your pot for a large version of it!";
 
                         button1.SetActive(true);
                         button2.SetActive(true);
@@ -2233,7 +2262,7 @@ public class ChipPoints : MonoBehaviour
                     }
                     if (smallIngredients.Count == 3)
                     {
-                        aboveCauldronText.text = "You had three ghostsbreath in your potion, you can trade one small ingredient that was in your pot for a large version of it!";
+                        aboveCauldronText.text = "You had <color=#800080>3</color> <sprite name=\"ghostsbreath\">  in your potion, you can trade one small ingredient that was in your pot for a large version of it!";
 
                         button1.SetActive(true);
                         button2.SetActive(true);
@@ -2316,7 +2345,7 @@ public class ChipPoints : MonoBehaviour
                     }
                     if (smallIngredients.Count == 4)
                     {
-                        aboveCauldronText.text = "You had three ghostsbreath in your potion, you can trade one small ingredient that was in your pot for a large version of it!";
+                        aboveCauldronText.text = "You had <color=#800080>3</color> <sprite name=\"ghostsbreath\">  in your potion, you can trade one small ingredient that was in your pot for a large version of it!";
 
                         button1.SetActive(true);
                         button2.SetActive(true);
@@ -2429,7 +2458,7 @@ public class ChipPoints : MonoBehaviour
             {
                 buttonsToAddLeftover.SetActive(true);
                 button5.SetActive(true);
-                aboveCauldronText.text = $"ghosts breath in potion adds {extraPoints} extra points";
+                aboveCauldronText.text = $"<sprite name=\"ghostsbreath\">  in potion adds <color=#800080>{extraPoints}</color> <sprite name=\"droplet\"> ";
                 Score += extraPoints;
                 await CheckWhichChoice(aboveCauldronText.text);
 
@@ -2439,7 +2468,7 @@ public class ChipPoints : MonoBehaviour
         else
         {
             buttonsToAddLeftover.SetActive(true);
-            aboveCauldronText.text = "You had no ghosts breath in your pot";
+            aboveCauldronText.text = "You had <color=#800080>0</color> <sprite name=\"ghostsbreath\">  in your pot";
             button5.SetActive(true);
             await CheckWhichChoice(aboveCauldronText.text);
             Debug.Log("no ghosts breath");
@@ -2459,7 +2488,7 @@ public class ChipPoints : MonoBehaviour
         {
             buttonsToAddLeftover.SetActive(true);
             button5.SetActive(true);
-            aboveCauldronText.text = "You get one ruby this round!";
+            aboveCauldronText.text = "You get <color=#FF0000>1</color> <sprite name=\"ruby\"> this round!";
             _playerData.Rubies.Value += 1;
             await CheckWhichChoice(aboveCauldronText.text);
             ResetChoices();
@@ -2470,13 +2499,13 @@ public class ChipPoints : MonoBehaviour
         {
             buttonsToAddLeftover.SetActive(true);
             button5.SetActive(true);
-            aboveCauldronText.text = "You don't get a ruby this round";
+            aboveCauldronText.text = "You get <color=#FF0000>0</color> <sprite name=\"ruby\"> this round";
             await CheckWhichChoice(aboveCauldronText.text);
             ResetChoices();
             Debug.Log("no rubies to add");
         }
         
-        aboveCauldronText.text = $"You get {VictoryPoints} Victory Points this round!";
+        aboveCauldronText.text = $"You get <color=#006400>{VictoryPoints}</color> <sprite name=\"VP\">  this round!";
         button5.SetActive(true);
         _playerData.VictoryPoints.Value += VictoryPoints;
         await CheckWhichChoice(aboveCauldronText.text);
@@ -2486,7 +2515,7 @@ public class ChipPoints : MonoBehaviour
 
         buttonsToAddLeftover.SetActive(true);
         button5.SetActive(true);
-        aboveCauldronText.text = $"You get {Coins} Coins this round!";
+        aboveCauldronText.text = $"You get <color=#FFA500>{Coins}</color> <sprite name=\"coin\">  this round!";
         _playerData.Coins.Value += Coins;
         await CheckWhichChoice(aboveCauldronText.text);
         ResetChoices();
@@ -2568,7 +2597,7 @@ public class ChipPoints : MonoBehaviour
         if (_playerData.Rubies.Value >= 2)
         {
             button1.SetActive(true);
-            choiceOne.text = "Buy droplet";
+            choiceOne.text = "Buy <sprite name=\"droplet\">";
             button2.SetActive(true);
             int rubiesToSpend = _playerData.Rubies.Value;
 
@@ -2577,14 +2606,14 @@ public class ChipPoints : MonoBehaviour
                 buttonsToAddLeftover.SetActive(true);
                 button5.SetActive(true);
                 _animatorScript.StartTalking(5);
-                aboveCauldronText.text = $"You have {rubiesToSpend} rubies, do you want to buy a droplet or refill your purifier potion?";
+                aboveCauldronText.text = $"You have <color=#FF0000>0{rubiesToSpend}</color> <sprite name=\"ruby\">, do you want to buy <sprite name=\"droplet\"> or refill your purifier potion?";
                 choiceTwo.text = "refill purifier";
                 if (_playerData.Rubies.Value >= 4)
                 {
                     button3.SetActive(true);
-                    choiceThree.text = "Buy 2 droplets";
+                    choiceThree.text = "Buy 2 <sprite name=\"droplet\">";
                     button4.SetActive(true);
-                    choiceFour.text = "Refill and Droplet";
+                    choiceFour.text = "Refill and 1 <sprite name=\"droplet\">";
                 }
              
                 await CheckWhichChoice(aboveCauldronText.text);
@@ -2616,27 +2645,27 @@ public class ChipPoints : MonoBehaviour
             {
                 buttonsToAddLeftover.SetActive(true);
                 _animatorScript.StartTalking(4);
-                aboveCauldronText.text = $"You have {rubiesToSpend} rubies, do you want to buy a droplet?";
+                aboveCauldronText.text = $"You have <color=#FF0000>{rubiesToSpend}</color> <sprite name=\"ruby\">, do you want to buy a <sprite name=\"droplet\"> ?";
                 choiceTwo.text = "Skip";
                 if (_playerData.Rubies.Value >= 4)
                 {
                     button3.SetActive(true);
-                    choiceThree.text = "Buy 2 droplets";
+                    choiceThree.text = "Buy 2 <sprite name=\"droplet\">";
                 }
                 if (_playerData.Rubies.Value >= 6)
                 {
                     button4.SetActive(true);
-                    choiceFour.text = "Buy 3 droplets";
+                    choiceFour.text = "Buy 3 <sprite name=\"droplet\">";
                 }
                 if (_playerData.Rubies.Value >= 8)
                 {
                     button5.SetActive(true);
-                    choiceFive.text = "Buy 4 droplets";
+                    choiceFive.text = "Buy 4 <sprite name=\"droplet\">";
                 }
                 if (_playerData.Rubies.Value >= 10)
                 {
                     button6.SetActive(true);
-                    choiceSix.text = "Buy 5 droplets";
+                    choiceSix.text = "Buy 5 <sprite name=\"droplet\">";
                 }
 
                 await CheckWhichChoice(aboveCauldronText.text);
@@ -2679,7 +2708,7 @@ public class ChipPoints : MonoBehaviour
             buttonsToAddLeftover.SetActive(true);
             button5.SetActive(true);
             _animatorScript.StartTalking(4);
-            await MessageAboveCauldron("You don't have enough rubies to spend!");
+            await MessageAboveCauldron("You don't have enough <sprite name=\"ruby\"> to spend!");
             
             ResetChoices();
         }
@@ -2707,7 +2736,7 @@ public class ChipPoints : MonoBehaviour
         buttonsToAddLeftover.SetActive(true);
         button5.SetActive(true);
         _animatorScript.StartTalking(4);
-        aboveCauldronText.text = $"You have {ratTails} rat tails to add to your pot this round";
+        aboveCauldronText.text = $"You have <color=#FF1493>{ratTails} Rat Tails</color> <sprite name=\"ratTail\">  to add to your pot";
         Score += ratTails;
         
 
@@ -3100,11 +3129,11 @@ public void BuyDrop()
         await MessageAboveCauldron("END OF GAME! Time to add up extra points!");
         int pointsFromRubies = _playerData.Rubies.Value / 2;
         _animatorScript.StartTalking(5);
-        await MessageAboveCauldron($"You get a victory point for every 2 Rubies, giving you {pointsFromRubies} Victory Points");
+        await MessageAboveCauldron($"You get <sprite name=\"VP\">  for every <color=#FF0000>2</color> <sprite name=\"ruby\">, giving you <color=#006400>{pointsFromRubies}</color> <sprite name=\"VP\"> ");
         _playerData.VictoryPoints.Value += pointsFromRubies;
         int pointsFromMoney = _playerData.Coins.Value / 5;
         _animatorScript.StartTalking(5);
-        await MessageAboveCauldron($"You get a victory point for every 5 Coins, giving you {pointsFromMoney} Victory Points");
+        await MessageAboveCauldron($"You get a <sprite name=\"VP\">  for every <color=#FFA500>5</color> <sprite name=\"coin\"> , giving you <color=#006400>{pointsFromMoney}</color> <sprite name=\"VP\"> ");
         _playerData.VictoryPoints.Value += pointsFromMoney;
     }
 

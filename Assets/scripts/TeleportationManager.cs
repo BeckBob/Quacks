@@ -13,10 +13,8 @@ public class TeleportationManager : MonoBehaviour
     [SerializeField] GameObject redPlayerSpace;
     [SerializeField] GameObject purplePlayerSpace;
 
-    [SerializeField] GameObject bluetoFace;
-    [SerializeField] GameObject yellowtoFace;
-    [SerializeField] GameObject redtoFace;
-    [SerializeField] GameObject purpletoFace;
+    [SerializeField] GameObject wizardToFace;
+  
 
     [SerializeField] GameObject shopDirection;
     [SerializeField] GameObject stallSphere;
@@ -26,6 +24,8 @@ public class TeleportationManager : MonoBehaviour
 
     private Vector3 shopDirectionLocation;
     private Vector3 stallLocation;
+
+    WinnerManager _winnerManager;
 
     private void Start()
     {
@@ -38,11 +38,27 @@ public class TeleportationManager : MonoBehaviour
     {
         _playerData = FindObjectOfType<PlayerData>();
         _settings = FindObjectOfType<LobbySettings>();
+        _winnerManager = FindObjectOfType<WinnerManager>();
 
         // Set player color randomly if needed
         var color = _playerData.Colour.Value == "Random" ? _settings.GetRandomColour() : _playerData.Colour.Value;
         _playerData.Colour.Value = color;
-
+        if (color == "Red")
+        {
+            _winnerManager.RedExists.Value = true;
+        }
+        else if( color == "Yellow")
+        {
+            _winnerManager.YellowExists.Value = true;
+        }
+        else if( color == "Blue")
+        {
+            _winnerManager.BlueExists.Value = true;
+        }
+        else if (color == "Purple")
+        {
+            _winnerManager.PurpleExists.Value = true;
+        }
         // Teleport and face direction based on player color
         TeleportAndRotatePlayer(color.ToString());
     }
@@ -56,25 +72,25 @@ public class TeleportationManager : MonoBehaviour
         {
             case "Red":
                 targetSpace = redPlayerSpace;
-                faceDirection = redtoFace.transform.position;
                 break;
             case "Blue":
                 targetSpace = bluePlayerSpace;
-                faceDirection = bluetoFace.transform.position;
                 break;
             case "Yellow":
                 targetSpace = yellowPlayerSpace;
-                faceDirection = yellowtoFace.transform.position;
+                
                 break;
             case "Purple":
                 targetSpace = purplePlayerSpace;
-                faceDirection = purpletoFace.transform.position;
                 break;
         }
 
         if (targetSpace != null)
         {
+            
+
             gameObject.transform.position = targetSpace.transform.position;
+            faceDirection = wizardToFace.transform.position;
             RotateTowards(faceDirection);
         }
     }
@@ -89,7 +105,7 @@ public class TeleportationManager : MonoBehaviour
     private void RotateTowards(Vector3 targetPosition)
     {
         // Calculate direction to face, ignoring y-axis for a flat rotation
-        Vector3 direction = (targetPosition + transform.position).normalized;
+        Vector3 direction = (targetPosition - transform.position).normalized;
         direction.y = 0;
 
         // Rotate immediately to face the direction

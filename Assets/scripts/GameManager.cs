@@ -458,7 +458,7 @@ public class GameManager : MonoBehaviour
         {
             afternoonMusic.Stop();
         }
-        if (gameRound == 7)
+        if (gameRound == 7 || gameRound == 8)
         {
             eveningMusic.Stop();
         }
@@ -479,7 +479,7 @@ public class GameManager : MonoBehaviour
         {
             afternoonMusic.Stop();
         }
-        if (gameRound == 7)
+        if (gameRound == 7 || gameRound == 8)
         {
             eveningMusic.Stop();
         }

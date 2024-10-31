@@ -116,6 +116,10 @@ public class WinnerManager : NetworkBehaviour
     [SerializeField] GameObject aboveCauldronButtonRed;
     [SerializeField] TextMeshProUGUI aboveCauldronTextRed;
 
+    [SerializeField] TextMeshProUGUI winningTextRed;
+    [SerializeField] TextMeshProUGUI winningTextBlue;
+    [SerializeField] TextMeshProUGUI winningTextYellow;
+    [SerializeField] TextMeshProUGUI winningTextPurple;
 
     [SerializeField] GameObject aboveCauldronUIBlue;
     [SerializeField] GameObject aboveCauldronButtonBlue;
@@ -472,7 +476,7 @@ public class WinnerManager : NetworkBehaviour
                 _animatorScript.GoodJobAnimation();
                 winningGame.Play();
                 aboveCauldronUIRed.SetActive(true);
-                aboveCauldronTextRed.text = "YOU WON!";
+                winningTextRed.text = "YOU WON!";
                 
                 winners.Add(_playerData.Name.Value.ToString());
                 ReadyUp();
@@ -484,6 +488,7 @@ public class WinnerManager : NetworkBehaviour
             {
                 LosingGame.Play();
                 ReadyUp();
+                winningTextRed.text = "YOU LOSER!";
                 await CheckAllPlayersReady();
                 ResetReady();
                 ShowWinnerUI();
@@ -501,7 +506,7 @@ public class WinnerManager : NetworkBehaviour
                 
                 winners.Add(_playerData.Name.Value.ToString());
                 aboveCauldronUIYellow.SetActive(true);
-                aboveCauldronTextYellow.text = "YOU WON!";
+                winningTextYellow.text = "YOU WON!";
                 ReadyUp();
                 await CheckAllPlayersReady();
                 ResetReady();
@@ -510,6 +515,7 @@ public class WinnerManager : NetworkBehaviour
             else
             {
                 LosingGame.Play();
+                winningTextYellow.text = "YOU LOSER!";
                 ReadyUp();
                 await CheckAllPlayersReady();
                 ResetReady();
@@ -527,7 +533,7 @@ public class WinnerManager : NetworkBehaviour
 
                 winners.Add(_playerData.Name.Value.ToString());
                 aboveCauldronUIBlue.SetActive(true);
-                aboveCauldronTextBlue.text = "YOU WON!";
+                winningTextBlue.text = "YOU WON!";
                 ReadyUp();
                 await CheckAllPlayersReady();
                 ResetReady();
@@ -537,6 +543,7 @@ public class WinnerManager : NetworkBehaviour
             {
                 LosingGame.Play();
                 ReadyUp();
+                winningTextBlue.text = "YOU LOSER!";
                 await CheckAllPlayersReady();
                 ResetReady();
                 ShowWinnerUI();
@@ -553,7 +560,7 @@ public class WinnerManager : NetworkBehaviour
 
                 winners.Add(_playerData.Name.Value.ToString()); 
                 aboveCauldronUIPurple.SetActive(true);
-                aboveCauldronTextPurple.text = "YOU WON!";
+                winningTextPurple.text = "YOU WON!";
                 ReadyUp();
                 await CheckAllPlayersReady();
                 ResetReady();
@@ -562,6 +569,7 @@ public class WinnerManager : NetworkBehaviour
             else
             {
                 LosingGame.Play();
+                winningTextPurple.text = "YOU LOSER!";
                 ReadyUp();
                 await CheckAllPlayersReady();
                 ResetReady();
@@ -974,7 +982,7 @@ public class WinnerManager : NetworkBehaviour
         _chipPoints = FindAnyObjectByType<ChipPoints>();
         if (_chipPoints.hawkMothRule == 1 && MothNumbersBeaten == 2)
         {
-            await DecideWhichCauldronUI("You have more moths in your pot than both your neighbours, you get a droplet and a ruby");
+            await DecideWhichCauldronUI("You have more <color=#708090>moths</color> <sprite name=\"moth\">  in your pot than both your neighbours, you get a <color=#800080>Droplet</color> <sprite name=\"droplet\"> and a <color=#FF0000>ruby</color> <sprite name=\"ruby\">");
           
             _playerData.Rubies.Value++;
             _chipPoints.AddDroplet();
@@ -982,7 +990,7 @@ public class WinnerManager : NetworkBehaviour
         }
         if (_chipPoints.hawkMothRule == 1 && MothNumbersBeaten == 1)
         {
-            await DecideWhichCauldronUI("You have more moths in your pot than ONE of your neighbours, you get a droplet");
+            await DecideWhichCauldronUI("You have more <color=#708090>moths</color> <sprite name=\"moth\">  in your pot than ONE of your neighbours, you get a droplet");
           
             _chipPoints.AddDroplet();
        
@@ -992,7 +1000,7 @@ public class WinnerManager : NetworkBehaviour
 
         if (_chipPoints.hawkMothRule == 2 && MothNumbersBeaten == 1)
         {
-            await DecideWhichCauldronUI("You have more moths in your pot than your neighbours, you get a droplet and a ruby");
+            await DecideWhichCauldronUI("You have more <color=#708090>moths</color> <sprite name=\"moth\">  in your pot than your neighbours, you get a <color=#800080>Droplet</color> <sprite name=\"droplet\"> and a <color=#FF0000>ruby</color> <sprite name=\"ruby\">");
            
             _playerData.Rubies.Value++;
             _chipPoints.AddDroplet();
@@ -1001,7 +1009,7 @@ public class WinnerManager : NetworkBehaviour
         }
         if (_chipPoints.hawkMothRule == 2 && TwoPlayerDraw)
         {
-            await DecideWhichCauldronUI("You have same amount of moths in your pot as your neighbour, you get one droplet");
+            await DecideWhichCauldronUI("You have same amount of <color=#708090>moths</color> <sprite name=\"moth\"> in your pot as your neighbour, you get <color=#800080>1 Droplet</color> <sprite name=\"droplet\">");
           
             _chipPoints.AddDroplet();
            
@@ -1066,6 +1074,10 @@ public class WinnerManager : NetworkBehaviour
         BlueVictoryPoints.Value= 0;
         YellowVictoryPoints.Value = 0;
         TwoPlayerDraw = false;
+        winningTextPurple.text = "";
+        winningTextRed.text = "";
+        winningTextBlue.text = "";
+        winningTextYellow.text = "";
         RoundWinnerScore.Value = 0;
         GameWinnerScore.Value = 0;
         PurpleRubies.Value = 0;

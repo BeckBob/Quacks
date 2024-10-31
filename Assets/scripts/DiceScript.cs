@@ -57,7 +57,7 @@ public class DiceScript : MonoBehaviour
                         
                         alreadyCalled = true;
                         playerData.VictoryPoints.Value += 1;
-                        await chipPoints.MessageAboveCauldron("You get 1 Victory point!!");
+                        await chipPoints.MessageAboveCauldron("You get <color=#006400>1 Victory Point</color> <sprite name=\"VP\"> !");
                          DeactivateDice(colour);
 
                         break;
@@ -65,14 +65,14 @@ public class DiceScript : MonoBehaviour
                        
                         alreadyCalled = true;
                         playerData.VictoryPoints.Value += 2;
-                        await chipPoints.MessageAboveCauldron("You get 2 Victory points!");
+                        await chipPoints.MessageAboveCauldron("You get <color=#006400>2 Victory Points</color> <sprite name=\"VP\"> !");
                         DeactivateDice(colour);
                         break;
                     case "Side3":
                         
                         alreadyCalled = true;
                         grabIngredient.AddToBagPermanantly(14);
-                        await chipPoints.MessageAboveCauldron("Pumpkin added to your bag!");
+                        await chipPoints.MessageAboveCauldron("<color=#FFA500>Pumpkin</color> <sprite name=\"pumpkin\">  added to your bag!");
                         DeactivateDice(colour);
                         break;
                     case "Side4":
@@ -80,21 +80,21 @@ public class DiceScript : MonoBehaviour
                         alreadyCalled = true;
                         playerData.Rubies.Value += 1;
                         chipPoints.ChangeRubyUI();
-                        await chipPoints.MessageAboveCauldron("You get a Ruby!!");
+                        await chipPoints.MessageAboveCauldron("You get a <color=#FF0000>Ruby</color> <sprite name=\"ruby\">!");
                         DeactivateDice(colour);
                         break;
                     case "Side5":
                        
                         alreadyCalled = true;
                         chipPoints.AddDroplet();
-                        await chipPoints.MessageAboveCauldron("Added a droplet to your pot!");
+                        await chipPoints.MessageAboveCauldron("Added a <color=#800080>droplet</color> <sprite name=\"droplet\">  to your pot!");
                          DeactivateDice(colour);
                         break;
                     case "Side6":
                         
                         alreadyCalled = true;
                         playerData.VictoryPoints.Value += 1;
-                        await chipPoints.MessageAboveCauldron("You get 1 Victory point!");
+                        await chipPoints.MessageAboveCauldron("You get <color=#006400>1 Victory Point</color> <sprite name=\"VP\"> !");
                         DeactivateDice(colour);
                         break;
                 }

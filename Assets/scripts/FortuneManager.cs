@@ -110,7 +110,7 @@ public class FortuneManager : MonoBehaviour
             {
 
                 _playerData.VictoryPoints.Value += _playerData.RatTails.Value;
-                await _chipPoints.MessageAboveCauldron($"Added {_playerData.RatTails.Value} to Victory Points!");
+                await _chipPoints.MessageAboveCauldron($"Added {_playerData.RatTails.Value} to <color=#006400>Victory Points!</color> <sprite name=\"VP\">");
                 _playerData.RatTails.Value = 0;
                 
                 //add same number of victory points as rat tails and then remove rat tail
@@ -127,7 +127,7 @@ public class FortuneManager : MonoBehaviour
             if(_onClickFortune.buttonTwo== true)
             {
                  
-                await _chipPoints.MessageAboveCauldron($"Added {_playerData.RatTails.Value} to Rubies!");
+                await _chipPoints.MessageAboveCauldron($"Added {_playerData.RatTails.Value} to <color=#FF0000>Rubies</color> <sprite name=\"ruby\">");
                 _playerData.RatTails.Value = 0;
                 for (int i = 0; i < _playerData.RatTails.Value; i++)
                 {
@@ -156,7 +156,7 @@ public class FortuneManager : MonoBehaviour
                 //Double the number of rat tails this round
 
                 _playerData.RatTails.Value += _playerData.RatTails.Value;}
-            await _chipPoints.MessageAboveCauldron($"Added {_playerData.RatTails.Value} to Rat Tails!");
+            await _chipPoints.MessageAboveCauldron($"Added {_playerData.RatTails.Value} to <color=#FF1493>Rat Tails!</color> <sprite name=\"ratTail\"> ");
 
         }
          if(_fortuneTeller.fortuneNumber == 7)
@@ -165,7 +165,7 @@ public class FortuneManager : MonoBehaviour
             if (_onClickFortune.buttonOne == true)
             {
                
-                await _chipPoints.MessageAboveCauldron($"Added 4 Victory Points!");
+                await _chipPoints.MessageAboveCauldron($"Added <color=#006400>4 Victory Points</color> <sprite name=\"VP\">");
                 _playerData.VictoryPoints.Value += 4;
                 //add 4 victory points to players score
             }
@@ -175,7 +175,7 @@ public class FortuneManager : MonoBehaviour
                 _grabIngredient.RemoveItemFromBagPermanantly(0);
                 _grabIngredient.ResetBagContents();
                 _grabIngredient.CountIngredientsInBag();
-                await _chipPoints.MessageAboveCauldron($"Removed small cherry bomb from bag PERMANANTLY!");
+                await _chipPoints.MessageAboveCauldron($"Removed <color=#FFFFFF>small cherrybomb</color> <sprite name=\"cherrybomb\">  from bag PERMANANTLY!");
                 //remove white chip from players bag
             }
             
@@ -188,13 +188,13 @@ public class FortuneManager : MonoBehaviour
                 if (_playerData.VictoryPoints.Value == _winnerManager.LowestVictoryPoints)
                 {
                     _grabIngredient.AddToBagPermanantly(16);
-                    await _chipPoints.MessageAboveCauldron($"You have the lowest Victory Points! Added small spider to bag!");
+                    await _chipPoints.MessageAboveCauldron($"You have the <color=#006400>lowest Victory Points</color> <sprite name=\"VP\">  Added <color=#006400>small spider</color> <sprite name=\"spider\">  to bag!");
                     _grabIngredient.ResetBagContents();
                     _grabIngredient.CountIngredientsInBag();
                 }
                 else
                 {
-                    await _chipPoints.MessageAboveCauldron($"You DON'T have the lowest Victory Points! No spider for yooou!");
+                    await _chipPoints.MessageAboveCauldron($"You DON'T have the lowest <color=#006400>Victory Points</color> <sprite name=\"VP\">  No <color=#006400>spider</color> <sprite name=\"spider\">  for yooou!");
                 }
                 _winnerManager.LowestVictoryPoints = 0;
                 ResetChoices();
@@ -218,7 +218,7 @@ public class FortuneManager : MonoBehaviour
                     _chipPoints.ChangeRubyUI();
                 }
 
-                await _chipPoints.MessageAboveCauldron($"Added 3 Rubies!");
+                await _chipPoints.MessageAboveCauldron($"Added <color=#FF0000>3 Rubies</color> <sprite name=\"ruby\">");
             }
             ResetChoices();
             //PRE ROUND - either open up shop with only medium ingredients and moth or add 3 rubies to players inventory
@@ -228,25 +228,26 @@ public class FortuneManager : MonoBehaviour
             _chipPoints.AddDroplet();
             _chipPoints.ResetScore();
             _chipPoints.resetScoreText();
-            await _chipPoints.MessageAboveCauldron($"Added droplet to potion!");
+            await _chipPoints.MessageAboveCauldron($"Added <color=#800080>droplets</color> <sprite name=\"droplet\">  to potion!");
             //PRE ROUND - adds droplet to everyones potion.
         }
         if (_fortuneTeller.fortuneNumber == 13)
         {
             if (_onClickFortune.buttonOne == true)
             {
-                _chipPoints.AddDroplet();
-                FunctionTimer.Create(() => _chipPoints.AddDroplet(), 2f);
+               
                 _chipPoints.ResetScore();
                 _chipPoints.resetScoreText();
-                await _chipPoints.MessageAboveCauldron($"Added 2 droplets to potion!");
+                await _chipPoints.MessageAboveCauldron($"Added <color=#800080>2 droplets</color> <sprite name=\"droplet\">  to potion!");
+                _chipPoints.AddDroplet();
+                FunctionTimer.Create(() => _chipPoints.AddDroplet(), 2f);
             }
             if (_onClickFortune.buttonTwo == true)
             {
                 _grabIngredient.AddToBagPermanantly(6);
                 _grabIngredient.ResetBagContents();
                 _grabIngredient.CountIngredientsInBag();
-                await _chipPoints.MessageAboveCauldron($"Added Ghosts Breath to your bag!");
+                await _chipPoints.MessageAboveCauldron($"Added <color=#800080>ghosts breath</color> <sprite name=\"ghostsbreath\">  to your bag!");
             }
             ResetChoices();
 
@@ -266,7 +267,7 @@ public class FortuneManager : MonoBehaviour
             await _winnerManager.CalculateLowestDrawnIngredients();
             if (_grabIngredient.totalOfFortuneIngredients == _winnerManager.LowestDrawn)
             {
-                await _chipPoints.MessageAboveCauldron("You drew the lowest total! You get a medium crow skull! Yippee! A dead things skull!");
+                await _chipPoints.MessageAboveCauldron("You drew the lowest total! You get a <color=#708090>medium crow skull</color> <sprite name=\"crowSkull\">  Yippee! A dead things skull!");
                 _grabIngredient.AddToBagPermanantly(5);
                 _grabIngredient.ResetBagContents();
                 _grabIngredient.CountIngredientsInBag();
@@ -276,7 +277,7 @@ public class FortuneManager : MonoBehaviour
             }
             else
             {
-                await _chipPoints.MessageAboveCauldron("You didn't have the lowest total, you loser? You get a ruby!");
+                await _chipPoints.MessageAboveCauldron("You didn't have the lowest total, you loser? You get a <color=#FF0000>Ruby</color> <sprite name=\"ruby\">");
                 _playerData.Rubies.Value++;
                 _chipPoints.ChangeRubyUI();
                 
@@ -304,10 +305,10 @@ public class FortuneManager : MonoBehaviour
         }
         if (_fortuneTeller.fortuneNumber == 20)
         {
-            redDice.SetActive(true);
-            blueDice.SetActive(true);
-            yellowDice.SetActive(true);
-            purpleDice.SetActive(true);
+            if (_winnerManager.RedExists.Value) { redDice.SetActive(true); }
+            if (_winnerManager.BlueExists.Value) { blueDice.SetActive(true); }
+            if (_winnerManager.YellowExists.Value) { yellowDice.SetActive(true); }
+            if (_winnerManager.PurpleExists.Value) { purpleDice.SetActive(true); }
             DiceFloor.SetActive(true);
             await _winnerManager.CheckAllPlayersReady();
             _winnerManager.ResetReady();
@@ -321,7 +322,7 @@ public class FortuneManager : MonoBehaviour
             {
                 _playerData.Rubies.Value++;
 
-                await _chipPoints.MessageAboveCauldron("You have the lowest rubies! You get a ruby!");
+                await _chipPoints.MessageAboveCauldron("You have the <color=#FF0000>lowest rubies</color><sprite name=\"ruby\">  You get a <color=#FF0000>Ruby</color> <sprite name=\"ruby\">");
                 _chipPoints.ChangeRubyUI();
             }
             _winnerManager.LowestRubies = 0;
@@ -329,7 +330,7 @@ public class FortuneManager : MonoBehaviour
         }
         if (_fortuneTeller.fortuneNumber == 23)
         {
-            _grabIngredient.SetCauldronMessage("Draw 4 chips from your bag!");
+            _grabIngredient.SetCauldronMessage("Draw 4 ingredients from your bag!");
             _grabIngredient.fortuneDrawAmount = 4;
             _grabIngredient.fortunedrawpulls = true;
             _grabIngredient.fortuneDrawTime = true;
@@ -359,7 +360,7 @@ public class FortuneManager : MonoBehaviour
         {
             if (ingredient.Contains("cherryBomb") && firstCherryBombHappened == false)
             {
-                await _chipPoints.MessageAboveCauldronMultipleChoice(2, "Your first cherry bomb! Do you want to Remove it and put back in you bag?", "Remove", "Leave in pot", "", "", "");
+                await _chipPoints.MessageAboveCauldronMultipleChoice(2, "Your first <color=#FFFFFF>cherrybomb</color> <sprite name=\"cherrybomb\">  Do you want to Remove it and put back in you bag?", "Remove", "Leave in pot", "", "", "");
                 if (_chipPoints.choiceOneCauldron)
                 {
                     if (ingredient.Contains("One"))
@@ -393,7 +394,7 @@ public class FortuneManager : MonoBehaviour
         {
             if (ingredient.Contains("pumpkin"))
             {
-                await _chipPoints.MessageAboveCauldron("The fortune pumpkin adds an extra point to pot!");
+                await _chipPoints.MessageAboveCauldron("The fortune means <color=#CD7F32>Pumpkin</color> <sprite name=\"pumpkin\">  adds extra <color=#800080>droplet</color> <sprite name=\"droplet\">  to pot!");
                 _chipPoints.Score++;
             }
             //DURING ROUND In this round, every pumpkin add an extra 1 to potion. -have this set a boolean true in chippoints that adds 1 in pumpkin if statements
@@ -433,13 +434,13 @@ public class FortuneManager : MonoBehaviour
             
             if (_chipPoints.RubiesThisRound)
             {
-                await _chipPoints.MessageAboveCauldron("You reached a ruby level this round and according to the fortune you get an extra ruby!");
+                await _chipPoints.MessageAboveCauldron("You reached a <color=#FF0000>Ruby</color> <sprite name=\"ruby\"> level this round and due to the fortune you get an extra <color=#FF0000>Ruby</color> <sprite name=\"ruby\">!");
                 _playerData.Rubies.Value++;
                 _chipPoints.ChangeRubyUI();
             }
             else
             {
-                await _chipPoints.MessageAboveCauldron("Boooohooooo! You didn't reach a ruby level, no extra fortune ruby for you");
+                await _chipPoints.MessageAboveCauldron("Boooohooooo! You didn't reach a <color=#FF0000>Ruby</color> <sprite name=\"ruby\"> level, no extra <color=#FF0000>Ruby</color> from fortune <sprite name=\"ruby\"> for you");
             }
         
         }
@@ -564,7 +565,7 @@ public class FortuneManager : MonoBehaviour
         {
             if (_chipPoints.RubiesThisRound)
             {
-                await _chipPoints.MessageAboveCauldron("Ruby on this level, you get 2 extra victory points!");
+                await _chipPoints.MessageAboveCauldron("<color=#FF0000>Ruby</color> <sprite name=\"ruby\"> on this level, you get <color=#006400>2 victory points</color> <sprite name=\"VP\">");
                 _playerData.VictoryPoints.Value += 2;
             }
             //AFTER ROUND - if you reach a scoring space with a ruby this round you get 2 extra victory points, even if your pot explodes.
@@ -609,15 +610,15 @@ public class FortuneManager : MonoBehaviour
         {
             if (_quality.GetCherryBombs() == 7)
             {
-                await _chipPoints.MessageAboveCauldron("Your Cherry Bombs total exactly 7! You get another droplet in your potion!");
+                await _chipPoints.MessageAboveCauldron("Your <color=#FFFFFF>Cherrybombs</color> <sprite name=\"cherrybomb\">  total exactly 7! You get another <color=#800080>droplet</color> <sprite name=\"droplet\">  in your potion!");
                 _chipPoints.AddDroplet();
               
             }
             else
             {
-                await _chipPoints.MessageAboveCauldron("Ohhh nooo! You didn't get a total of 7 cherry bombs, no droplet for you! YOU LOSER!");
+                await _chipPoints.MessageAboveCauldron("Ohhh nooo! You didn't get a total of <color=#FFFFFF>7 Cherrybombs</color> <sprite name=\"cherrybomb\">  no <color=#800080>droplet</color> <sprite name=\"droplet\">  for you! YOU LOSER!");
             }
-            // END OF ROUND - "If your white chips total exactly 7 at the end of the round you get to add a droplet to your potion.
+            // END OF ROUND - "If your white chips total exactly 7 at the end of the round you get to add a droplet to your potion.  
         }
         if (_playerData.Colour.Value == "Purple")
         {
@@ -805,7 +806,7 @@ public class FortuneManager : MonoBehaviour
     {
         if (_fortuneTeller.fortuneNumber == 5)
         {
-            await _chipPoints.MessageAboveCauldron("Putting Cherry Bomb limit back to 7!");
+            await _chipPoints.MessageAboveCauldron("Putting <color=#FFFFFF>Cherrybomb</color> <sprite name=\"cherrybomb\">  limit back to <color=#FFFFFF>7</color>");
             _quality.RemoveFromCherryBombLimit();
             _quality.RemoveFromCherryBombLimit();
         }
