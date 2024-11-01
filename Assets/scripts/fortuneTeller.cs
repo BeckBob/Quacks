@@ -169,7 +169,7 @@ public class fortuneTeller : MonoBehaviour
             _animatorScript.StartTalking(6);
 
             choiceOne.text = "add 2 <sprite name=\"droplet\">";
-            choiceTwo.text = "take one ghosts breath <sprite name=\"ghostbreath\">";
+            choiceTwo.text = "take one ghosts breath <sprite name=\"ghostsbreath\">";
             //PREROUND
         }
         if (fortuneNum == 14)

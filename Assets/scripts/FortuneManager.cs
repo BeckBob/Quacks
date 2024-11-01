@@ -241,6 +241,8 @@ public class FortuneManager : MonoBehaviour
                 await _chipPoints.MessageAboveCauldron($"Added <color=#800080>2 droplets</color> <sprite name=\"droplet\">  to potion!");
                 _chipPoints.AddDroplet();
                 FunctionTimer.Create(() => _chipPoints.AddDroplet(), 2f);
+                _chipPoints.ResetScore();
+                _chipPoints.resetScoreText();
             }
             if (_onClickFortune.buttonTwo == true)
             {

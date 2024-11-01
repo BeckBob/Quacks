@@ -926,19 +926,17 @@ public class ChipPoints : MonoBehaviour
         button5.SetActive(true);
         aboveCauldronText.text = $"added <color=#006400>{VictoryPoints}</color> <sprite name=\"VP\">";
         await CheckWhichChoice(aboveCauldronText.text);
-       
+        Coins = 0;
         ResetChoices();
         winnerManager.ReadyUp();
         await winnerManager.CheckAllPlayersReady();
         winnerManager.ResetReady();
-        Coins = 0;
+   
 
 
-        if (!isCheckingChoice)
-        {
             
             GameManager.Instance.UpdateGameState(GameState.RollDice);
-        }
+        
     }
 
     public async void ChooseCoins()
@@ -948,7 +946,7 @@ public class ChipPoints : MonoBehaviour
         await _fortuneManager.PostRoundFortuneEffects();
         buttonsToAddLeftover.SetActive(true);
         button5.SetActive(true);
-        aboveCauldronText.text = $"added <color=#FFA500>>{Coins}</color> <sprite name=\"coin\">";
+        aboveCauldronText.text = $"added <color=#FFA500>{Coins}</color> <sprite name=\"coin\">";
         await CheckWhichChoice(aboveCauldronText.text);
         buttonsToAddLeftover.SetActive(false);
         ResetChoices();
@@ -960,11 +958,9 @@ public class ChipPoints : MonoBehaviour
         await winnerManager.CheckAllPlayersReady();
         winnerManager.ResetReady();
 
-        if (!isCheckingChoice)
-        {
-            
+        
             GameManager.Instance.UpdateGameState(GameState.RollDice);
-        }
+        
 
     }
 
@@ -1088,7 +1084,7 @@ public class ChipPoints : MonoBehaviour
 
     public void AddDroplet()
     {
-        InitialScore++;
+        InitialScore+=1;
         leftOverIngredientLocation = leftOverIngredient.transform.position;
         
         GameObject dropletObj = Instantiate(droplet, leftOverIngredientLocation, Quaternion.identity);

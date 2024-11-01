@@ -1084,6 +1084,10 @@ public class WinnerManager : NetworkBehaviour
         RedRubies.Value = 0;
         BlueRubies.Value = 0;
         YellowRubies.Value = 0;
+        RedPoints.Value = 0;
+        YellowPoints.Value = 0;
+        BluePoints.Value = 0;
+        PurplePoints.Value = 0;
         RedExists.Value = false;
         BlueExists.Value = false;
         YellowExists.Value = false;

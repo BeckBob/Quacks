@@ -105,8 +105,10 @@ public class TeleportationManager : MonoBehaviour
     private void RotateTowards(Vector3 targetPosition)
     {
         // Calculate direction to face, ignoring y-axis for a flat rotation
-        Vector3 direction = (targetPosition - transform.position).normalized;
+        Vector3 direction = (transform.position - targetPosition);
         direction.y = 0;
+        
+        
 
         // Rotate immediately to face the direction
         transform.rotation = Quaternion.LookRotation(direction);

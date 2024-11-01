@@ -496,7 +496,10 @@ public class GameManager : MonoBehaviour
         _yellowPlayerSpace.SetActive(false);
         _redPlayerSpace.SetActive(false);
         _BluePlayerSpace.SetActive(false);
-
+        _fortuneTextBlue.SetActive(false);
+        _fortuneTextPurple.SetActive(false);
+        _fortuneTextYellow.SetActive(false);
+        _fortuneTextRed.SetActive(false);
   
             _purpleSphere.SetActive(false);
 
